@@ -25,7 +25,7 @@ Here we are using JUnit
 
 ```java
 import static org.quicktheories.quicktheories.QuickTheory.qt;
-import static org.quicktheories.quicktheories.generators.ValuesDSL.*;
+import static org.quicktheories.quicktheories.generators.SourceDSL.*;
 
 public class SomeTests {
 
@@ -42,7 +42,7 @@ public class SomeTests {
 
 The static import `org.quicktheories.quicktheories.QuickTheory.qt` provides access to the QuickTheories DSL.
 
-The static import `org.quicktheories.quicktheories.generators.ValuesDSL.*` provides access to a DSL that allows valid inputs to be defined.
+The static import `org.quicktheories.quicktheories.generators.SourceDSL.*` provides access to a DSL that allows valid inputs to be defined.
 
 This property looks pretty simple, it just checks that adding two integers always produces a number greater than 0.
 
