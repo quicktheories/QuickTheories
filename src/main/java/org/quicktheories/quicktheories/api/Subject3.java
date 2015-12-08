@@ -1,5 +1,7 @@
 package org.quicktheories.quicktheories.api;
 
+import java.util.function.Function;
+
 /**
  * State for a theory involving three values
  *
@@ -29,5 +31,9 @@ public interface Subject3<P, P2, T> {
    *          property to check
    */
   public void checkAssert(final TriConsumer<P, P2, T> property);
+
+  public Subject3<P, P2, T> withStringFormat(Function<P, String> pToString,
+      Function<P2, String> p2ToString,
+      Function<T, String> tToString);
 
 }

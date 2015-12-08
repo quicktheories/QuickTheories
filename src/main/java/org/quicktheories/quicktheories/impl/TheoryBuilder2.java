@@ -68,7 +68,8 @@ public final class TheoryBuilder2<A, B> {
   public void check(final BiPredicate<A, B> property) {
     final TheoryRunner<Pair<A, B>, Pair<A, B>> qc = new TheoryRunner<>(
         this.state.get(),
-        combine(), convertPredicate(), x -> x);
+        combine(), convertPredicate(), x -> x,
+        pair -> "{" + pair._1.toString() + ", " + pair._2.toString() + "}");
     qc.check(x -> property.test(x._1, x._2));
   }
 
@@ -100,15 +101,16 @@ public final class TheoryBuilder2<A, B> {
     return new MappingTheoryBuilder<>(state, combine(),
         precursor -> assumptions.test(precursor._1,
             precursor._2),
-        precursor -> mapping.apply(precursor._1, precursor._2));
+        precursor -> mapping.apply(precursor._1, precursor._2),
+        t -> t.toString());
   }
 
   /**
    * Converts theory to one about a different type using the given function
-   * retaining all precursor values 
-   *   
+   * retaining all precursor values
+   * 
    * @param mapping
-   * Function from types A and B to type T
+   *          Function from types A and B to type T
    * @return a Subject3 relating to the state of a theory involving three values
    */
   public <T> Subject3<A, B, T> asWithPrecursor(BiFunction<A, B, T> mapping) {
@@ -123,7 +125,8 @@ public final class TheoryBuilder2<A, B> {
         .map(p -> Tuple3.of(p._1, p._2, mapping.apply(p._1, p._2)));
 
     Source<Tuple3<A, B, T>> gen = Source.of(g).withShrinker(s);
-    return new PrecursorTheoryBuilder2<A, B, T>(state, gen, assumptions);
+    return new PrecursorTheoryBuilder2<A, B, T>(state, gen, assumptions,
+        a -> a.toString(), b -> b.toString(), t -> t.toString());
 
   }
 

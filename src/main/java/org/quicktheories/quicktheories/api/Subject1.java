@@ -1,6 +1,7 @@
 package org.quicktheories.quicktheories.api;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -28,4 +29,6 @@ public interface Subject1<T> {
    */
   public void checkAssert(final Consumer<T> property);
 
+  public Subject1<T> withStringFormat(Function<T,String> tToString);
+  
 }

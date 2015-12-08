@@ -1,5 +1,7 @@
 package org.quicktheories.quicktheories.api;
 
+import java.util.function.Function;
+
 /**
  * The state for a theory involving five values
  *
@@ -33,4 +35,10 @@ public interface Subject5<P, P2, P3, P4, T> {
    *          property to check
    */
   public void checkAssert(final Consumer5<P, P2, P3, P4, T> property);
+
+  public Subject5<P, P2, P3, P4, T> withStringFormat(
+      Function<P, String> pToString,
+      Function<P2, String> p2ToString, Function<P3, String> p3ToString,
+      Function<P4, String> p4ToString,
+      Function<T, String> tToString);
 }

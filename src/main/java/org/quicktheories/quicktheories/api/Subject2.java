@@ -2,6 +2,7 @@ package org.quicktheories.quicktheories.api;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 /**
  * State for a theory involving two values
@@ -30,5 +31,8 @@ public interface Subject2<P, T> {
    *          property to check
    */
   public void checkAssert(final BiConsumer<P, T> property);
+
+  public Subject2<P, T> withStringFormat(Function<P, String> pToString,
+      Function<T, String> tToString);
 
 }

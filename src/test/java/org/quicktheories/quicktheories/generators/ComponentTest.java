@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -11,8 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.mockito.ArgumentCaptor;
-import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Reporter;
+import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
@@ -27,14 +28,14 @@ abstract class ComponentTest<T> {
     this.strategy = strategy;
     this.reporter = reporter;
     return new TheoryBuilder<T, T>(() -> strategy, source, i -> true,
-        x -> x);
+        x -> x, a-> a.toString());
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   protected List<T> listOfShrunkenItems() {
     ArgumentCaptor<List> shrunkList = ArgumentCaptor.forClass(List.class);
     verify(this.reporter, times(1)).falisification(anyLong(), anyInt(),
-        any(Object.class), shrunkList.capture());
+        any(Object.class), shrunkList.capture(), anyObject());
     return shrunkList.getValue();
   }
 
@@ -47,7 +48,7 @@ abstract class ComponentTest<T> {
     ArgumentCaptor<T> smallestValue = (ArgumentCaptor<T>) ArgumentCaptor
         .forClass(Object.class);
     verify(this.reporter, times(1)).falisification(anyLong(), anyInt(),
-        smallestValue.capture(), any(List.class));
+        smallestValue.capture(), any(List.class), anyObject());
     return smallestValue;
   }
 

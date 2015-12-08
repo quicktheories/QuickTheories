@@ -25,13 +25,16 @@ class MappingTheoryBuilder<P, T> implements Subject1<T> {
   final Source<P> ps;
   final Predicate<P> assumptions;
   final Function<P, T> conversion;
+  final Function<T, String> tToString;
 
   MappingTheoryBuilder(final Supplier<Strategy> state, final Source<P> source,
-      Predicate<P> assumptions, Function<P, T> conversion) {
+      Predicate<P> assumptions, Function<P, T> conversion,
+      Function<T, String> tToString) {
     this.state = state;
     this.ps = source;
     this.assumptions = assumptions;
     this.conversion = conversion;
+    this.tToString = tToString;
   }
 
   /**
@@ -43,7 +46,7 @@ class MappingTheoryBuilder<P, T> implements Subject1<T> {
   public final void check(final Predicate<T> property) {
     final TheoryRunner<P, T> qc = new TheoryRunner<>(this.state.get(), this.ps,
         this.assumptions,
-        conversion);
+        conversion, tToString);
     qc.check(property);
   }
 
@@ -59,6 +62,12 @@ class MappingTheoryBuilder<P, T> implements Subject1<T> {
       property.accept(t);
       return true;
     });
+  }
+
+  @Override
+  public Subject1<T> withStringFormat(Function<T, String> toString) {
+    return new MappingTheoryBuilder<P, T>(this.state, this.ps, this.assumptions,
+        this.conversion, toString);
   }
 
 }

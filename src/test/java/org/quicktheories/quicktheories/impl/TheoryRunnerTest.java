@@ -4,6 +4,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -21,8 +22,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.quicktheories.quicktheories.core.Configuration;
 import org.quicktheories.quicktheories.core.Reporter;
-import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Strategy;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TheoryRunnerTest {
@@ -44,7 +45,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(arbitrary().sequence(1, 2, 3, 4, 5));
     testee.check(i -> true);
     verify(reporter, never()).falisification(anyLong(), anyInt(),
-        any(Object.class), anySmallerValues());
+        any(Object.class), anySmallerValues(), anyObject());
   }
 
   @Test
@@ -52,7 +53,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(arbitrary().sequence(1, 2, 3, 4, 5));
     testee.check(i -> false);
     verify(reporter, times(1)).falisification(anyLong(), anyInt(),
-        any(Object.class), anySmallerValues());
+        any(Object.class), anySmallerValues(), anyObject());
   }
 
   @Test
@@ -60,7 +61,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(arbitrary().sequence(1, 2, 3, 4, 5));
     testee.check(i -> i > 3);
     verify(reporter, times(1)).falisification(anyLong(), anyInt(),
-        any(Object.class), anySmallerValues());
+        any(Object.class), anySmallerValues(), anyObject());
   }
 
   @Test
@@ -73,7 +74,7 @@ public class TheoryRunnerTest {
       return true;
     });
     verify(reporter, times(1)).falisification(anyLong(), anyInt(),
-        any(Object.class), any(Throwable.class), anySmallerValues());
+        any(Object.class), any(Throwable.class), anySmallerValues(), anyObject());
   }
 
   @Test
@@ -81,7 +82,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(arbitrary().sequence(1, 2, 3, 4, 5));
     testee.check(i -> i <= 3);
     verify(reporter, times(1)).falisification(anyLong(), anyInt(), eq(4),
-        anySmallerValues());
+        anySmallerValues(), anyObject());
   }
 
   @Test
@@ -90,7 +91,7 @@ public class TheoryRunnerTest {
         i -> i != 4);
     testee.check(i -> i <= 3);
     verify(reporter, times(1)).falisification(anyLong(), anyInt(), eq(5),
-        anySmallerValues());
+        anySmallerValues(), anyObject());
   }
 
   @Test
@@ -99,7 +100,7 @@ public class TheoryRunnerTest {
         arbitrary().reverse(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
     testee.check(i -> i > 7);
     verify(reporter, times(1)).falisification(anyLong(), anyInt(), anyInt(),
-        eq(Arrays.asList(6, 5, 4, 3, 2, 1)));
+        eq(Arrays.asList(6, 5, 4, 3, 2, 1)), anyObject());
   }
 
   @Test
@@ -109,7 +110,7 @@ public class TheoryRunnerTest {
     testee.check(i -> i > 3);
 
     verify(reporter, times(1)).falisification(anyLong(), anyInt(), anyInt(),
-        eq(Arrays.asList(2)));
+        eq(Arrays.asList(2)), anyObject());
   }
 
   @Test
@@ -119,7 +120,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(arbitrary().sequence(1));
     testee.check(i -> false);
     verify(reporter, times(1)).falisification(eq(seed), anyInt(), anyInt(),
-        anySmallerValues());
+        anySmallerValues(), anyObject());
   }
 
   @Test
@@ -148,7 +149,7 @@ public class TheoryRunnerTest {
         arbitrary().sequence(0, 1, 2, 3, 4, 5));
     testee.check(i -> i != 4);
     verify(reporter, times(1)).falisification(anyLong(), eq(5), anyInt(),
-        anySmallerValues());
+        anySmallerValues(), anyObject());
 
   }
 
@@ -161,7 +162,7 @@ public class TheoryRunnerTest {
       Source<Integer> generator,
       Predicate<Integer> assumption) {
     return new TheoryRunner<Integer, Integer>(strategy, generator, assumption,
-        x -> x);
+        x -> x, a-> a.toString());
   }
 
   private List<Object> anySmallerValues() {

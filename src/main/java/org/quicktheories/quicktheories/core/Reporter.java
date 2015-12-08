@@ -1,6 +1,7 @@
 package org.quicktheories.quicktheories.core;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Interface by which falsification of properties is reported
@@ -22,7 +23,7 @@ public interface Reporter {
    *          other falsifying examples, if they exist
    */
   void falisification(long seed, int count, Object smallest, Throwable cause,
-      List<Object> examples);
+      List<Object> examples, Function<Object, String> toString);
 
   /**
    * Report falsification of a theory
@@ -37,7 +38,7 @@ public interface Reporter {
    *          other falsifying examples, if they exist
    */
   void falisification(long seed, int count, Object smallest,
-      List<Object> examples);
+      List<Object> examples, Function<Object, String> toString);
 
   /**
    * Reports the number of examples generated, which is less than the expected

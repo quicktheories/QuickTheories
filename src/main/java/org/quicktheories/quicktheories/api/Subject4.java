@@ -1,5 +1,7 @@
 package org.quicktheories.quicktheories.api;
 
+import java.util.function.Function;
+
 /**
  * The state for a theory involving four values
  *
@@ -31,5 +33,9 @@ public interface Subject4<P, P2, P3, T> {
    *          property to check
    */
   public void checkAssert(final QuadConsumer<P, P2, P3, T> property);
+
+  public Subject4<P, P2, P3, T> withStringFormat(Function<P, String> pToString,
+      Function<P2, String> p2ToString, Function<P3, String> p3ToString,
+      Function<T, String> tToString);
 
 }
