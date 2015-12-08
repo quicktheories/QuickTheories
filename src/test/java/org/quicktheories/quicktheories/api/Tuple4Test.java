@@ -1,0 +1,42 @@
+package org.quicktheories.quicktheories.api;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.Test;
+import org.quicktheories.quicktheories.api.Tuple4;
+import org.quicktheories.quicktheories.api.Tuple5;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+
+public class Tuple4Test {
+
+  @Test
+  public void shouldPrependDataToFromTuple5() {
+    Tuple4<Integer, String, Integer, String> testee = Tuple4.of(42, "foo", 13,
+        "boo");
+    Tuple5<String, Integer, String, Integer, String> actual = testee
+        .prepend("coo");
+    assertThat(actual).isEqualTo(Tuple5.of("coo", 42, "foo", 13, "boo"));
+  }
+
+  @Test
+  public void shouldExtendToRightBasedOnOwnContents() {
+    Tuple4<Integer, String, Integer, String> testee = Tuple4.of(42, "foo", 13,
+        "boo");
+    Tuple5<Integer, String, Integer, String, String> actual = testee
+        .extend((a, b, c, d) -> "" + a + b + c + d);
+    assertThat(actual).isEqualTo(Tuple5.of(42, "foo", 13, "boo", "42foo13boo"));
+  }
+
+  @Test
+  public void shouldDisplayAllDataInToString() {
+    Tuple4<Integer, String, Integer, String> testee = Tuple4.of(42, "foo",
+        13, "boo");
+    assertThat(testee.toString()).isEqualTo("{42, foo, 13, boo}");
+  }
+
+  @Test
+  public void shouldObeyHashcodeEqualsContract() {
+    EqualsVerifier.forClass(Tuple4.class).allFieldsShouldBeUsed().verify();
+  }
+}
