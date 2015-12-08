@@ -518,7 +518,7 @@ It turned out that number 2 was the hard bit as it had many implications for the
 
 QuickTheories was produced at [NCR Edinburgh](http://ncredinburgh.com/) as part of our graduate training program. 
 
-We like to do training a little differently - our new graduates get to work on an interesting project for a weeks with a more worn in and weathered member of our staff. Our motto for these projects is "software that can fail" - so we get to play with interesting ideas that may come to nothing. 
+We like to do training a little differently - our [new graduates](http://github.com/katyrae) get to work on an interesting project for a weeks with a more worn in and [weathered member of our staff](http://github.com/hcoles). Our motto for these projects is "software that can fail" - so we get to play with interesting ideas that may come to nothing. 
 
 We're happy to share the results as open source when we think they're successful.
 
