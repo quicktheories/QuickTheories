@@ -390,9 +390,9 @@ If a theory explicitly assumes that heights and radii are positive these values 
 
 Be careful when creating custom shrinkers.
 
-## Making the falsification method more relevant to your test
+## Modifying the falsification output
 
-Say you are working with arrays, then the following falsification output isn't helpful in working out what went wrong with your test:
+Say that you are working with arrays, then the following falsification output isn't very helpful in working out what went wrong with your test:
 
 ```
 java.lang.AssertionError: Property falsified after 1 example(s) 
@@ -419,9 +419,10 @@ Fortunately, we can conjoin a method, withStringFormat, to our QuickTheory that 
   public void checkingEqualityOfTwoDimensionalArrays() {
     qt().forAll(arrays().ofIntegers(integers().all()).withLength(2),
         arrays().ofIntegers(integers().all()).withLength(3))
-        .asWithPrecursor((a, b) -> new Integer`[][]` { a, b })
+        .asWithPrecursor((a, b) -> new Integer[][] { a, b })
         .withStringFormat(a -> Arrays.deepToString(a), b -> Arrays.deepToString(b), c -> Arrays.deepToString(c)) 
-        .check((a,b,c) -> { Integer`[][]` d= new Integer`[][]`{Arrays.copyOf(c`[0]`,2), Arrays.copyOf(c`[1]`,3)}; return Arrays.equals(c, d);});
+        .check((a,b,c) -> { Integer[][] d= new Integer[][]{Arrays.copyOf(c[0],2), Arrays.copyOf(c[1],3)}; 
+                           return Arrays.equals(c, d);});
   }
 ```
 This then produces the much more readable output: 
