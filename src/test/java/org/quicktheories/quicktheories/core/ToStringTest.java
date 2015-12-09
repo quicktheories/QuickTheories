@@ -45,8 +45,9 @@ public class ToStringTest {
   @Test
   public void shouldPrintArraysAsWithPrecursorToDeepString() {
     try {
-      qt().forAll(
-          arrays().ofIntegers(integers().all()).withLengthBetween(1, 100))
+      qt().withFixedSeed(5)
+          .forAll(
+              arrays().ofIntegers(integers().all()).withLengthBetween(1, 100))
           .asWithPrecursor(a -> Arrays.asList(a))
           .withStringFormat(a -> Arrays.deepToString(a), l -> l.toString())
           .check((a, l) -> integerListIsReducedByRemovingAnItem().test(l));
@@ -95,13 +96,77 @@ public class ToStringTest {
   }
 
   @Test
-  public void canUseCustomToStringOnPersonSubject() {
+  public void shouldUseCustomToStringOnPersonSubject() {
     try {
       forAllPeople().withStringFormat(p -> p.toUseToString()).check(i -> false);
       throw (new AssertionError("Test didn't fail"));
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageContaining("Name:");
+    }
+  }
+
+  @Test
+  public void shouldPrintArrayFromAsOfThreeElementsToDeepString() {
+    try {
+      qt().withFixedSeed(5)
+          .forAll(integers().allPositive(), integers().allPositive(),
+              integers().allPositive())
+          .as((i, j, k) -> new Integer[] { i, j, k })
+          .withStringFormat(a -> Arrays.deepToString(a))
+          .check(i -> false);
+    } catch (AssertionError error) {
+      assertThat(error)
+          .hasMessageContaining(Arrays.deepToString(new Integer[] { 1, 1, 1 }));
+    }
+  }
+
+  @Test
+  public void shouldPrintArrayFromAsWithPrecursorOfThreeElementsToDeepString() {
+    try {
+      qt().withFixedSeed(5)
+          .forAll(integers().allPositive(), integers().allPositive(),
+              integers().allPositive())
+          .asWithPrecursor((i, j, k) -> new Integer[] { i, j, k })
+          .withStringFormat(i -> i.toString(), j -> j.toString(),
+              k -> k.toString(), a -> Arrays.deepToString(a))
+          .check((i, j, k, a) -> false);
+    } catch (AssertionError error) {
+      assertThat(error)
+          .hasMessageContaining(
+              "1, 1, 1, " + Arrays.deepToString(new Integer[] { 1, 1, 1 }));
+    }
+  }
+
+  @Test
+  public void shouldPrintArrayFromAsOfFourElementsToDeepString() {
+    try {
+      qt().withFixedSeed(5)
+          .forAll(integers().allPositive(), integers().allPositive(),
+              integers().allPositive(), integers().allPositive())
+          .as((i, j, k, l) -> new Integer[] { i, j, k, l })
+          .withStringFormat(a -> Arrays.deepToString(a)).check(i -> false);
+    } catch (AssertionError error) {
+      assertThat(error)
+          .hasMessageContaining(
+              Arrays.deepToString(new Integer[] { 1, 1, 1, 1 }));
+    }
+  }
+
+  @Test
+  public void shouldPrintArrayFromAsWithPrecursorOfFourElementsToDeepString() {
+    try {
+      qt().withFixedSeed(5)
+          .forAll(integers().allPositive(), integers().allPositive(),
+              integers().allPositive(), integers().allPositive())
+          .asWithPrecursor((i, j, k, l) -> new Integer[] { i, j, k, l })
+          .withStringFormat(i -> i.toString(), j -> j.toString(),
+              k -> k.toString(), l -> l.toString(), a -> Arrays.deepToString(a))
+          .check((i, j, k, l, a) -> false);
+    } catch (AssertionError error) {
+      assertThat(error)
+          .hasMessageContaining("1, 1, 1, 1, "
+              + Arrays.deepToString(new Integer[] { 1, 1, 1, 1 }));
     }
   }
 
