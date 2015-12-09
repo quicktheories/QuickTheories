@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/NCR-CoDE/QuickTheories.svg)](https://travis-ci.org/NCR-CoDE/QuickTheories)
+
 # QuickTheories
 
 Property-based testing for Java 8.
