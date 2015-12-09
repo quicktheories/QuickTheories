@@ -5,6 +5,7 @@ import static org.quicktheories.quicktheories.QuickTheory.qt;
 import static org.quicktheories.quicktheories.generators.SourceDSL.arrays;
 import static org.quicktheories.quicktheories.generators.SourceDSL.bigIntegers;
 import static org.quicktheories.quicktheories.generators.SourceDSL.integers;
+import static org.quicktheories.quicktheories.generators.SourceDSL.longs;
 import static org.quicktheories.quicktheories.generators.SourceDSL.strings;
 
 import java.util.Arrays;
@@ -15,6 +16,18 @@ import org.junit.Test;
 import org.quicktheories.quicktheories.api.Subject1;
 
 public class ToStringTest {
+
+  @Test
+  public void shouldPrintSingleLongAsExpected() {
+    try {
+      qt().forAll(longs().all()).as(l -> l)
+          .check(i -> i < i + 1);
+      throw (new AssertionError("Test didn't fail"));
+    } catch (AssertionError error) {
+      assertThat(error)
+          .hasMessageContaining("9223372036854775807");
+    }
+  }
 
   @Test
   public void shouldPrintArrayDeepToString() {
