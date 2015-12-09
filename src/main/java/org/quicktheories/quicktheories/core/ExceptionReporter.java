@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 /**
  * Interface that reports the falsification of properties
  *
@@ -28,7 +29,8 @@ public class ExceptionReporter implements Reporter {
 
   @Override
   public void falisification(long seed, int examplesUsed, Object smallest,
-      Throwable cause, List<Object> examples, Function<Object, String> toString) {
+      Throwable cause, List<Object> examples,
+      Function<Object, String> toString) {
     StringWriter sw = new StringWriter();
     cause.printStackTrace(new PrintWriter(sw));
     String failure = "\nCause was :-\n" + sw.toString();
@@ -36,7 +38,8 @@ public class ExceptionReporter implements Reporter {
   }
 
   private void falsify(long seed, int examplesUsed, Object smallest,
-      String failure, List<Object> examples, Function<Object, String> toString) {
+      String failure, List<Object> examples,
+      Function<Object, String> toString) {
     throw new AssertionError(String.format(
         "Property falsified after %s example(s) \nSmallest found falsifying value(s) :-\n%s%s\nOther found falsifying value(s) :- \n%s\n \nSeed was %s",
         examplesUsed, toString.apply(smallest), failure,

@@ -10,8 +10,9 @@ import org.quicktheories.quicktheories.core.Source;
  * minimum size, at which point it will continue to shrink as if an array of
  * fixed length.
  * 
- * There is a possibility that the shrinker will get stuck at a local minima when
- * one value in the array shrinks to it's "smallest" value without falsifying
+ * There is a possibility that the shrinker will get stuck at a local minima
+ * when one value in the array shrinks to it's "smallest" value without
+ * falsifying
  *
  */
 public class ArraysDSL {
@@ -43,8 +44,8 @@ public class ArraysDSL {
   }
 
   /**
-   * Creates an ArrayGeneratorBuilder of Strings that can be used to create
-   * an array Source
+   * Creates an ArrayGeneratorBuilder of Strings that can be used to create an
+   * array Source
    * 
    * @param source
    *          a Source of type String

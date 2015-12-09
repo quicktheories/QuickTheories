@@ -77,7 +77,7 @@ class PrecursorTheoryBuilder4<P, P2, P3, P4, T>
   }
 
   @Override
-  public Subject5<P, P2, P3, P4, T> withStringFormat(
+  public Subject5<P, P2, P3, P4, T> describedAs(
       Function<P, String> pToString,
       Function<P2, String> p2ToString, Function<P3, String> p3ToString,
       Function<P4, String> p4ToString,

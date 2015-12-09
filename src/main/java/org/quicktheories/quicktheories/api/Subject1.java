@@ -37,6 +37,6 @@ public interface Subject1<T> {
    *          function to transform the value of type T to a String
    * @return a Subject1 of type T
    */
-  public Subject1<T> withStringFormat(Function<T, String> tToString);
+  public Subject1<T> describedAs(Function<T, String> tToString);
 
 }

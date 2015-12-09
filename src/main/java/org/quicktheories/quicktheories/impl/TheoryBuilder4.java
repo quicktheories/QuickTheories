@@ -89,7 +89,8 @@ public final class TheoryBuilder4<A, B, C, D> {
         precursor -> assumptions.test(precursor._1, precursor._2,
             precursor._3, precursor._4),
         tuple -> mapping.apply(tuple._1, tuple._2,
-            tuple._3, tuple._4), t -> t.toString());
+            tuple._3, tuple._4),
+        t -> t.toString());
   }
 
   /**

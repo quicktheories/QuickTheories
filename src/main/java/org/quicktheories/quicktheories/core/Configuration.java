@@ -13,7 +13,9 @@ public abstract class Configuration {
   public final static String SHRINKS = "QT_SHRINKS";
 
   /**
-   * Sets the strategy for the corresponding QuickTheory. Default values are set if the user has not overridden them elsewhere.
+   * Sets the strategy for the corresponding QuickTheory. Default values are set
+   * if the user has not overridden them elsewhere.
+   * 
    * @return a Strategy
    */
   public static Strategy systemStrategy() {

@@ -54,8 +54,8 @@ public class QuickTheory {
   }
 
   /**
-   * Sets the number of examples to use to verify a property overriding any value
-   * set elsewhere
+   * Sets the number of examples to use to verify a property overriding any
+   * value set elsewhere
    * 
    * @param examples
    *          number of examples to use
@@ -86,7 +86,8 @@ public class QuickTheory {
    * @return state for which a property can be defined
    */
   public <A> TheoryBuilder<A, A> forAll(final Source<A> values) {
-    return new TheoryBuilder<>(state, values, a -> true, x -> x, a -> a.toString());
+    return new TheoryBuilder<>(state, values, a -> true, x -> x,
+        a -> a.toString());
   }
 
   /**

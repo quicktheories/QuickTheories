@@ -52,7 +52,7 @@ public interface Subject5<P, P2, P3, P4, T> {
    *          function to transform the value of type T to a String
    * @return a Subject5
    */
-  public Subject5<P, P2, P3, P4, T> withStringFormat(
+  public Subject5<P, P2, P3, P4, T> describedAs(
       Function<P, String> pToString,
       Function<P2, String> p2ToString, Function<P3, String> p3ToString,
       Function<P4, String> p4ToString,

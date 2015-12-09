@@ -42,7 +42,7 @@ public interface Subject2<P, T> {
    *          function to transform the value of type T to a String
    * @return a Subject2
    */
-  public Subject2<P, T> withStringFormat(Function<P, String> pToString,
+  public Subject2<P, T> describedAs(Function<P, String> pToString,
       Function<T, String> tToString);
 
 }

@@ -28,7 +28,7 @@ abstract class ComponentTest<T> {
     this.strategy = strategy;
     this.reporter = reporter;
     return new TheoryBuilder<T, T>(() -> strategy, source, i -> true,
-        x -> x, a-> a.toString());
+        x -> x, a -> a.toString());
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })

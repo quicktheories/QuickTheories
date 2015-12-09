@@ -39,13 +39,14 @@ class PrecursorTheoryBuilder1<P, T> implements Subject2<P, T> {
 
   public final void check(final BiPredicate<P, T> property) {
     final TheoryRunner<Pair<P, T>, Pair<P, T>> qc = new TheoryRunner<Pair<P, T>, Pair<P, T>>(
-        this.state.get(),ps, pair -> assumptions.test(pair._1),
+        this.state.get(), ps, pair -> assumptions.test(pair._1),
         Function.identity(), toStringFunction());
     qc.check(pair -> property.test(pair._1, pair._2));
   }
 
   private Function<Pair<P, T>, String> toStringFunction() {
-    return pair -> "{" + this.pToString.apply(pair._1) + ", " + this.tToString.apply(pair._2) + "}";
+    return pair -> "{" + this.pToString.apply(pair._1) + ", "
+        + this.tToString.apply(pair._2) + "}";
   }
 
   /**
@@ -63,7 +64,7 @@ class PrecursorTheoryBuilder1<P, T> implements Subject2<P, T> {
   }
 
   @Override
-  public Subject2<P, T> withStringFormat(Function<P, String> pToString,
+  public Subject2<P, T> describedAs(Function<P, String> pToString,
       Function<T, String> tToString) {
     return new PrecursorTheoryBuilder1<P, T>(this.state, this.ps,
         this.assumptions, pToString, tToString);

@@ -48,7 +48,7 @@ class PrecursorTheoryBuilder3<P, P2, P3, T> implements Subject4<P, P2, P3, T> {
         Function.identity(), toStringFunction());
     qc.check(tuple -> property.test(tuple._1, tuple._2, tuple._3, tuple._4));
   }
-  
+
   private Function<Tuple4<P, P2, P3, T>, String> toStringFunction() {
     return tuple4 -> "{" + this.pToString.apply(tuple4._1) + ", "
         + this.p2ToString.apply(tuple4._2) + ", "
@@ -69,9 +69,9 @@ class PrecursorTheoryBuilder3<P, P2, P3, T> implements Subject4<P, P2, P3, T> {
       return true;
     });
   }
-  
+
   @Override
-  public Subject4<P, P2, P3, T> withStringFormat(Function<P, String> pToString,
+  public Subject4<P, P2, P3, T> describedAs(Function<P, String> pToString,
       Function<P2, String> p2ToString, Function<P3, String> p3ToString,
       Function<T, String> tToString) {
     return new PrecursorTheoryBuilder3<P, P2, P3, T>(this.state, this.ps,

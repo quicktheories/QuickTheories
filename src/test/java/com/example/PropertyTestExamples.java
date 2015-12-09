@@ -55,7 +55,7 @@ public class PropertyTestExamples {
   public void arraysAsListsGetShorterWhenUsingRemove() {
     qt().forAll(arrays().ofIntegers(integers().all()).withLengthBetween(1, 100))
         .asWithPrecursor(a -> Arrays.asList(a))
-        .withStringFormat(a -> Arrays.deepToString(a), l -> l.toString())
+        .describedAs(a -> Arrays.deepToString(a), l -> l.toString())
         .check((a, l) -> integerListIsReducedByRemovingAnItem().test(l));
   }
 
@@ -72,7 +72,7 @@ public class PropertyTestExamples {
     qt().forAll(arrays().ofIntegers(integers().all()).withLength(2),
         arrays().ofIntegers(integers().all()).withLength(3))
         .asWithPrecursor((a, b) -> new Integer[][] { a, b })
-        .withStringFormat(a -> Arrays.deepToString(a),
+        .describedAs(a -> Arrays.deepToString(a),
             b -> Arrays.deepToString(b), c -> Arrays.deepToString(c))
         .check((a, b, c) -> {
           Integer[][] d = new Integer[][] { Arrays.copyOf(c[0], 2),

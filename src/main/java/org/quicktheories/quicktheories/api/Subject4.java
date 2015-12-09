@@ -48,7 +48,7 @@ public interface Subject4<P, P2, P3, T> {
    *          function to transform the value of type T to a String
    * @return a Subject4
    */
-  public Subject4<P, P2, P3, T> withStringFormat(Function<P, String> pToString,
+  public Subject4<P, P2, P3, T> describedAs(Function<P, String> pToString,
       Function<P2, String> p2ToString, Function<P3, String> p3ToString,
       Function<T, String> tToString);
 

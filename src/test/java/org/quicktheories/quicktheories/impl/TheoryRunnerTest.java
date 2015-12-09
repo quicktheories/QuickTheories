@@ -74,7 +74,8 @@ public class TheoryRunnerTest {
       return true;
     });
     verify(reporter, times(1)).falisification(anyLong(), anyInt(),
-        any(Object.class), any(Throwable.class), anySmallerValues(), anyObject());
+        any(Object.class), any(Throwable.class), anySmallerValues(),
+        anyObject());
   }
 
   @Test
@@ -162,7 +163,7 @@ public class TheoryRunnerTest {
       Source<Integer> generator,
       Predicate<Integer> assumption) {
     return new TheoryRunner<Integer, Integer>(strategy, generator, assumption,
-        x -> x, a-> a.toString());
+        x -> x, a -> a.toString());
   }
 
   private List<Object> anySmallerValues() {

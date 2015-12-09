@@ -67,7 +67,7 @@ class PrecursorTheoryBuilder2<P, P2, T> implements Subject3<P, P2, T> {
   }
 
   @Override
-  public Subject3<P, P2, T> withStringFormat(Function<P, String> pToString,
+  public Subject3<P, P2, T> describedAs(Function<P, String> pToString,
       Function<P2, String> p2ToString,
       Function<T, String> tToString) {
     return new PrecursorTheoryBuilder2<P, P2, T>(this.state, this.ps,

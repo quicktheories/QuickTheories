@@ -412,7 +412,7 @@ Other found falsifying value(s) :-
  
 Seed was 11540446915993
 ```
-Fortunately, we can conjoin a method, withStringFormat, to our QuickTheory that allows us to specify how we would like the output to look for the falsifying objects.
+Fortunately, we can conjoin a method, describedAs, to our QuickTheory that allows us to specify how we would like the output to look for the falsifying objects.
 
 ```java
   @Test
@@ -420,7 +420,7 @@ Fortunately, we can conjoin a method, withStringFormat, to our QuickTheory that 
     qt().forAll(arrays().ofIntegers(integers().all()).withLength(2),
         arrays().ofIntegers(integers().all()).withLength(3))
         .asWithPrecursor((a, b) -> new Integer[][] { a, b })
-        .withStringFormat(a -> Arrays.deepToString(a), b -> Arrays.deepToString(b), c -> Arrays.deepToString(c)) 
+        .describedAs(a -> Arrays.deepToString(a), b -> Arrays.deepToString(b), c -> Arrays.deepToString(c)) 
         .check((a,b,c) -> { Integer[][] d= new Integer[][]{Arrays.copyOf(c[0],2), Arrays.copyOf(c[1],3)}; 
                            return Arrays.equals(c, d);});
   }
@@ -502,64 +502,7 @@ An example test that is falsifying, showing that adding two positive integers in
           , integers().allPositive())
     .check((i,j) -> i + j > 0);  //fails
   }
-```
 
-An example of a generator that always produces palindromes but depending on how you test it this property can falsify:
-
-```java
-  @Test
-  public void palindromeTester1() {
-    qt().withFixedSeed(23432432)
-        .forAll(strings().allPossible().ofLengthBetween(1, 12), characters().basicMultilingualPlane())
-        .asWithPrecursor((s,c) -> new Palindrome(s,c).construct())
-        .check((s,c,palindrome) -> isPalindrome().test(palindrome));   //passes
-  }
-  
-  @Test
-  public void palindromeTester2() {
-    qt().withFixedSeed(23432432)
-        .forAll(strings().allPossible().ofLengthBetween(1, 12), characters().basicMultilingualPlane())
-        .asWithPrecursor((s,c) -> new Palindrome(s,c).construct())
-        .check((s,c,palindrome) -> isPalindromeCheckingIndices().test(palindrome));  //fails
-  }
-  
-  private Predicate<String> isPalindrome(){
-    StringBuilder sb = new StringBuilder();
-    return s -> s.equals(sb.append(s).reverse().toString());
-  }
-  
-  private Predicate<String> isPalindromeCheckingIndices(){
-    return s-> {
-      for(int i = 0, j = s.length()-1; ; i++, j--){
-        if(i+1==j){
-          return s.charAt(i)==s.charAt(j);
-        }
-        if(i==j){
-          return true;
-        }
-        if(s.charAt(i)!= s.charAt(j)){
-          return false;
-        }
-      }
-    };
-  }
-  
-  
-  static class Palindrome {
-    
-    private final String repeat;
-    private final char center;
-    
-    Palindrome(String repeat, char center){
-      this.repeat = repeat;
-      this.center = center;
-    }
-    
-    String construct(){
-      StringBuilder sb = new StringBuilder();
-      return repeat + center + sb.append(repeat).reverse().toString();
-    }
-  }
 ```
 
 ## Design Goals
