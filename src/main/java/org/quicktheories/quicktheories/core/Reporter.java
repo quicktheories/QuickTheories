@@ -21,6 +21,9 @@ public interface Reporter {
    *          throwable that caused the theory to falsify
    * @param examples
    *          other falsifying examples, if they exist
+   * @param toString
+   *          function specifying how the Object should be output to String in
+   *          the falsification output
    */
   void falisification(long seed, int count, Object smallest, Throwable cause,
       List<Object> examples, Function<Object, String> toString);
@@ -36,6 +39,9 @@ public interface Reporter {
    *          smallest falsifying object
    * @param examples
    *          other falsifying examples, if they exist
+   * @param toString
+   *          function specifying how the Object should be output to String in
+   *          the falsification output
    */
   void falisification(long seed, int count, Object smallest,
       List<Object> examples, Function<Object, String> toString);

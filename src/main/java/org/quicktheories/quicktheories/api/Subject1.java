@@ -29,6 +29,14 @@ public interface Subject1<T> {
    */
   public void checkAssert(final Consumer<T> property);
 
-  public Subject1<T> withStringFormat(Function<T,String> tToString);
-  
+  /**
+   * Specifies how the object of type T will be output as a String by the
+   * ExceptionReporter
+   * 
+   * @param tToString
+   *          function to transform the value of type T to a String
+   * @return a Subject1 of type T
+   */
+  public Subject1<T> withStringFormat(Function<T, String> tToString);
+
 }

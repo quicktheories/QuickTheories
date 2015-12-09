@@ -31,6 +31,9 @@ public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
    *          limits the possible values of type P
    * @param conversion
    *          function defining the conversion from type P to type T
+   * @param tToString
+   *          function specifying how a value of type T should be output to
+   *          String in the falsification output
    */
   public TheoryBuilder(final Supplier<Strategy> state, final Source<P> source,
       Predicate<P> predicate, Function<P, T> conversion,

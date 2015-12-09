@@ -32,6 +32,18 @@ public interface Subject3<P, P2, T> {
    */
   public void checkAssert(final TriConsumer<P, P2, T> property);
 
+  /**
+   * Specifies how the objects of type P, P2 and T will be output as Strings by
+   * the ExceptionReporter
+   * 
+   * @param pToString
+   *          function to transform the value of type P to a String
+   * @param p2ToString
+   *          function to transform the value of type P2 to a String
+   * @param tToString
+   *          function to transform the value of type T to a String
+   * @return a Subject3
+   */
   public Subject3<P, P2, T> withStringFormat(Function<P, String> pToString,
       Function<P2, String> p2ToString,
       Function<T, String> tToString);

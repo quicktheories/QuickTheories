@@ -34,6 +34,20 @@ public interface Subject4<P, P2, P3, T> {
    */
   public void checkAssert(final QuadConsumer<P, P2, P3, T> property);
 
+  /**
+   * Specifies how the objects of type P, P2, P3 and T will be output as Strings
+   * by the ExceptionReporter
+   * 
+   * @param pToString
+   *          function to transform the value of type P to a String
+   * @param p2ToString
+   *          function to transform the value of type P2 to a String
+   * @param p3ToString
+   *          function to transform the value of type P3 to a String
+   * @param tToString
+   *          function to transform the value of type T to a String
+   * @return a Subject4
+   */
   public Subject4<P, P2, P3, T> withStringFormat(Function<P, String> pToString,
       Function<P2, String> p2ToString, Function<P3, String> p3ToString,
       Function<T, String> tToString);

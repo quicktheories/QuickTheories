@@ -32,6 +32,16 @@ public interface Subject2<P, T> {
    */
   public void checkAssert(final BiConsumer<P, T> property);
 
+  /**
+   * Specifies how the objects of type P and T will be output as Strings by the
+   * ExceptionReporter
+   * 
+   * @param pToString
+   *          function to transform the value of type P to a String
+   * @param tToString
+   *          function to transform the value of type T to a String
+   * @return a Subject2
+   */
   public Subject2<P, T> withStringFormat(Function<P, String> pToString,
       Function<T, String> tToString);
 
