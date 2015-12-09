@@ -219,24 +219,27 @@ public class PropertyTestExamples {
   // Greatest Common Divisor example
 
   @Test
-  public void gcdTester() {
-    qt().forAll(integers().all()).check(n -> gcd(n, 1) == 1);
-    qt().forAll(integers().all()).check(n -> gcd(n, n) == Math.abs(n));
+  public void shouldFindThatAllIntegersHaveGcdOfOneWithOne() {
+    qt().forAll(integers().all()).check(n -> gcd(n, 1) == 1); // fails on
+                                                              // -2147483648
   }
 
   @Test
-  public void gcdTester2() {
+  public void shouldFindThatAllIntegersInRangeHaveGcdOfOneWithOne() {
     qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
         .check(n -> gcd(n, 1) == 1);
+  }
 
+  @Test
+  public void shouldFindThatAllIntegersHaveGcdThemselvesWithThemselves() {
     qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
         .check(n -> gcd(n, n) == Math.abs(n));
+  }
 
-    qt()
-        .withExamples(5)
-        .withShrinkCycles(5)
-        .forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE),
-            integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
+  @Test
+  public void shouldFindThatGcdOfNAndMEqualsGcdMModNAndN() {
+    qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE),
+        integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
         .check((n, m) -> gcd(n, m) == gcd(m % n, n));
   }
 

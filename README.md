@@ -504,6 +504,53 @@ An example test that is falsifying, showing that adding two positive integers in
   }
 
 ```
+An example of multiple tests for code that claims to find the greatest common divisor between two integers. The first property test fails due to a java.lang.StackOverflowError error (caused by attempting to take the absolute value of Integer.MIN_VALUE).
+```java
+  @Test
+  public void shouldFindThatAllIntegersHaveGcdOfOneWithOne() {
+    qt().forAll(integers().all()).check(n -> gcd(n, 1) == 1); // fails on
+                                                              // -2147483648
+  }
+
+  @Test
+  public void shouldFindThatAllIntegersInRangeHaveGcdOfOneWithOne() {
+    qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
+        .check(n -> gcd(n, 1) == 1);
+  }
+
+  @Test
+  public void shouldFindThatAllIntegersHaveGcdThemselvesWithThemselves() {
+    qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
+        .check(n -> gcd(n, n) == Math.abs(n));
+  }
+
+  @Test
+  public void shouldFindThatGcdOfNAndMEqualsGcdMModNAndN() {
+    qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE)
+               ,integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
+        .check((n, m) -> gcd(n, m) == gcd(m % n, n));
+  }
+
+  private int gcd(int n, int m) {
+    if (n == 0) {
+      return Math.abs(m);
+    }
+    if (m == 0) {
+      return Math.abs(n);
+    }
+    if (n < 0) {
+      return gcd(-n, m);
+    }
+    if (m < 0) {
+      return gcd(n, -m);
+    }
+    if (n > m) {
+      return gcd(m, n);
+    }
+    return gcd(m % n, n);
+  }
+```
+
 
 ## Design Goals
 
