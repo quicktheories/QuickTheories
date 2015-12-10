@@ -9,7 +9,7 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/NCR-CoDE/QuickTheories.git</connection>
-		<developerConnection>scm:git@github.com:NCR-CoDE/QuickTheories.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:NCR-CoDE/QuickTheories.git</developerConnection>
 		<url>https://github.com/NCR-CoDE/QuickTheories.git</url>
 		<tag>HEAD</tag>
 	</scm>
