@@ -14,9 +14,8 @@ import org.quicktheories.quicktheories.core.Strategy;
 /**
  * Builds theories about values of type T based on values of precursor types P
  *
- * @param
- *          <P>
- * @param <T>
+ * @param <P> Precursor type
+ * @param <T> Final type
  */
 public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
 
@@ -69,6 +68,9 @@ public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
   /**
    * Converts theory to one about a different type using the given function
    * retaining all precursor values 
+   *   
+   * @param <N>
+   *          type to convert to
    *   
    * @param mapping
    * Function from type T to type N

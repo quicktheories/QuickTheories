@@ -21,6 +21,12 @@ public final class Tuple5<A, B, C, D, E> {
   /**
    * Creates a tuple 5 from the five supplied values
    * 
+   * @param <A> first type
+   * @param <B> second type
+   * @param <C> third type
+   * @param <D> fourth type 
+   * @param <E> fifth type
+   * 
    * @param a
    *          first supplied value
    * @param b

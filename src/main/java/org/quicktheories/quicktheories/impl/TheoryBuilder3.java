@@ -101,7 +101,8 @@ public final class TheoryBuilder3<A, B, C> {
   /**
    * Converts theory to one about a different type using the given function
    * retaining all precursor values 
-   *   
+    * @param <T>
+   *          type to convert to
    * @param mapping
    * Function from types A,B,C to type T
    * @return a Subject4 relating to the state of a theory involving four values

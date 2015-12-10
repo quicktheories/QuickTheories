@@ -38,6 +38,8 @@ public final class Source<T> implements Shrink<T>, Generator<T> {
    * Produce a Source from a generator of type T. The resulting values will not
    * shrink.
    * 
+   * @param <T>
+   *          Type of values to generate
    * @param generator
    *          a generator of values
    * @return a Source of values that cannot be shrunk

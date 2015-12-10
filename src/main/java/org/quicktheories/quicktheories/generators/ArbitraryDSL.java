@@ -72,7 +72,9 @@ public class ArbitraryDSL {
    * 
    * If more examples are requested than are supplied then the sequence will be
    * repeated.
-   * 
+   *
+   * @param <T>
+   *          type of value to generate
    * @param ts
    *          values to create sequence from
    * @return a Source of type T of values selected from ts
@@ -87,7 +89,9 @@ public class ArbitraryDSL {
    * 
    * If more examples are requested than are present in the list then the
    * sequence will be repeated.
-   * 
+   *
+   * @param <T>
+   *          type of value to generate
    * @param ts
    *          values to create sequence from
    * @return a Source of type T of values selected from ts
@@ -102,6 +106,8 @@ public class ArbitraryDSL {
    * 
    * If more examples are requested than are supplied then the last value will
    * be repeated.
+   * 
+   * @param <T> type to generate
    * 
    * @param ts
    *          values to create sequence from

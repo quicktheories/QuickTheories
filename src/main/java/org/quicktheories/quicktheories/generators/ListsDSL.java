@@ -25,7 +25,10 @@ public class ListsDSL {
    * Creates an appropriate Collector for a type of List by specifying the
    * Supplier used as a parameter
    * 
-   * @param collectionFactory
+   * @param <T> type to generate
+   * @param <A> list type
+   * 
+   * @param collectionFactory a supplier of A
    * @return a Collector
    */
   public <T, A extends List<T>> Collector<T, A, A> createListCollector(
@@ -35,6 +38,8 @@ public class ListsDSL {
 
   /**
    * Creates a ListGeneratorBuilder.
+   * 
+   * @param <T> type to generate
    * 
    * @param source
    *          a Source of type T for the items in the list
@@ -49,6 +54,8 @@ public class ListsDSL {
    * Creates a TypedListGeneratorBuilder. The Collector cannot be changed and is
    * set to collect ArrayLists.
    * 
+   * @param <T> type to generate
+   * 
    * @param source
    *          a Source of type T for the items in the List
    * @return a TypedListGeneratorBuilder of type T
@@ -62,6 +69,8 @@ public class ListsDSL {
   /**
    * Creates a TypedListGeneratorBuilder. The Collector cannot be changed and is
    * set to collect LinkedLists.
+   * 
+   * @param <T> type to generate
    * 
    * @param source
    *          a Source of type T for the items in the List
@@ -79,7 +88,7 @@ public class ListsDSL {
    * be used to create a TypedListGeneratorBuilder, where the Collector is
    * specified.
    * 
-   * @param <T>
+   * @param <T> type to generate
    */
   public static class ListGeneratorBuilder<T> {
 
@@ -92,7 +101,7 @@ public class ListsDSL {
     /**
      * Generates a List of objects, where the size of the List is fixed
      * 
-     * @param size
+     * @param size size of lists to generate
      * @return a Source of Lists of type T
      */
     public Source<List<T>> ofSize(int size) {
@@ -118,10 +127,10 @@ public class ListsDSL {
 
     /**
      * Determines how the Lists will be collected and returns an
-     * ExtendedListGeneratorBuilder<T> with the Collector specified
+     * TypedListGeneratorBuilder with the Collector specified
      * 
-     * @param collector
-     * @return ExtendedListGeneratorBuilder<T>
+     * @param collector collector to use to contruct list
+     * @return a TypedListGeneratorBuilder
      */
     public TypedListGeneratorBuilder<T> ofType(
         Collector<T, List<T>, List<T>> collector) {
@@ -147,7 +156,7 @@ public class ListsDSL {
     /**
      * Generates a List of objects, where the size of the List is fixed
      * 
-     * @param size
+     * @param size size of lists to generate
      * @return a Source of Lists of type T
      */
     public Source<List<T>> ofSize(int size) {
