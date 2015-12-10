@@ -4,13 +4,13 @@
 
 	<groupId>org.quicktheories</groupId>
 	<artifactId>quicktheories</artifactId>
-	<version>0.11</version>
+	<version>0.12-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:git:https://github.com/NCR-CoDE/QuickTheories.git</connection>
 		<developerConnection>scm:git:git@github.com:NCR-CoDE/QuickTheories.git</developerConnection>
 		<url>https://github.com/NCR-CoDE/QuickTheories.git</url>
-		<tag>quicktheories-0.11</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<properties>
