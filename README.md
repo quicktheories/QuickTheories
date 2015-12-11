@@ -333,7 +333,7 @@ Subjects are similar to Sources except that they cannot be combined together to 
 
 We could not reuse our Cylinder subject in a theory about boxes that contain cylinders, we would need to create our boxes of cylinders out of Sources.
 
-## Creating new Generators and Values
+## Creating new Generators and Sources
 
 If you want to create theories that combine one or more custom types you may need to create custom Sources that can be combined via the DSL to create new Subjects.
 

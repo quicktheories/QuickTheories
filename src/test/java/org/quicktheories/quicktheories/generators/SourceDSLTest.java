@@ -8,15 +8,19 @@ import static org.quicktheories.quicktheories.generators.SourceDSL.arrays;
 import static org.quicktheories.quicktheories.generators.SourceDSL.bigDecimals;
 import static org.quicktheories.quicktheories.generators.SourceDSL.bigIntegers;
 import static org.quicktheories.quicktheories.generators.SourceDSL.characters;
+import static org.quicktheories.quicktheories.generators.SourceDSL.dates;
 import static org.quicktheories.quicktheories.generators.SourceDSL.doubles;
 import static org.quicktheories.quicktheories.generators.SourceDSL.floats;
 import static org.quicktheories.quicktheories.generators.SourceDSL.integers;
 import static org.quicktheories.quicktheories.generators.SourceDSL.lists;
+import static org.quicktheories.quicktheories.generators.SourceDSL.localDates;
 import static org.quicktheories.quicktheories.generators.SourceDSL.longs;
 import static org.quicktheories.quicktheories.generators.SourceDSL.strings;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,6 +30,9 @@ import org.quicktheories.quicktheories.core.ShrinkContext;
 import org.quicktheories.quicktheories.core.Source;
 
 public class SourceDSLTest {
+
+  private static final int LOCAL_DATE_MIN_EPOCH_DAY_COUNT = -999999999;
+  private static final int LOCAL_DATE_MAX_EPOCH_DAY_COUNT = 999999999;
 
   @Test
   public void shouldGenerateLongMaxAndMin() {
@@ -887,6 +894,190 @@ public class SourceDSLTest {
 
   static enum AnEnum {
     A, B, C, D, E;
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldCatchWhenCreatingADateOfNegativeLong() {
+    try {
+      Source<Date> testee = dates().withMilliSeconds(-234);
+      fail("Created a date with a negative number of milliseconds");
+    } catch (IllegalArgumentException expected) {
+      assertTrue(
+          "Expected exception message to relate to negative long argument",
+          expected.getMessage()
+              .indexOf(
+                  "not an accepted number of milliseconds") >= 0);
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldNotCatchWhenCreatingADateWithLongOfZero() {
+    try {
+      Source<Date> testee = dates().withMilliSeconds(0);
+    } catch (IllegalArgumentException expected) {
+      fail("Threw an exception for an acceptable input!");
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldCatchWhenCreatingAnInclusiveLongIntervalForDatesWithMaxLessThanMin() {
+    try {
+      Source<Date> testee = dates().withMilliSecondsBetween(342, 3);
+      fail("Created a Date where max long is less than min long!");
+    } catch (IllegalArgumentException expected) {
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldNotCatchWhenCreatingAnInclusiveLongIntervalForDatesWithMaxEqualToMin() {
+    try {
+      Source<Date> testee = dates().withMilliSecondsBetween(352, 352);
+    } catch (IllegalArgumentException expected) {
+      fail("Threw an exception for an acceptable interval!");
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldCatchWhenCreatingAnInclusiveLongIntervalForDatesWithMinLessThanZero() {
+    try {
+      Source<Date> testee = dates().withMilliSecondsBetween(-5, 6);
+      fail("Created a Date where min long is less than zero!");
+    } catch (IllegalArgumentException expected) {
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldNotCatchWhenCreatingAnInclusiveLongIntervalForDatesWithMinEqualToZero() {
+    try {
+      Source<Date> testee = dates().withMilliSecondsBetween(0, 5);
+    } catch (IllegalArgumentException expected) {
+      fail("Threw an exception for an acceptable interval!");
+    }
+  }
+
+  @Test
+  public void shouldGenerateDateMax() {
+    Source<Date> testee = dates().withMilliSeconds(7890789);
+    assertThatSource(testee).generatesAllOf(new Date(7890789));
+  }
+
+  @Test
+  public void shouldGenerateDateAtStartAndEndInclusive() {
+    Source<Date> testee = dates().withMilliSecondsBetween(3245352,
+        72938572398752l);
+    assertThatSource(testee).generatesAllOf(new Date(3245352),
+        new Date(72938572398752l));
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldCatchWhenCreatingALocalDateBelowMinEpochDayCount() {
+    try {
+      Source<LocalDate> testee = localDates()
+          .withDays(LOCAL_DATE_MIN_EPOCH_DAY_COUNT - 1);
+      fail("Created a localDate with an improper value");
+    } catch (IllegalArgumentException expected) {
+      assertTrue(
+          "Expected exception message to relate to out of suitable range long argument",
+          expected.getMessage()
+              .indexOf(
+                  "The long value representing the number of days from the epoch must be bounded") >= 0);
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldCatchWhenCreatingALocalDateAboveMaxEpochDayCount() {
+    try {
+      Source<LocalDate> testee = localDates()
+          .withDays(LOCAL_DATE_MAX_EPOCH_DAY_COUNT + 1);
+      fail("Created a localDate with an improper value");
+    } catch (IllegalArgumentException expected) {
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldNotCatchWhenCreatingALocalDateAtMinEpochDayCount() {
+    try {
+      Source<LocalDate> testee = localDates()
+          .withDays(LOCAL_DATE_MIN_EPOCH_DAY_COUNT);
+    } catch (IllegalArgumentException expected) {
+      fail("Threw an exception for an acceptable input!");
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldNotCatchWhenCreatingALocalDateAtMaxEpochDayCount() {
+    try {
+      Source<LocalDate> testee = localDates()
+          .withDays(LOCAL_DATE_MAX_EPOCH_DAY_COUNT);
+    } catch (IllegalArgumentException expected) {
+      fail("Threw an exception for an acceptable input!");
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldCatchWhenCreatingAnInclusiveLongIntervalForLocalDatesWithMaxLessThanMin() {
+    try {
+      Source<LocalDate> testee = localDates().withDaysBetween(342, 3);
+      fail("Created a localDate where max long is less than min long!");
+    } catch (IllegalArgumentException expected) {
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldNotCatchWhenCreatingAnInclusiveLongIntervalForLocalDatesWithMaxEqualToMin() {
+    try {
+      Source<LocalDate> testee = localDates().withDaysBetween(352, 352);
+    } catch (IllegalArgumentException expected) {
+      fail("Threw an exception for an acceptable interval!");
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldCatchWhenCreatingAnInclusiveLongIntervalForLocalDatesWithMinLessThanMinEpochDayCount() {
+    try {
+      Source<LocalDate> testee = localDates().withDaysBetween(
+          LOCAL_DATE_MIN_EPOCH_DAY_COUNT - 1,
+          LOCAL_DATE_MAX_EPOCH_DAY_COUNT + 1);
+      fail("Created a Date where min long is less than zero!");
+    } catch (IllegalArgumentException expected) {
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @Test
+  public void shouldNotCatchWhenCreatingAnInclusiveLongIntervalForDatesWithMinEqualToMinEpochDayCount() {
+    try {
+      Source<LocalDate> testee = localDates().withDaysBetween(
+          LOCAL_DATE_MIN_EPOCH_DAY_COUNT, LOCAL_DATE_MAX_EPOCH_DAY_COUNT);
+    } catch (IllegalArgumentException expected) {
+      fail("Threw an exception for an acceptable interval!");
+    }
+  }
+
+  @Test
+  public void shouldGenerateLocalDateMax() {
+    Source<LocalDate> testee = localDates().withDays(7890789);
+    assertThatSource(testee).generatesAllOf(LocalDate.ofEpochDay(7890789));
+  }
+
+  @Test
+  public void shouldGenerateLocalDateAtStartAndEndInclusive() {
+    Source<LocalDate> testee = localDates().withDaysBetween(3245352, 729385723);
+    assertThatSource(testee).generatesAllOf(LocalDate.ofEpochDay(3245352),
+        LocalDate.ofEpochDay(729385723));
   }
 
 }
