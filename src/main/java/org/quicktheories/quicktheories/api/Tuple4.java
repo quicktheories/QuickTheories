@@ -18,6 +18,11 @@ public final class Tuple4<A, B, C, D> {
 
   /**
    * Creates a tuple 4 from the four supplied values
+   *
+   * @param <A> first type
+   * @param <B> second type
+   * @param <C> third type
+   * @param <D> fourth type 
    * 
    * @param a
    *          first supplied value
@@ -36,6 +41,8 @@ public final class Tuple4<A, B, C, D> {
   /**
    * Creates a tuple 5 by prepending the supplied value
    * 
+   * @param <T> type of value to prepend
+   * 
    * @param t
    *          value to prepend
    * @return a tuple 5
@@ -47,6 +54,8 @@ public final class Tuple4<A, B, C, D> {
   /**
    * Creates a tuple 5 by applying the supplied function to this tuple's
    * contents
+   * 
+   * @param <T> type of value to extend with
    * 
    * @param mapping
    *          function to apply

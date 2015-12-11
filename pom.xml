@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.quicktheories</groupId>
 	<artifactId>quicktheories</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.13-SNAPSHOT</version>
+
+	<name>QuickTheories</name>
+	<description>Property based testing for Java</description>
+	<url>https://github.com/NCR-CoDE/QuickTheories</url>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:https://github.com/NCR-CoDE/QuickTheories.git</connection>
+		<developerConnection>scm:git:git@github.com:NCR-CoDE/QuickTheories.git</developerConnection>
+		<url>https://github.com/NCR-CoDE/QuickTheories.git</url>
+		<tag>HEAD</tag>
+	</scm>
+	<issueManagement>
+		<url>https://github.com/NCR-CoDE/QuickTheories/issues</url>
+		<system>GitHub</system>
+	</issueManagement>
+
+	<developers>
+		<developer>
+			<id>henry</id>
+			<name>Henry Coles</name>
+			<email>henry@pitest.org</email>
+		</developer>
+		<developer>
+			<id>katy</id>
+			<name>Katy Rae</name>
+			<email>katy.rae@ncr.com</email>
+		</developer>		
+	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<bintray.repo>ncr-code/ncrcoe</bintray.repo>
+		<bintray.package>QuickTheories</bintray.package>
 	</properties>
 
 	<dependencies>
@@ -56,6 +92,22 @@
 					<debug>true</debug>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.4.2</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-provider-gitexe</artifactId>
+						<version>1.9.4</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -77,8 +129,8 @@
 							</execution>
 						</executions>
 						<configuration>
-                            <threads>2</threads>
-                            <excludedClasses>
+							<threads>2</threads>
+							<excludedClasses>
 								<value>com.example.*</value>
 							</excludedClasses>
 							<timestampedReports>false</timestampedReports>
@@ -90,5 +142,43 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 	</profiles>
+
+	<distributionManagement>
+		<repository>
+			<id>bintray-ncrcoe</id>
+			<url>https://api.bintray.com/maven/${bintray.repo}/${bintray.package}/;publish=1</url>
+		</repository>
+	</distributionManagement>
+
 </project>

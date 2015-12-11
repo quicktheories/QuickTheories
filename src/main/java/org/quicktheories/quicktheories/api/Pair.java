@@ -17,6 +17,8 @@ public final class Pair<A, B> {
   /**
    * Creates a pair from the two supplied values
    * 
+   * @param <A> first type
+   * @param <B> second type
    * @param a
    *          first supplied value
    * @param b
@@ -29,7 +31,8 @@ public final class Pair<A, B> {
 
   /**
    * Creates a tuple 3 by prepending the supplied value
-   * 
+   *
+   * @param <T> type to prepend 
    * @param t
    *          value to prepend
    * @return a tuple 3
@@ -42,6 +45,7 @@ public final class Pair<A, B> {
    * Creates a tuple 3 by applying the supplied function to this tuple's
    * contents
    * 
+   * @param <T> type to extend with 
    * @param mapping
    *          function to apply
    * @return a tuple 3

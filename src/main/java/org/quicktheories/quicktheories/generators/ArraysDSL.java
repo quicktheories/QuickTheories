@@ -57,9 +57,11 @@ public class ArraysDSL {
   }
 
   /**
-   * Creates an ArrayGeneratorBuilder<T> of the given class, Class<T> c, that
+   * Creates an ArrayGeneratorBuilder of the given class that
    * can be used to create an array Source
-   * 
+   *
+   * @param <T>
+   *          type of value to generate
    * @param source
    *          a Source of type T
    * @param c
@@ -99,9 +101,9 @@ public class ArraysDSL {
      * Generates arrays of specified type T of length bounded inclusively
      * between minimumSize and maximumSize
      * 
-     * @param minimumSize
+     * @param minLength
      *          - the inclusive minimum size of the array
-     * @param maximumSize
+     * @param maxLength
      *          - the inclusive maximum size of the array
      * @return a Source of type T[]
      */

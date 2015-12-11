@@ -11,6 +11,8 @@ public class Compositions {
   /**
    * Composes two Sources such that their values are produced interleaved
    * 
+   * @param <T> type to generate
+   * 
    * @param lhs
    *          Source from which to retrieve first value
    * @param rhs
@@ -26,6 +28,8 @@ public class Compositions {
   /**
    * Composes two Sources such that the first n values are drawn from the first,
    * with all subsequent values coming from the second
+   * 
+   * @param <T> type to generate
    * 
    * @param n
    *          number of values to take from lhs
@@ -47,6 +51,8 @@ public class Compositions {
    * 
    * If a property is falsified by one of the supplied values then shrunk values
    * will be selected from those specifically supplied only.
+   * 
+   * @param <T> type to generate
    * 
    * @param source
    *          Source from which most values will be gathered

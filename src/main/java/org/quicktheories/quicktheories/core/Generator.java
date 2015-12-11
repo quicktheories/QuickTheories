@@ -31,6 +31,8 @@ public interface Generator<T> {
   /**
    * Produce a Generator of type V by applying the supplied function to this
    * Generator's values
+   *
+   * @param<V> type to generate
    * 
    * @param after
    *          function to apply
@@ -45,6 +47,10 @@ public interface Generator<T> {
   /**
    * Produce a Generator of type V by applying the supplied bifunction to this
    * Generator and the supplied Generator's values
+   * 
+   * @param<B> type of other generator
+
+   * @param<V> type to generate
    * 
    * @param other
    *          second Generator
@@ -61,7 +67,11 @@ public interface Generator<T> {
   /**
    * Produce a Generator of type V by applying the supplied Function3 to this
    * Generator and the two other supplied Generators' values
-   * 
+   *
+   * @param<A> type of first generator
+   * @param<B> type of second generator
+   * @param<V> type to generate   
+   *
    * @param as
    *          second Generator
    * @param bs
@@ -79,6 +89,12 @@ public interface Generator<T> {
   /**
    * Produce a Generator of type V by applying the supplied Function4 to this
    * Generator and the three other supplied Generators' values
+   * 
+   * @param<A> type of first generator
+   * @param<B> type of second generator
+   * @param<C> type of third generator
+   * @param<V> type to generate
+   *  
    * 
    * @param as
    *          second Generator

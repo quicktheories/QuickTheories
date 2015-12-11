@@ -16,6 +16,10 @@ public final class Tuple3<A, B, C> {
 
   /**
    * Creates a tuple 3 from the three supplied values
+   *
+   * @param <A> first type
+   * @param <B> second type
+   * @param <C> third type
    * 
    * @param a
    *          first supplied value
@@ -32,6 +36,8 @@ public final class Tuple3<A, B, C> {
   /**
    * Creates a tuple 4 by prepending the supplied value
    * 
+   * @param <T> type to prepend with 
+   * 
    * @param t
    *          value to prepend
    * @return a tuple 4
@@ -43,6 +49,8 @@ public final class Tuple3<A, B, C> {
   /**
    * Creates a tuple 4 by applying the supplied function to this tuple's
    * contents
+   * 
+   * @param <T> type to extend with 
    * 
    * @param mapping
    *          function to apply
