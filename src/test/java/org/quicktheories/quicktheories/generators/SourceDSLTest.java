@@ -900,7 +900,7 @@ public class SourceDSLTest {
   @Test
   public void shouldCatchWhenCreatingADateOfNegativeLong() {
     try {
-      Source<Date> testee = dates().withMilliSeconds(-234);
+      Source<Date> testee = dates().withMilliseconds(-234);
       fail("Created a date with a negative number of milliseconds");
     } catch (IllegalArgumentException expected) {
       assertTrue(
@@ -915,7 +915,7 @@ public class SourceDSLTest {
   @Test
   public void shouldNotCatchWhenCreatingADateWithLongOfZero() {
     try {
-      Source<Date> testee = dates().withMilliSeconds(0);
+      Source<Date> testee = dates().withMilliseconds(0);
     } catch (IllegalArgumentException expected) {
       fail("Threw an exception for an acceptable input!");
     }
@@ -925,7 +925,7 @@ public class SourceDSLTest {
   @Test
   public void shouldCatchWhenCreatingAnInclusiveLongIntervalForDatesWithMaxLessThanMin() {
     try {
-      Source<Date> testee = dates().withMilliSecondsBetween(342, 3);
+      Source<Date> testee = dates().withMillisecondsBetween(342, 3);
       fail("Created a Date where max long is less than min long!");
     } catch (IllegalArgumentException expected) {
     }
@@ -935,7 +935,7 @@ public class SourceDSLTest {
   @Test
   public void shouldNotCatchWhenCreatingAnInclusiveLongIntervalForDatesWithMaxEqualToMin() {
     try {
-      Source<Date> testee = dates().withMilliSecondsBetween(352, 352);
+      Source<Date> testee = dates().withMillisecondsBetween(352, 352);
     } catch (IllegalArgumentException expected) {
       fail("Threw an exception for an acceptable interval!");
     }
@@ -945,7 +945,7 @@ public class SourceDSLTest {
   @Test
   public void shouldCatchWhenCreatingAnInclusiveLongIntervalForDatesWithMinLessThanZero() {
     try {
-      Source<Date> testee = dates().withMilliSecondsBetween(-5, 6);
+      Source<Date> testee = dates().withMillisecondsBetween(-5, 6);
       fail("Created a Date where min long is less than zero!");
     } catch (IllegalArgumentException expected) {
     }
@@ -955,7 +955,7 @@ public class SourceDSLTest {
   @Test
   public void shouldNotCatchWhenCreatingAnInclusiveLongIntervalForDatesWithMinEqualToZero() {
     try {
-      Source<Date> testee = dates().withMilliSecondsBetween(0, 5);
+      Source<Date> testee = dates().withMillisecondsBetween(0, 5);
     } catch (IllegalArgumentException expected) {
       fail("Threw an exception for an acceptable interval!");
     }
@@ -963,13 +963,13 @@ public class SourceDSLTest {
 
   @Test
   public void shouldGenerateDateMax() {
-    Source<Date> testee = dates().withMilliSeconds(7890789);
+    Source<Date> testee = dates().withMilliseconds(7890789);
     assertThatSource(testee).generatesAllOf(new Date(7890789));
   }
 
   @Test
   public void shouldGenerateDateAtStartAndEndInclusive() {
-    Source<Date> testee = dates().withMilliSecondsBetween(3245352,
+    Source<Date> testee = dates().withMillisecondsBetween(3245352,
         72938572398752l);
     assertThatSource(testee).generatesAllOf(new Date(3245352),
         new Date(72938572398752l));

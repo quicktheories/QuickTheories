@@ -1,14 +1,30 @@
 package org.quicktheories.quicktheories.generators;
 
 import java.time.LocalDate;
-
 import org.quicktheories.quicktheories.core.Source;
 
+/**
+ * A Class for creating LocalDate Sources that will produce LocalDates based on
+ * the epoch day count
+ */
 public class LocalDatesDSL {
 
   private static final int LOCAL_DATE_MIN_EPOCH_DAY_COUNT = -999999999;
   private static final int LOCAL_DATE_MAX_EPOCH_DAY_COUNT = 999999999;
 
+  /**
+   * Generates LocalDates inclusively bounded between 1970-01-01 and
+   * LocalDate.of(daysFromEpoch) (which can be a negative long, in accordance
+   * with the LocalDate API).
+   * 
+   * The Source is weighted so it is likely to produce
+   * LocalDate.of(daysFromEpoch) one or more times.
+   * 
+   * @param daysFromEpoch
+   *          the number of days from the epoch such that LocalDates are
+   *          generated within this interval.
+   * @return a Source of type LocalDate
+   */
   public Source<LocalDate> withDays(long daysFromEpoch) {
     lowerBoundGEQLongLocalDateMin(daysFromEpoch);
     return Compositions.weightWithValues(LocalDates.withDays(daysFromEpoch),
@@ -16,6 +32,24 @@ public class LocalDatesDSL {
 
   }
 
+  /**
+   * Generates LocalDates inclusively bounded between
+   * LocalDate.of(daysFromEpochStartInclusive) and
+   * LocalDate.of(daysFromEpochEndInclusive) (these can be negative longs, in
+   * accordance with the LocalDate API).
+   * 
+   * The Source is weighted so it is likely to produce
+   * LocalDate.of(daysFromEpochStartInclusive) and
+   * LocalDate.of(daysFromEpochEndInclusive) one or more times.
+   * 
+   * @param daysFromEpochStartInclusive
+   *          the number of days from epoch for the desired older LocalDate
+   * @param daysFromEpochEndInclusive
+   *          the number of days from epoch for the desired more recent
+   *          LocalDate
+   * 
+   * @return a Source of type LocalDate
+   */
   public Source<LocalDate> withDaysBetween(long daysFromEpochStartInclusive,
       long daysFromEpochEndInclusive) {
     acceptableIntervalForLongLocalDate(daysFromEpochStartInclusive,

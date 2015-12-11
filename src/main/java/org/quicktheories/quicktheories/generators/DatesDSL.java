@@ -4,26 +4,57 @@ import java.util.Date;
 
 import org.quicktheories.quicktheories.core.Source;
 
+/**
+ * A Class for creating Date Sources that will produce Dates based on the number
+ * of milliseconds since epoch
+ */
 public class DatesDSL {
 
-  public Source<Date> withMilliSeconds(long milliSecondsFromEpoch) {
-    lowerBoundGEQZero(milliSecondsFromEpoch);
+  /**
+   * Generates Dates inclusively bounded between January 1, 1970, 00:00:00 GMT
+   * and new Date(milliSecondsFromEpoch). The Source restricts Date generation,
+   * so that no Dates before 1970 can be created. . The Source is weighted so it
+   * is likely to produce new Date(millisecondsFromEpoch) one or more times.
+   * 
+   * @param millisecondsFromEpoch
+   *          the number of milliseconds from the epoch such that Dates are
+   *          generated within this interval.
+   * @return a Source of type Date
+   */
+  public Source<Date> withMilliseconds(long millisecondsFromEpoch) {
+    lowerBoundGEQZero(millisecondsFromEpoch);
     return Compositions.weightWithValues(
-        Dates.withMilliSeconds(milliSecondsFromEpoch),
-        new Date(milliSecondsFromEpoch));
+        Dates.withMilliSeconds(millisecondsFromEpoch),
+        new Date(millisecondsFromEpoch));
   }
 
-  public Source<Date> withMilliSecondsBetween(
-      long milliSecondsFromEpochStartInclusive,
-      long milliSecondsFromEpochEndInclusive) {
-    lowerBoundGEQZero(milliSecondsFromEpochStartInclusive);
-    maxGEQMin(milliSecondsFromEpochStartInclusive,
-        milliSecondsFromEpochEndInclusive);
+  /**
+   * Generates Dates inclusively bounded between new
+   * Date(millisecondsFromEpochStartInclusive) and new
+   * Date(millisecondsFromEpochEndInclusive).
+   * 
+   * The Source is weighted so it is likely to produce new
+   * Date(millisecondsFromEpochStartInclusive) and new
+   * Date(millisecondsFromEpochEndInclusive) one or more times.
+   * 
+   * @param millisecondsFromEpochStartInclusive
+   *          the number of milliseconds from epoch for the desired older Date
+   * @param millisecondsFromEpochEndInclusive
+   *          the number of milliseconds from epoch for the desired more recent
+   *          Date
+   * @return
+   */
+  public Source<Date> withMillisecondsBetween(
+      long millisecondsFromEpochStartInclusive,
+      long millisecondsFromEpochEndInclusive) {
+    lowerBoundGEQZero(millisecondsFromEpochStartInclusive);
+    maxGEQMin(millisecondsFromEpochStartInclusive,
+        millisecondsFromEpochEndInclusive);
     return Compositions.weightWithValues(
-        Dates.withMilliSecondsBetween(milliSecondsFromEpochStartInclusive,
-            milliSecondsFromEpochEndInclusive),
-        new Date(milliSecondsFromEpochEndInclusive),
-        new Date(milliSecondsFromEpochStartInclusive));
+        Dates.withMilliSecondsBetween(millisecondsFromEpochStartInclusive,
+            millisecondsFromEpochEndInclusive),
+        new Date(millisecondsFromEpochEndInclusive),
+        new Date(millisecondsFromEpochStartInclusive));
   }
 
   private void lowerBoundGEQZero(long milliSecondsFromEpoch) {
