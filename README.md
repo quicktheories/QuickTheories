@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/NCR-CoDE/QuickTheories.svg)](https://travis-ci.org/NCR-CoDE/QuickTheories)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.quicktheories/quicktheories/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.quicktheories/quicktheories)
 
 # QuickTheories
 
@@ -19,7 +20,7 @@ If the word random is making you feel a little nervous, don't worry QuickTheorie
 
 ## Quick Start
 
-Add the QuickTheories jar to your build. It's not been released yet so for the moment you'll have to build it yourself.
+Add the QuickTheories jar to your build (see the badge at the top of the page for the maven co-ordinates of the latest version).
 
 You can run QuickTheories from JUnit, TestNG or any other test framework.
 
