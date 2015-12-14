@@ -1,6 +1,7 @@
 package org.quicktheories.quicktheories.api;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -27,5 +28,15 @@ public interface Subject1<T> {
    *          property to check
    */
   public void checkAssert(final Consumer<T> property);
+
+  /**
+   * Specifies how the object of type T will be output as a String by the
+   * ExceptionReporter
+   * 
+   * @param tToString
+   *          function to transform the value of type T to a String
+   * @return a Subject1 of type T
+   */
+  public Subject1<T> describedAs(Function<T, String> tToString);
 
 }

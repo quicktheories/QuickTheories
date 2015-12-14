@@ -46,4 +46,12 @@ public class SourceDSL {
     return new ArbitraryDSL();
   }
 
+  public static DatesDSL dates() {
+    return new DatesDSL();
+  }
+
+  public static LocalDatesDSL localDates() {
+    return new LocalDatesDSL();
+  }
+
 }

@@ -16,8 +16,8 @@ import org.junit.Test;
 
 public class PropertyTestExamples {
 
-  //Failing property tests:
-  
+  // Failing property tests:
+
   @Test
   public void addingTwoPositiveIntegersAlwaysGivesAPositiveInteger() {
     qt()
@@ -55,6 +55,7 @@ public class PropertyTestExamples {
   public void arraysAsListsGetShorterWhenUsingRemove() {
     qt().forAll(arrays().ofIntegers(integers().all()).withLengthBetween(1, 100))
         .asWithPrecursor(a -> Arrays.asList(a))
+        .describedAs(a -> Arrays.deepToString(a), l -> l.toString())
         .check((a, l) -> integerListIsReducedByRemovingAnItem().test(l));
   }
 
@@ -66,9 +67,23 @@ public class PropertyTestExamples {
     };
   }
 
+  @Test
+  public void checkingEqualityOfTwoDimensionalArrays() {
+    qt().forAll(arrays().ofIntegers(integers().all()).withLength(2),
+        arrays().ofIntegers(integers().all()).withLength(3))
+        .asWithPrecursor((a, b) -> new Integer[][] { a, b })
+        .describedAs(a -> Arrays.deepToString(a),
+            b -> Arrays.deepToString(b), c -> Arrays.deepToString(c))
+        .check((a, b, c) -> {
+          Integer[][] d = new Integer[][] { Arrays.copyOf(c[0], 2),
+              Arrays.copyOf(c[1], 3) };
+          return Arrays.equals(c, d);
+        }); // have to use deepEquals for this test to pass
+  }
+
   // Palindrome example: How to check that a String is a palindrome - can't
   // compare chars
-  
+
   @Test
   public void palindromeTester1() {
     qt().withFixedSeed(23432432)
@@ -125,9 +140,9 @@ public class PropertyTestExamples {
     }
   }
 
-  
-  //Person example where no examples can be found that meet this criteria (as none exist)
-  
+  // Person example where no examples can be found that meet this criteria (as
+  // none exist)
+
   @Test
   public void canMakePeopleWithOddLengthNamesFromSupplementaryCodePoints() {
     qt().withExamples(100000)
@@ -158,7 +173,7 @@ public class PropertyTestExamples {
     }
   }
 
-  //Fermat's Little Theorem Example
+  // Fermat's Little Theorem Example
   @Test
   public void truthOfFermatsLittleTheorem() {
     qt().forAll(longs().between(1, Long.MAX_VALUE), longs().between(2, 1000))
@@ -201,31 +216,32 @@ public class PropertyTestExamples {
     return Math.abs(a - b) % n == 0;
   }
 
-  
-  //Greatest Common Divisor example
-  
+  // Greatest Common Divisor example
+
   @Test
-  public void gcdTester() {
-    qt().forAll(integers().all()).check(n -> gcd(n, 1) == 1);
-    qt().forAll(integers().all()).check(n -> gcd(n, n) == Math.abs(n));
+  public void shouldFindThatAllIntegersHaveGcdOfOneWithOne() {
+    qt().forAll(integers().all()).check(n -> gcd(n, 1) == 1); // fails on
+                                                              // -2147483648
   }
 
   @Test
-  public void gcdTester2() {
+  public void shouldFindThatAllIntegersInRangeHaveGcdOfOneWithOne() {
     qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
         .check(n -> gcd(n, 1) == 1);
-
-    qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
-        .check(n -> gcd(n, n) == Math.abs(n));
-
-    qt()
-        .withExamples(5)
-        .withShrinkCycles(5)
-        .forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE),
-            integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
-        .check((n, m) -> gcd(n, m) == gcd(m % n, n));
   }
 
+  @Test
+  public void shouldFindThatAllIntegersHaveGcdThemselvesWithThemselves() {
+    qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
+        .check(n -> gcd(n, n) == Math.abs(n));
+  }
+
+  @Test
+  public void shouldFindThatGcdOfNAndMEqualsGcdMModNAndN() {
+    qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE),
+        integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
+        .check((n, m) -> gcd(n, m) == gcd(m % n, n));
+  }
 
   private int gcd(int n, int m) {
     if (n == 0) {

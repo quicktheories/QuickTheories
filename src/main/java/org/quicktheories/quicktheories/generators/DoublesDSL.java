@@ -118,8 +118,9 @@ public class DoublesDSL {
    * Generates Doubles in Java, including Double.NaN - which will only ever
    * shrink to itself.
    * 
-   * The Source is weighted so it is likely to generate Double.NaN, Double.NEGATIVE_INFINITY,
-   * Double.POSITIVE_INFINITY and Double.MAX_VALUE one or more times.
+   * The Source is weighted so it is likely to generate Double.NaN,
+   * Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY and Double.MAX_VALUE one
+   * or more times.
    * 
    * @return Source of type Double
    */

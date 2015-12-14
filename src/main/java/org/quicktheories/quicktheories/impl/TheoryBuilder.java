@@ -14,8 +14,11 @@ import org.quicktheories.quicktheories.core.Strategy;
 /**
  * Builds theories about values of type T based on values of precursor types P
  *
- * @param <P> Precursor type
- * @param <T> Final type
+ * @param
+ *          <P>
+ *          Precursor type
+ * @param <T>
+ *          Final type
  */
 public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
 
@@ -30,10 +33,14 @@ public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
    *          limits the possible values of type P
    * @param conversion
    *          function defining the conversion from type P to type T
+   * @param tToString
+   *          function specifying how a value of type T should be output to
+   *          String in the falsification output
    */
   public TheoryBuilder(final Supplier<Strategy> state, final Source<P> source,
-      Predicate<P> predicate, Function<P, T> conversion) {
-    super(state, source, predicate, conversion);
+      Predicate<P> predicate, Function<P, T> conversion,
+      Function<T, String> tToString) {
+    super(state, source, predicate, conversion, tToString);
   }
 
   /**
@@ -46,7 +53,7 @@ public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
   public TheoryBuilder<P, T> assuming(Predicate<P> newAssumption) {
     return new TheoryBuilder<P, T>(this.state, this.ps,
         this.assumptions.and(newAssumption),
-        conversion);
+        conversion, tToString);
   }
 
   /**
@@ -62,18 +69,14 @@ public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
       Function<T, N> mapping) {
     return new TheoryBuilder<Pair<P, T>, N>(state,
         convertedSource(mapping), convertedPredicate(mapping),
-        internalConversion(mapping));
+        internalConversion(mapping), n -> n.toString());
   }
 
   /**
    * Converts theory to one about a different type using the given function
-   * retaining all precursor values 
-   *   
-   * @param <N>
-   *          type to convert to
-   *   
+   * retaining all precursor values
    * @param mapping
-   * Function from type T to type N
+   *          Function from type T to type N
    * @return a Subject2 relating to the state of a theory involving two values
    */
   public <N> Subject2<P, N> asWithPrecursor(Function<T, N> mapping) {
@@ -88,7 +91,8 @@ public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
         .map(p -> Pair.of(p, conversion.andThen(mapping).apply(p)));
 
     Source<Pair<P, N>> gen = Source.of(g).withShrinker(s);
-    return new PrecursorTheoryBuilder1<P, N>(state, gen, assumptions);
+    return new PrecursorTheoryBuilder1<P, N>(state, gen, assumptions,
+        a -> a.toString(), b -> b.toString());
 
   }
 

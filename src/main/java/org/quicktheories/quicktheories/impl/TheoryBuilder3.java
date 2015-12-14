@@ -95,16 +95,16 @@ public final class TheoryBuilder3<A, B, C> {
         precursor -> assumptions.test(precursor._1, precursor._2,
             precursor._3),
         tuple -> mapping.apply(tuple._1, tuple._2,
-            tuple._3));
+            tuple._3),
+        t -> t.toString());
   }
 
   /**
    * Converts theory to one about a different type using the given function
-   * retaining all precursor values 
-    * @param <T>
-   *          type to convert to
+   * retaining all precursor values
+   * 
    * @param mapping
-   * Function from types A,B,C to type T
+   *          Function from types A,B,C to type T
    * @return a Subject4 relating to the state of a theory involving four values
    */
   public <T> Subject4<A, B, C, T> asWithPrecursor(
@@ -116,7 +116,9 @@ public final class TheoryBuilder3<A, B, C> {
 
     Source<Tuple4<A, B, C, T>> gen = Source
         .of(generatePrecursorValueTuple(mapping)).withShrinker(shrink);
-    return new PrecursorTheoryBuilder3<A, B, C, T>(state, gen, assumptions);
+    return new PrecursorTheoryBuilder3<A, B, C, T>(state, gen, assumptions,
+        a -> a.toString(), b -> b.toString(), c -> c.toString(),
+        t -> t.toString());
   }
 
   /**
@@ -128,7 +130,9 @@ public final class TheoryBuilder3<A, B, C> {
   public void check(final Predicate3<A, B, C> property) {
     final TheoryRunner<Tuple3<A, B, C>, Tuple3<A, B, C>> qc = new TheoryRunner<>(
         this.state.get(),
-        combine(), convertPredicate(), x -> x);
+        combine(), convertPredicate(), x -> x,
+        tuple3 -> "{" + tuple3._1.toString() + ", " + tuple3._2.toString()
+            + ", " + tuple3._3.toString() + "}");
     qc.check(
         x -> property.test(x._1, x._2, x._3));
   }

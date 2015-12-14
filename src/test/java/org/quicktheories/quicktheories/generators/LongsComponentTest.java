@@ -29,17 +29,17 @@ public class LongsComponentTest extends ComponentTest<Long> {
   public void shouldFindFalsifyingValuesFromOutsideAndInsideIntegerRange() {
     assertThatFor(
         Longs.range((long) Integer.MIN_VALUE - 50, -5000000),
-        withShrinkCycles(100000)).check(i -> i >= -5000000);
+        withShrinkCycles(10000)).check(i -> i >= -5000000);
     listIsInDecreasingAbsValueOrder();
     smallestValueIsEqualTo(-5000001);
   }
 
   @Test
   public void shouldShrinkByOneInPositiveNumbersWhereDistanceIsLessThanRemainingCycles() {
-    assertThatFor(Longs.range(5324, 35323), withShrinkCycles(35000))
+    assertThatFor(Longs.range(532, 3532), withShrinkCycles(3000))
         .check(i -> false);
     listIsDecreasingByAtMostOne();
-    smallestValueIsEqualTo(5324L);
+    smallestValueIsEqualTo(532L);
   }
 
   @Test
@@ -110,8 +110,8 @@ public class LongsComponentTest extends ComponentTest<Long> {
   }
 
   private Strategy withShrinkCycles(int shrinkCycles) {
-    return new Strategy(Configuration.defaultPRNG(2), 1000000, shrinkCycles,
-        this.reporter);
+    return new Strategy(Configuration.defaultPRNG(2), 10000, shrinkCycles,
+        this.reporter).withExamples(100000);
   }
 
   private void listIsInDecreasingAbsValueOrder() {
