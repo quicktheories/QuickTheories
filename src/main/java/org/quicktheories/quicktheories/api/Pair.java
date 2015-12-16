@@ -3,6 +3,7 @@ package org.quicktheories.quicktheories.api;
 import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public final class Pair<A, B> {
   public final A _1;
@@ -52,6 +53,10 @@ public final class Pair<A, B> {
    */
   public <T> Tuple3<A, B, T> extend(BiFunction<A, B, T> mapping) {
     return Tuple3.of(_1, _2, mapping.apply(_1, _2));
+  }
+  
+  public <A1,B1> Pair<A1, B1> map(Function<A,A1> fa, Function<B,B1> fb) {
+    return Pair.of(fa.apply(_1), fb.apply(_2));
   }
 
   @Override

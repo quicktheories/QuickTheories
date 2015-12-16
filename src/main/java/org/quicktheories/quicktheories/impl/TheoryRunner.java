@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.impl.Checker.CheckerResults;
@@ -15,11 +16,11 @@ final class TheoryRunner<P, T> {
   private final Source<P> precursorSource;
   private final Predicate<P> assumptions;
   private final Function<P, T> precursorToValue;
-  private final Function<T, String> toString;
+  private final AsString<T> toString;
 
   TheoryRunner(final Strategy state, final Source<P> source,
       Predicate<P> assumptions, Function<P, T> f,
-      Function<T, String> toString) {
+      AsString<T> toString) {
     this.strategy = state;
     this.precursorSource = source;
     this.assumptions = assumptions;
@@ -53,12 +54,12 @@ final class TheoryRunner<P, T> {
       this.strategy.reporter().falisification(seed, result.executedExamples,
           smallest, shrinkResult.smallest.cause().get(),
           (List<Object>) shrinkResult.otherExamples,
-          (Function<Object, String>) toString);
+          (AsString<Object>) toString);
     } else {
       this.strategy.reporter().falisification(seed, result.executedExamples,
           smallest,
           (List<Object>) shrinkResult.otherExamples,
-          (Function<Object, String>) toString);
+          (AsString<Object>) toString);
     }
   }
 }

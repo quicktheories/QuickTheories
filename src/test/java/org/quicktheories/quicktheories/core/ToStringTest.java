@@ -23,7 +23,7 @@ public class ToStringTest {
     try {
       qt().withFixedSeed(5).forAll(longs().all()).as(l -> l)
           .check(i -> i < i + 1);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageContaining("9223372036854775807");
@@ -35,7 +35,7 @@ public class ToStringTest {
     try {
       qt().withFixedSeed(5).forAll(longs().all()).asWithPrecursor(l -> l)
           .check((h, i) -> i < i + 1);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageContaining("{9223372036854775807, 9223372036854775807}");
@@ -47,7 +47,7 @@ public class ToStringTest {
     try {
       qt().withFixedSeed(5).forAll(integers().all(), integers().allPositive())
           .check((i, j) -> false);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageContaining("{0, 1}");
@@ -60,7 +60,7 @@ public class ToStringTest {
       qt().withFixedSeed(5).forAll(integers().all(), integers().allPositive())
           .asWithPrecursor((i, j) -> i + j)
           .check((i, j, k) -> false);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageContaining("{0, 1, 1}");
@@ -73,7 +73,7 @@ public class ToStringTest {
       qt().withFixedSeed(5).forAll(characters().ascii(), characters().ascii(),
           characters().ascii())
           .check((i, j, k) -> false);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error).hasMessageContaining("{\u0000, \u0000, \u0000}");
     }
@@ -87,7 +87,7 @@ public class ToStringTest {
           .as((i, j, k) -> Character.toString(i) + Character.toString(j)
               + Character.toString(k))
           .check(s -> false);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error).hasMessageContaining("\u0000\u0000\u0000");
     }
@@ -102,7 +102,7 @@ public class ToStringTest {
               (i, j, k) -> Character.toString(i) + Character.toString(j)
                   + Character.toString(k))
           .check((i, j, k, s) -> false);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageContaining("{\u0000, \u0000, \u0000, \u0000\u0000\u0000}");
@@ -115,7 +115,7 @@ public class ToStringTest {
       qt().withFixedSeed(5).forAll(integers().all(), integers().all(),
           integers().all(), integers().all())
           .check((i, j, k, l) -> false);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error).hasMessageContaining("{0, 0, 0, 0}");
     }
@@ -128,7 +128,7 @@ public class ToStringTest {
           integers().all(), integers().all())
           .asWithPrecursor((i, j, k, l) -> (long) i + j + k + l)
           .check((i, j, k, l, s) -> false);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error).hasMessageContaining("{0, 0, 0, 0, 0}");
     }
@@ -140,7 +140,7 @@ public class ToStringTest {
       qt().withFixedSeed(5).forAll(
           arrays().ofStrings(strings().ascii().ofLength(1)).withLength(1))
           .describedAs(a -> Arrays.deepToString(a)).check(i -> false);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageContaining(Arrays.deepToString(new String[] { "!" }));
@@ -153,7 +153,7 @@ public class ToStringTest {
       qt().withFixedSeed(5).forAll(bigIntegers().ofBytes(5))
           .as(b -> b.toByteArray()).describedAs(a -> Arrays.toString(a))
           .check(i -> false);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageContaining(Arrays.deepToString(new Integer[] { 0 }));
@@ -169,7 +169,7 @@ public class ToStringTest {
           .asWithPrecursor(a -> Arrays.asList(a))
           .describedAs(a -> Arrays.deepToString(a), l -> l.toString())
           .check((a, l) -> integerListIsReducedByRemovingAnItem().test(l));
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageContaining(Arrays.deepToString(new Integer[] { 0 }));
@@ -187,7 +187,7 @@ public class ToStringTest {
           .as((i, j) -> new Person(i, j))
           .describedAs(p -> p.toUseToString())
           .check(i -> false);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageContaining("Name:");
@@ -206,7 +206,7 @@ public class ToStringTest {
           .describedAs(s -> s.toString(), i -> i.toString(),
               p -> p.toUseToString())
           .check((i, s, p) -> false);
-      throw (new AssertionError("Test didn't fail"));
+      throw new AssertionError("Test didn't fail");
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageContaining("Name:");

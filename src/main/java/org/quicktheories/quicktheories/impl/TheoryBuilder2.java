@@ -124,8 +124,7 @@ public final class TheoryBuilder2<A, B> {
         .map(p -> Tuple3.of(p._1, p._2, mapping.apply(p._1, p._2)));
 
     Source<Tuple3<A, B, T>> gen = Source.of(g).withShrinker(s);
-    return new PrecursorTheoryBuilder2<A, B, T>(state, gen, assumptions,
-        a -> a.toString(), b -> b.toString(), t -> t.toString());
+    return new PrecursorTheoryBuilder2<A, B, T>(state, gen, assumptions);
 
   }
 

@@ -116,9 +116,7 @@ public final class TheoryBuilder3<A, B, C> {
 
     Source<Tuple4<A, B, C, T>> gen = Source
         .of(generatePrecursorValueTuple(mapping)).withShrinker(shrink);
-    return new PrecursorTheoryBuilder3<A, B, C, T>(state, gen, assumptions,
-        a -> a.toString(), b -> b.toString(), c -> c.toString(),
-        t -> t.toString());
+    return new PrecursorTheoryBuilder3<A, B, C, T>(state, gen, assumptions);
   }
 
   /**

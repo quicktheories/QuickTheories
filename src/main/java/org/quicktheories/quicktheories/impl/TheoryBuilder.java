@@ -4,11 +4,12 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.api.Pair;
 import org.quicktheories.quicktheories.api.Subject2;
-import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Generator;
 import org.quicktheories.quicktheories.core.Shrink;
+import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Strategy;
 
 /**
@@ -33,14 +34,14 @@ public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
    *          limits the possible values of type P
    * @param conversion
    *          function defining the conversion from type P to type T
-   * @param tToString
+   * @param asString
    *          function specifying how a value of type T should be output to
    *          String in the falsification output
    */
   public TheoryBuilder(final Supplier<Strategy> state, final Source<P> source,
       Predicate<P> predicate, Function<P, T> conversion,
-      Function<T, String> tToString) {
-    super(state, source, predicate, conversion, tToString);
+      AsString<T> asString) {
+    super(state, source, predicate, conversion, asString);
   }
 
   /**
@@ -53,7 +54,7 @@ public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
   public TheoryBuilder<P, T> assuming(Predicate<P> newAssumption) {
     return new TheoryBuilder<P, T>(this.state, this.ps,
         this.assumptions.and(newAssumption),
-        conversion, tToString);
+        conversion, asString);
   }
 
   /**
@@ -91,8 +92,7 @@ public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
         .map(p -> Pair.of(p, conversion.andThen(mapping).apply(p)));
 
     Source<Pair<P, N>> gen = Source.of(g).withShrinker(s);
-    return new PrecursorTheoryBuilder1<P, N>(state, gen, assumptions,
-        a -> a.toString(), b -> b.toString());
+    return new PrecursorTheoryBuilder1<P, N>(state, gen, assumptions);
 
   }
 
