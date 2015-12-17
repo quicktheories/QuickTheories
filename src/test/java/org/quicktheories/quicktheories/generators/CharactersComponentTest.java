@@ -116,12 +116,12 @@ public class CharactersComponentTest extends ComponentTest<Character> {
     smallestValueIsEqualTo('\u0000');
   }
 
-  private TheoryBuilder<Character, Character> assertThatFor(
+  private TheoryBuilder<Character> assertThatFor(
       Source<Character> generator) {
     return theoryBuilder(generator, this.strategy, this.reporter);
   }
 
-  private TheoryBuilder<Character, Character> assertThatFor(
+  private TheoryBuilder<Character> assertThatFor(
       Source<Character> generator, Strategy strategy) {
     return theoryBuilder(generator, strategy, this.reporter);
   }

@@ -22,13 +22,12 @@ abstract class ComponentTest<T> {
   public Source<T> source;
   public Strategy strategy;
 
-  public TheoryBuilder<T, T> theoryBuilder(Source<T> source,
+  public TheoryBuilder<T> theoryBuilder(Source<T> source,
       Strategy strategy, Reporter reporter) {
     this.source = source;
     this.strategy = strategy;
     this.reporter = reporter;
-    return new TheoryBuilder<T, T>(() -> strategy, source, i -> true,
-        x -> x, a -> a.toString());
+    return new TheoryBuilder<>(() -> strategy, source, i -> true);
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })

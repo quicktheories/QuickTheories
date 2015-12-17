@@ -92,7 +92,7 @@ public class IntegerShrinkerImplementationTest extends ComponentTest<Integer> {
     shrinkIsExpectedValue(listOfShrunkenItems().get(0), -1);
   }
 
-  private TheoryBuilder<Integer, Integer> assertThatFor(
+  private TheoryBuilder<Integer> assertThatFor(
       Source<Integer> generator, Strategy strategy) {
     return theoryBuilder(generator, strategy, this.reporter);
   }

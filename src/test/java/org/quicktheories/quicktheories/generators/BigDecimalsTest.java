@@ -88,7 +88,7 @@ public class BigDecimalsTest extends ComponentTest<BigDecimal> {
     return new ShrinkContext(0, 1, Configuration.defaultPRNG(2));
   }
 
-  private TheoryBuilder<BigDecimal, BigDecimal> assertThatFor(
+  private TheoryBuilder<BigDecimal> assertThatFor(
       Source<BigDecimal> generator) {
     return theoryBuilder(generator, this.strategy, this.reporter);
   }

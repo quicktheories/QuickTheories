@@ -104,7 +104,7 @@ public class LongsComponentTest extends ComponentTest<Long> {
     smallestValueIsEqualTo(target);
   }
 
-  private TheoryBuilder<Long, Long> assertThatFor(
+  private TheoryBuilder<Long> assertThatFor(
       Source<Long> generator, Strategy strategy) {
     return theoryBuilder(generator, strategy, this.reporter);
   }

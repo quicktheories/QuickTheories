@@ -1,11 +1,12 @@
 package org.quicktheories.quicktheories.impl;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.api.Pair;
+import org.quicktheories.quicktheories.api.Subject1;
 import org.quicktheories.quicktheories.api.Subject2;
 import org.quicktheories.quicktheories.core.Generator;
 import org.quicktheories.quicktheories.core.Shrink;
@@ -13,35 +14,35 @@ import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Strategy;
 
 /**
- * Builds theories about values of type T based on values of precursor types P
+ * Builds theories about values of type A
  *
- * @param
- *          <P>
- *          Precursor type
- * @param <T>
+ * @param <A>
  *          Final type
  */
-public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
-
+public final class TheoryBuilder<A> implements Subject1<A> {
+  
+  private final Supplier<Strategy> state;
+  private final Source<A> ps;
+  private final Predicate<A> assumptions;
+  
   /**
-   * Builds theories about values of type T based on values of precursor types P
+   * Builds theories about values of type T
    * 
    * @param state
    *          supplies the strategy to be implemented
    * @param source
    *          the source of the values to be generated and potentially shrunk
-   * @param predicate
-   *          limits the possible values of type P
-   * @param conversion
-   *          function defining the conversion from type P to type T
+   * @param assumptions
+   *          limits the possible values of type T
    * @param asString
    *          function specifying how a value of type T should be output to
    *          String in the falsification output
    */
-  public TheoryBuilder(final Supplier<Strategy> state, final Source<P> source,
-      Predicate<P> predicate, Function<P, T> conversion,
-      AsString<T> asString) {
-    super(state, source, predicate, conversion, asString);
+  public TheoryBuilder(final Supplier<Strategy> state, final Source<A> source,
+      Predicate<A> assumptions) {
+    this.state = state;
+    this.ps = source;
+    this.assumptions = assumptions;
   }
 
   /**
@@ -51,76 +52,77 @@ public final class TheoryBuilder<P, T> extends MappingTheoryBuilder<P, T> {
    *          an assumption that must be true of all values
    * @return TheoryBuilder based on the given assumption
    */
-  public TheoryBuilder<P, T> assuming(Predicate<P> newAssumption) {
-    return new TheoryBuilder<P, T>(this.state, this.ps,
-        this.assumptions.and(newAssumption),
-        conversion, asString);
+  public TheoryBuilder<A> assuming(Predicate<A> newAssumption) {
+    return new TheoryBuilder<A>(this.state, this.ps,
+        this.assumptions.and(newAssumption));
   }
 
   /**
    * Converts theory to one about a different type using the given function
    * 
-   * @param <N>
+   * @param <T>
    *          type to convert to
    * @param mapping
    *          function with which to map values to desired type
-   * @return TheoryBuilder about type N
+   * @return theory builder about type T
    */
-  public <N> TheoryBuilder<Pair<P, T>, N> as(
-      Function<T, N> mapping) {
-    return new TheoryBuilder<Pair<P, T>, N>(state,
-        convertedSource(mapping), convertedPredicate(mapping),
-        internalConversion(mapping), n -> n.toString());
+  public <T> Subject1<T> as(Function<A, T> mapping) {
+    return new MappingTheoryBuilder<>(state, ps, assumptions, mapping,
+        t -> t.toString());
   }
 
   /**
    * Converts theory to one about a different type using the given function
    * retaining all precursor values
    * @param mapping
-   *          Function from type T to type N
-   * @return a Subject2 relating to the state of a theory involving two values
+   *          Function from types A and B to type T
+   * @return a Subject3 relating to the state of a theory involving three values
    */
-  public <N> Subject2<P, N> asWithPrecursor(Function<T, N> mapping) {
-    Generator<Pair<P, N>> g = (prng, step) -> {
-      P p = this.ps.next(prng, step);
-      T t = this.conversion.apply(p);
-      return Pair.of(p, mapping.apply(t));
+  public <T> Subject2<A, T> asWithPrecursor(Function<A, T> mapping) {
+    Generator<Pair<A, T>> g = (prng, step) -> {
+      A a = this.ps.next(prng, step);
+      return Pair.of(a, mapping.apply(a));
     };
 
-    Shrink<Pair<P, N>> s = (original, context) -> ps
+    Shrink<Pair<A, T>> s = (original, context) -> ps
         .shrink(original._1, context)
-        .map(p -> Pair.of(p, conversion.andThen(mapping).apply(p)));
+        .map(p -> Pair.of(p, mapping.apply(p)));
 
-    Source<Pair<P, N>> gen = Source.of(g).withShrinker(s);
-    return new PrecursorTheoryBuilder1<P, N>(state, gen, assumptions);
+    Source<Pair<A, T>> gen = Source.of(g).withShrinker(s);
+    return new PrecursorTheoryBuilder1<A, T>(state, gen, assumptions);
 
   }
-
-  private <N> Function<Pair<P, T>, N> internalConversion(
-      Function<T, N> conversion2) {
-    return pair -> conversion2.apply(conversion.apply(pair._1));
+  
+  @Override
+  public Subject1<A> describedAs(Function<A,String> toString) {
+   return new TheoryBuilder<A>(this.state, this.ps.describedAs(a-> toString.apply(a)), this.assumptions);
+  }  
+  
+  /**
+   * Checks a boolean property across a random sample of possible values
+   * 
+   * @param property
+   *          property to check
+   */
+  public final void check(final Predicate<A> property) {
+    final TheoryRunner<A, A> qc = new TheoryRunner<>(this.state.get(), this.ps,
+        this.assumptions,
+        x -> x, ps);
+    qc.check(property);
   }
 
-  private <N> Source<Pair<P, T>> convertedSource(
-      Function<T, N> conversion2) {
-    return Source.of(generatorFunction()).withShrinker(shrinker());
-  }
-
-  private <N> Generator<Pair<P, T>> generatorFunction() {
-    return (prng, step) -> {
-      P p = ps.next(prng, step);
-      return Pair.of(p, conversion.apply(p));
-    };
-  }
-
-  private <N> Shrink<Pair<P, T>> shrinker() {
-    return (pair, context) -> ps.shrink(pair._1, context)
-        .map(pre -> Pair.of(pre, conversion.apply(pre)));
-  }
-
-  private <N> Predicate<Pair<P, T>> convertedPredicate(
-      Function<T, N> conversion2) {
-    return pair -> assumptions.test(pair._1);
-  }
+  /**
+   * Checks a property across a random sample of possible values where
+   * falsification is indicated by an unchecked exception such as an assertion
+   * 
+   * @param property
+   *          property to check
+   */
+  public final void checkAssert(final Consumer<A> property) {
+    check(t -> {
+      property.accept(t);
+      return true;
+    });
+  }  
 
 }

@@ -210,12 +210,12 @@ public class IntegersComponentTest extends ComponentTest<Integer> {
     smallestValueIsEqualTo(target);
   }
 
-  private TheoryBuilder<Integer, Integer> assertThatFor(
+  private TheoryBuilder<Integer> assertThatFor(
       Source<Integer> generator) {
     return theoryBuilder(generator, this.strategy, this.reporter);
   }
 
-  private TheoryBuilder<Integer, Integer> assertThatFor(
+  private TheoryBuilder<Integer> assertThatFor(
       Source<Integer> generator, Strategy strategy) {
     return theoryBuilder(generator, strategy, this.reporter);
   }

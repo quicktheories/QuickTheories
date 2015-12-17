@@ -22,11 +22,11 @@ import org.quicktheories.quicktheories.core.Strategy;
  */
 class MappingTheoryBuilder<P, T> implements Subject1<T> {
 
-  final Supplier<Strategy> state;
-  final Source<P> ps;
-  final Predicate<P> assumptions;
-  final Function<P, T> conversion;
-  final AsString<T> asString;
+  private final Supplier<Strategy> state;
+  private final Source<P> ps;
+  private final Predicate<P> assumptions;
+  private final Function<P, T> conversion;
+  private final AsString<T> asString;
 
   MappingTheoryBuilder(final Supplier<Strategy> state, final Source<P> source,
       Predicate<P> assumptions, Function<P, T> conversion,
