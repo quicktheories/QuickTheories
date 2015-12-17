@@ -18,7 +18,21 @@ public class Tuple5Test {
   }
 
   @Test
+  public void shouldMapValues() {
+    assertThat(Tuple5.of(1, 2, 3, 4, 5).map(i -> "A" + i, i -> "B" + i,
+        i -> "C" + i, i -> "D" + i, i -> "E" + i))
+            .isEqualTo(Tuple5.of("A1", "B2", "C3", "D4", "E5"));
+  }
+
+  @Test
   public void shouldObeyHashcodeEqualsContract() {
     EqualsVerifier.forClass(Tuple5.class).allFieldsShouldBeUsed().verify();
   }
+
+  @Test
+  public void shouldNotBeEqualToUnrelatedClass() {
+    assertThat(Tuple5.of(1, 2, 3, 4, 5)).isNotEqualTo("");
+  }
+  
+  
 }

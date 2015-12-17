@@ -8,8 +8,8 @@ import java.util.function.Supplier;
 
 import org.quicktheories.quicktheories.api.Pair;
 import org.quicktheories.quicktheories.api.Subject2;
-import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Strategy;
 
 class PrecursorTheoryBuilder1<P, T> implements Subject2<P, T> {
 
@@ -35,9 +35,8 @@ class PrecursorTheoryBuilder1<P, T> implements Subject2<P, T> {
   public final void check(final BiPredicate<P, T> property) {
     final TheoryRunner<Pair<P, T>, Pair<P, T>> qc = new TheoryRunner<Pair<P, T>, Pair<P, T>>(
         this.state.get(), ps, pair -> assumptions.test(pair._1),
-        Function.identity());
+        Function.identity(), ps);
     qc.check(pair -> property.test(pair._1, pair._2));
-
   }
 
   /**
@@ -53,5 +52,4 @@ class PrecursorTheoryBuilder1<P, T> implements Subject2<P, T> {
       return true;
     });
   }
-
 }

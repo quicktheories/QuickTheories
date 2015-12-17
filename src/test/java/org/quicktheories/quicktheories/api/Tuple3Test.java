@@ -32,7 +32,18 @@ public class Tuple3Test {
   }
 
   @Test
+  public void shouldMapValues() {
+    assertThat(Tuple3.of(1, 2, 3).map(i -> "A" + i, i -> "B" + i, i -> "C" + i))
+        .isEqualTo(Tuple3.of("A1", "B2", "C3"));
+  }
+
+  @Test
   public void shouldObeyHashcodeEqualsContract() {
     EqualsVerifier.forClass(Tuple3.class).allFieldsShouldBeUsed().verify();
+  }
+
+  @Test
+  public void shouldNotBeEqualToUnrelatedClass() {
+    assertThat(Tuple3.of(1, 2, 3)).isNotEqualTo("");
   }
 }

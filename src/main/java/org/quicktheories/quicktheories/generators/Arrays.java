@@ -2,16 +2,14 @@ package org.quicktheories.quicktheories.generators;
 
 import java.lang.reflect.Array;
 
+import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.core.Source;
 
 final class Arrays {
 
-  @SuppressWarnings("unchecked")
   static <T> Source<T[]> arraysOf(Source<T> values, Class<T> c,
       int length) {
-    return Lists.listsOf(values, Lists.arrayListCollector(), length).as(
-        l -> l.toArray((T[]) Array.newInstance(c, length)),
-        a -> java.util.Arrays.asList(a));
+    return arraysOf(values, c, length, length);
   }
 
   @SuppressWarnings("unchecked")
@@ -24,7 +22,11 @@ final class Arrays {
                                                            // zero is less than
                                                            // the length of the
                                                            // array
-            a -> java.util.Arrays.asList(a));
+            a -> java.util.Arrays.asList(a)).describedAs(arrayDescriber());
+  }
+  
+  private static <T> AsString<T[]> arrayDescriber() {
+    return a -> java.util.Arrays.deepToString(a);
   }
 
 }

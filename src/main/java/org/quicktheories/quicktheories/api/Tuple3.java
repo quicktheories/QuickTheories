@@ -2,6 +2,7 @@ package org.quicktheories.quicktheories.api;
 
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.function.Function;
 
 public final class Tuple3<A, B, C> {
   public final A _1;
@@ -59,6 +60,10 @@ public final class Tuple3<A, B, C> {
   public <T> Tuple4<A, B, C, T> extend(Function3<A, B, C, T> mapping) {
     return Tuple4.of(_1, _2, _3, mapping.apply(_1, _2, _3));
   }
+  
+  public <A1,B1,C1> Tuple3<A1, B1, C1> map(Function<A,A1> fa, Function<B,B1> fb, Function<C,C1> fc ) {
+    return Tuple3.of(fa.apply(_1), fb.apply(_2), fc.apply(_3));
+  }
 
   @Override
   public String toString() {
@@ -90,5 +95,7 @@ public final class Tuple3<A, B, C> {
         Objects.equals(_2, other._2) &&
         Objects.equals(_3, other._3);
   }
+
+
 
 }

@@ -31,4 +31,5 @@ public interface Subject2<P, T> {
    */
   public void checkAssert(final BiConsumer<P, T> property);
 
+
 }

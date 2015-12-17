@@ -4,6 +4,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.quicktheories.quicktheories.api.AsString;
+
 /**
  * Interface that reports the falsification of properties
  *
@@ -12,8 +15,8 @@ public class ExceptionReporter implements Reporter {
 
   @Override
   public void falisification(long seed, int examplesUsed, Object smallest,
-      List<Object> examples) {
-    this.falsify(seed, examplesUsed, smallest, "", examples);
+      List<Object> examples, AsString<Object> toString) {
+    this.falsify(seed, examplesUsed, smallest, "", examples, toString);
 
   }
 
@@ -27,21 +30,22 @@ public class ExceptionReporter implements Reporter {
 
   @Override
   public void falisification(long seed, int examplesUsed, Object smallest,
-      Throwable cause, List<Object> examples) {
+      Throwable cause, List<Object> examples, AsString<Object> toString) {
     StringWriter sw = new StringWriter();
     cause.printStackTrace(new PrintWriter(sw));
     String failure = "\nCause was :-\n" + sw.toString();
-    this.falsify(seed, examplesUsed, smallest, failure, examples);
+    this.falsify(seed, examplesUsed, smallest, failure, examples, toString);
   }
 
   private void falsify(long seed, int examplesUsed, Object smallest,
-      String failure, List<Object> examples) {
+      String failure, List<Object> examples,
+      AsString<Object> toString) {
     throw new AssertionError(String.format(
         "Property falsified after %s example(s) \nSmallest found falsifying value(s) :-\n%s%s\nOther found falsifying value(s) :- \n%s\n \nSeed was %s",
-        examplesUsed, smallest, failure,
+        examplesUsed, toString.asString(smallest), failure,
         examples.stream()
             .limit(10)
-            .map(o -> o.toString())
+            .map(o -> toString.asString(o))
             .collect(Collectors.joining("\n")),
         seed));
 

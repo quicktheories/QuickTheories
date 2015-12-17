@@ -5,6 +5,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.api.Subject1;
 import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Strategy;
@@ -21,17 +22,20 @@ import org.quicktheories.quicktheories.core.Strategy;
  */
 class MappingTheoryBuilder<P, T> implements Subject1<T> {
 
-  final Supplier<Strategy> state;
-  final Source<P> ps;
-  final Predicate<P> assumptions;
-  final Function<P, T> conversion;
+  private final Supplier<Strategy> state;
+  private final Source<P> ps;
+  private final Predicate<P> assumptions;
+  private final Function<P, T> conversion;
+  private final AsString<T> asString;
 
   MappingTheoryBuilder(final Supplier<Strategy> state, final Source<P> source,
-      Predicate<P> assumptions, Function<P, T> conversion) {
+      Predicate<P> assumptions, Function<P, T> conversion,
+      AsString<T> asString) {
     this.state = state;
     this.ps = source;
     this.assumptions = assumptions;
     this.conversion = conversion;
+    this.asString = asString;
   }
 
   /**
@@ -43,7 +47,7 @@ class MappingTheoryBuilder<P, T> implements Subject1<T> {
   public final void check(final Predicate<T> property) {
     final TheoryRunner<P, T> qc = new TheoryRunner<>(this.state.get(), this.ps,
         this.assumptions,
-        conversion);
+        conversion, asString);
     qc.check(property);
   }
 
@@ -59,6 +63,12 @@ class MappingTheoryBuilder<P, T> implements Subject1<T> {
       property.accept(t);
       return true;
     });
+  }
+
+  @Override
+  public Subject1<T> describedAs(Function<T,String> toString) {
+   return new MappingTheoryBuilder<P, T>(this.state, this.ps, this.assumptions,
+        this.conversion, v -> toString.apply(v));
   }
 
 }

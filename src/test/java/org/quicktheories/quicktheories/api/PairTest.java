@@ -32,8 +32,18 @@ public class PairTest {
   }
 
   @Test
+  public void shouldMapValues() {
+    assertThat(Pair.of(1, 2).map(i -> "A" + i, i -> "B" + i)).isEqualTo(Pair.of("A1", "B2"));
+  }
+  
+  @Test
   public void shouldObeyHashcodeEqualsContract() {
     EqualsVerifier.forClass(Pair.class).allFieldsShouldBeUsed().verify();
   }
 
+  @Test
+  public void shouldNotBeEqualToUnrelatedClass() {
+    assertThat(Pair.of(1, 2)).isNotEqualTo("");
+  }
+  
 }

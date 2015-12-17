@@ -35,7 +35,7 @@ class PrecursorTheoryBuilder3<P, P2, P3, T> implements Subject4<P, P2, P3, T> {
     final TheoryRunner<Tuple4<P, P2, P3, T>, Tuple4<P, P2, P3, T>> qc = new TheoryRunner<>(
         this.state.get(), ps,
         pair -> assumptions.test(pair._1, pair._2, pair._3),
-        Function.identity());
+        Function.identity(), ps);
     qc.check(tuple -> property.test(tuple._1, tuple._2, tuple._3, tuple._4));
   }
 

@@ -35,10 +35,10 @@ class PrecursorTheoryBuilder2<P, P2, T> implements Subject3<P, P2, T> {
   public final void check(final Predicate3<P, P2, T> property) {
     final TheoryRunner<Tuple3<P, P2, T>, Tuple3<P, P2, T>> qc = new TheoryRunner<>(
         this.state.get(), ps, pair -> assumptions.test(pair._1, pair._2),
-        Function.identity());
+        Function.identity(), ps);
     qc.check(tuple -> property.test(tuple._1, tuple._2, tuple._3));
-
   }
+
 
   /**
    * Checks a property across a random sample of possible values where

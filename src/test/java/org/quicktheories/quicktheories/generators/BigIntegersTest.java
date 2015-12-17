@@ -97,7 +97,7 @@ public class BigIntegersTest extends ComponentTest<BigInteger> {
     }
   }
 
-  private TheoryBuilder<BigInteger, BigInteger> assertThatFor(
+  private TheoryBuilder<BigInteger> assertThatFor(
       Source<BigInteger> generator) {
     return theoryBuilder(generator, this.strategy, this.reporter);
   }

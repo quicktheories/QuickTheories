@@ -219,8 +219,6 @@ Other found falsifying value(s) :-
 Seed was 2563360080237
 ```  
 
-
-
 ### Subjects
 
 It is likely that you will want to construct instances of your own types. You could do this within each check, but this would result in a lot of code duplication.
@@ -334,7 +332,7 @@ Subjects are similar to Sources except that they cannot be combined together to 
 
 We could not reuse our Cylinder subject in a theory about boxes that contain cylinders, we would need to create our boxes of cylinders out of Sources.
 
-## Creating new Generators and Values
+## Creating new Generators and Sources
 
 If you want to create theories that combine one or more custom types you may need to create custom Sources that can be combined via the DSL to create new Subjects.
 
@@ -391,6 +389,52 @@ If a theory explicitly assumes that heights and radii are positive these values 
 
 Be careful when creating custom shrinkers.
 
+## Modifying the falsification output
+
+Values produces by the sources DSL should provide produce clear falsification messages.
+
+If you are working with your own sources, or would like to modify the defaults you can supply your own function to be used when describing the falisfying values.
+
+For example
+
+
+```java
+  @Test
+  public void checkingEqualityOfTwoDimensionalArrays() {
+      qt()
+      .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
+              integers().allPositive().describesAs(h -> "Height = " + h)
+      .check(l -> whatever);
+  }
+```
+
+Custom description functions will be retained when converting to a type with precursors. A description function for the converted type can be optionally passed to the asWithPrecursor function.
+
+```java
+  @Test
+  public void checkingEqualityOfTwoDimensionalArrays() {
+      qt()
+      .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
+              integers().allPositive().describesAs(h -> "Height = " + h)
+      asWithPrecursor( (r,h) -> new Cylinder(r,h), cylinder -> "" + cylinder.radius() + cylinder.height())        
+     .check(l -> whatever);
+  }
+```
+
+A description function can be provider for a type converted without precursors as follows 
+
+```java
+  @Test
+  public void checkingEqualityOfTwoDimensionalArrays() {
+      qt()
+      .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
+              integers().allPositive().describesAs(h -> "Height = " + h)
+      as( (r,h) -> new Cylinder(r,h))
+      describedAs(cylinder -> "" + cylinder.radius() + cylinder.height())        
+     .check(l -> whatever);
+  }
+```
+
 ## Configuration properties
 
 Three system properties can be set that determine QuickTheories behaviour:
@@ -446,65 +490,55 @@ An example test that is falsifying, showing that adding two positive integers in
           , integers().allPositive())
     .check((i,j) -> i + j > 0);  //fails
   }
+
 ```
-
-An example of a generator that always produces palindromes but depending on how you test it this property can falsify:
-
+An example of multiple tests for code that claims to find the greatest common divisor between two integers. The first property test fails due to a java.lang.StackOverflowError error (caused by attempting to take the absolute value of Integer.MIN_VALUE).
 ```java
   @Test
-  public void palindromeTester1() {
-    qt().withFixedSeed(23432432)
-        .forAll(strings().allPossible().ofLengthBetween(1, 12), characters().basicMultilingualPlane())
-        .asWithPrecursor((s,c) -> new Palindrome(s,c).construct())
-        .check((s,c,palindrome) -> isPalindrome().test(palindrome));   //passes
+  public void shouldFindThatAllIntegersHaveGcdOfOneWithOne() {
+    qt().forAll(integers().all()).check(n -> gcd(n, 1) == 1); // fails on
+                                                              // -2147483648
   }
-  
+
   @Test
-  public void palindromeTester2() {
-    qt().withFixedSeed(23432432)
-        .forAll(strings().allPossible().ofLengthBetween(1, 12), characters().basicMultilingualPlane())
-        .asWithPrecursor((s,c) -> new Palindrome(s,c).construct())
-        .check((s,c,palindrome) -> isPalindromeCheckingIndices().test(palindrome));  //fails
+  public void shouldFindThatAllIntegersInRangeHaveGcdOfOneWithOne() {
+    qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
+        .check(n -> gcd(n, 1) == 1);
   }
-  
-  private Predicate<String> isPalindrome(){
-    StringBuilder sb = new StringBuilder();
-    return s -> s.equals(sb.append(s).reverse().toString());
+
+  @Test
+  public void shouldFindThatAllIntegersHaveGcdThemselvesWithThemselves() {
+    qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
+        .check(n -> gcd(n, n) == Math.abs(n));
   }
-  
-  private Predicate<String> isPalindromeCheckingIndices(){
-    return s-> {
-      for(int i = 0, j = s.length()-1; ; i++, j--){
-        if(i+1==j){
-          return s.charAt(i)==s.charAt(j);
-        }
-        if(i==j){
-          return true;
-        }
-        if(s.charAt(i)!= s.charAt(j)){
-          return false;
-        }
-      }
-    };
+
+  @Test
+  public void shouldFindThatGcdOfNAndMEqualsGcdMModNAndN() {
+    qt().forAll(integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE)
+               ,integers().between(-Integer.MAX_VALUE, Integer.MAX_VALUE))
+        .check((n, m) -> gcd(n, m) == gcd(m % n, n));
   }
-  
-  
-  static class Palindrome {
-    
-    private final String repeat;
-    private final char center;
-    
-    Palindrome(String repeat, char center){
-      this.repeat = repeat;
-      this.center = center;
+
+  private int gcd(int n, int m) {
+    if (n == 0) {
+      return Math.abs(m);
     }
-    
-    String construct(){
-      StringBuilder sb = new StringBuilder();
-      return repeat + center + sb.append(repeat).reverse().toString();
+    if (m == 0) {
+      return Math.abs(n);
     }
+    if (n < 0) {
+      return gcd(-n, m);
+    }
+    if (m < 0) {
+      return gcd(n, -m);
+    }
+    if (n > m) {
+      return gcd(m, n);
+    }
+    return gcd(m % n, n);
   }
 ```
+
 
 ## Design Goals
 

@@ -33,4 +33,5 @@ public interface Subject5<P, P2, P3, P4, T> {
    *          property to check
    */
   public void checkAssert(final Consumer5<P, P2, P3, P4, T> property);
+
 }

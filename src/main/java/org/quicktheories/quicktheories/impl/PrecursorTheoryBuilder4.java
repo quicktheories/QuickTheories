@@ -18,6 +18,7 @@ class PrecursorTheoryBuilder4<P, P2, P3, P4, T>
   private final Source<Tuple5<P, P2, P3, P4, T>> ps;
   private final Predicate4<P, P2, P3, P4> assumptions;
 
+
   PrecursorTheoryBuilder4(final Supplier<Strategy> state,
       final Source<Tuple5<P, P2, P3, P4, T>> source,
       Predicate4<P, P2, P3, P4> assumptions) {
@@ -36,7 +37,7 @@ class PrecursorTheoryBuilder4<P, P2, P3, P4, T>
     final TheoryRunner<Tuple5<P, P2, P3, P4, T>, Tuple5<P, P2, P3, P4, T>> qc = new TheoryRunner<>(
         this.state.get(), ps,
         pair -> assumptions.test(pair._1, pair._2, pair._3, pair._4),
-        Function.identity());
+        Function.identity(), this.ps);
     qc.check(tuple -> property.test(tuple._1, tuple._2, tuple._3, tuple._4,
         tuple._5));
   }
@@ -54,5 +55,5 @@ class PrecursorTheoryBuilder4<P, P2, P3, P4, T>
       return true;
     });
   }
-
+ 
 }
