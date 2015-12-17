@@ -99,18 +99,24 @@ public final class TheoryBuilder4<A, B, C, D> {
    * Converts theory to one about a different type using the given function
    * retaining all precursor values
    *
+   * @param <T>
+   *          type to create theory about
+   *
    * @param mapping
    *          Function from types A,B,C,D to type T
    * @return a Subject5 relating to the state of a theory involving five values
    */
   public <T> Subject5<A, B, C, D, T> asWithPrecursor(
       Function4<A, B, C, D, T> mapping) {
-   return asWithPrecursor(mapping, t -> t.toString());
-  }  
-  
+    return asWithPrecursor(mapping, t -> t.toString());
+  }
+
   /**
    * Converts theory to one about a different type using the given function
    * retaining all precursor values
+   *
+   * @param <T>
+   *          type to create theory about
    *
    * @param mapping
    *          Function from types A,B,C,D to type T
