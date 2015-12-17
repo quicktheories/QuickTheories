@@ -5,6 +5,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.api.Pair;
 import org.quicktheories.quicktheories.api.Subject1;
 import org.quicktheories.quicktheories.api.Subject2;
@@ -71,6 +72,7 @@ public final class TheoryBuilder<A> implements Subject1<A> {
         t -> t.toString());
   }
 
+  
   /**
    * Converts theory to one about a different type using the given function
    * retaining all precursor values
@@ -79,6 +81,19 @@ public final class TheoryBuilder<A> implements Subject1<A> {
    * @return a Subject3 relating to the state of a theory involving three values
    */
   public <T> Subject2<A, T> asWithPrecursor(Function<A, T> mapping) {
+    return asWithPrecursor(mapping, t -> t.toString());
+  }
+  
+  /**
+   * Converts theory to one about a different type using the given function
+   * retaining all precursor values
+   * @param mapping
+   *          Function from types A and B to type T
+   * @param typeToString
+   *          Function to use when describing the built type
+   * @return a Subject3 relating to the state of a theory involving three values
+   */
+  public <T> Subject2<A, T> asWithPrecursor(Function<A, T> mapping, Function<T,String> typeToString) {
     Generator<Pair<A, T>> g = (prng, step) -> {
       A a = this.ps.next(prng, step);
       return Pair.of(a, mapping.apply(a));
@@ -87,10 +102,11 @@ public final class TheoryBuilder<A> implements Subject1<A> {
     Shrink<Pair<A, T>> s = (original, context) -> ps
         .shrink(original._1, context)
         .map(p -> Pair.of(p, mapping.apply(p)));
+    
+    AsString<Pair<A,T>> desc = pair -> pair.map(ps.asToStringFunction(), typeToString).toString();
 
-    Source<Pair<A, T>> gen = Source.of(g).withShrinker(s);
+    Source<Pair<A, T>> gen = Source.of(g).withShrinker(s).describedAs(desc);
     return new PrecursorTheoryBuilder1<A, T>(state, gen, assumptions);
-
   }
   
   @Override

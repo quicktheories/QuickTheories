@@ -32,11 +32,11 @@ public class CylinderExample {
           .multiply(r.add(h));
     }
 
-    @Override
-    public String toString() {
-      return "Cylinder [radius=" + radius + ", height=" + height + ", area"
-          + area() + "]";
-    }
+//    @Override
+//    public String toString() {
+//      return "Cylinder [radius=" + radius + ", height=" + height + ", area"
+//          + area() + "]";
+//    }
 
   }
 

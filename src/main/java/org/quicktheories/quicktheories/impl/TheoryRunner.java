@@ -17,7 +17,7 @@ final class TheoryRunner<P, T> {
   private final Predicate<P> assumptions;
   private final Function<P, T> precursorToValue;
   private final AsString<T> toString;
-
+  
   TheoryRunner(final Strategy state, final Source<P> source,
       Predicate<P> assumptions, Function<P, T> f,
       AsString<T> toString) {
@@ -28,6 +28,11 @@ final class TheoryRunner<P, T> {
     this.toString = toString;
   }
 
+  static <T> TheoryRunner<T,T> runner(final Strategy state, final Source<T> source,
+      Predicate<T> assumptions) {
+    return new TheoryRunner<T,T>(state,source, assumptions, t -> t, source);
+  }
+  
   void check(final Predicate<T> property) {
     Checker<P, T> checker = new Checker<P, T>(strategy, precursorSource,
         assumptions, precursorToValue);

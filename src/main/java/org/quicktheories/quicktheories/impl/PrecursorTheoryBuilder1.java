@@ -52,12 +52,4 @@ class PrecursorTheoryBuilder1<P, T> implements Subject2<P, T> {
       return true;
     });
   }
-
-  @Override
-  public Subject2<P, T> describedAs(Function<P, String> pToString, Function<T, String> tToString) {
-    return new PrecursorTheoryBuilder1<P, T>(this.state
-        , this.ps.describedAs(pair -> pair.map(pToString, tToString).toString()),
-        this.assumptions);
-  }
-
 }

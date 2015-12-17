@@ -219,8 +219,6 @@ Other found falsifying value(s) :-
 Seed was 2563360080237
 ```  
 
-
-
 ### Subjects
 
 It is likely that you will want to construct instances of your own types. You could do this within each check, but this would result in a lot of code duplication.
@@ -393,60 +391,49 @@ Be careful when creating custom shrinkers.
 
 ## Modifying the falsification output
 
-Say that you are working with arrays, then the following falsification output isn't very helpful in working out what went wrong with your test:
+Values produces by the sources DSL should provide produce clear falsification messages.
 
-```
-java.lang.AssertionError: Property falsified after 1 example(s) 
-Smallest found falsifying value(s) :-
-{[Ljava.lang.Integer;@383534aa, [Ljava.lang.Integer;@6bc168e5, [[Ljava.lang.Integer;@7b3300e5}
-Other found falsifying value(s) :- 
-{[Ljava.lang.Integer;@1c6b6478, [Ljava.lang.Integer;@67f89fa3, [[Ljava.lang.Integer;@4ac68d3e}
-{[Ljava.lang.Integer;@277c0f21, [Ljava.lang.Integer;@6073f712, [[Ljava.lang.Integer;@43556938}
-{[Ljava.lang.Integer;@3d04a311, [Ljava.lang.Integer;@7a46a697, [[Ljava.lang.Integer;@5f205aa}
-{[Ljava.lang.Integer;@6d86b085, [Ljava.lang.Integer;@75828a0f, [[Ljava.lang.Integer;@3abfe836}
-{[Ljava.lang.Integer;@2ff5659e, [Ljava.lang.Integer;@77afea7d, [[Ljava.lang.Integer;@161cd475}
-{[Ljava.lang.Integer;@532760d8, [Ljava.lang.Integer;@57fa26b7, [[Ljava.lang.Integer;@5f8ed237}
-{[Ljava.lang.Integer;@2f410acf, [Ljava.lang.Integer;@47089e5f, [[Ljava.lang.Integer;@4141d797}
-{[Ljava.lang.Integer;@68f7aae2, [Ljava.lang.Integer;@4f47d241, [[Ljava.lang.Integer;@4c3e4790}
-{[Ljava.lang.Integer;@38cccef, [Ljava.lang.Integer;@5679c6c6, [[Ljava.lang.Integer;@27ddd392}
-{[Ljava.lang.Integer;@19e1023e, [Ljava.lang.Integer;@7cef4e59, [[Ljava.lang.Integer;@64b8f8f4}
- 
-Seed was 11540446915993
-```
-Fortunately, we can conjoin a method, describedAs, to our QuickTheory that allows us to specify how we would like the output to look for the falsifying objects.
+If you are working with your own sources, or would like to modify the defaults you can supply your own function to be used when describing the falisfying values.
+
+For example
+
 
 ```java
   @Test
   public void checkingEqualityOfTwoDimensionalArrays() {
-    qt().forAll(arrays().ofIntegers(integers().all()).withLength(2),
-        arrays().ofIntegers(integers().all()).withLength(3))
-        .asWithPrecursor((a, b) -> new Integer[][] { a, b })
-        .describedAs(a -> Arrays.deepToString(a), b -> Arrays.deepToString(b), c -> Arrays.deepToString(c)) 
-        .check((a,b,c) -> { Integer[][] d= new Integer[][]{Arrays.copyOf(c[0],2), Arrays.copyOf(c[1],3)}; 
-                           return Arrays.equals(c, d);});
+      qt()
+      .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
+              integers().allPositive().describesAs(h -> "Height = " + h)
+      .check(l -> whatever);
   }
 ```
-This then produces the much more readable output: 
 
-```
-java.lang.AssertionError: Property falsified after 1 example(s) 
-Smallest found falsifying value(s) :-
-{[0, 0], [0, 0, 0], [[0, 0], [0, 0, 0]]}
-Other found falsifying value(s) :- 
-{[1035368887, 1280302125], [-590714898, 236313975, -523965445], [[1035368887, 1280302125], [-590714898, 236313975, -523965445]]}
-{[635906967, 149301493], [-487616491, 201457679, -226580711], [[635906967, 149301493], [-487616491, 201457679, -226580711]]}
-{[583299763, 126460118], [-31093960, 101273493, -112280337], [[583299763, 126460118], [-31093960, 101273493, -112280337]]}
-{[178330496, 107126938], [-25532972, 82521378, -2040169], [[178330496, 107126938], [-25532972, 82521378, -2040169]]}
-{[30582761, 10763203], [-17457959, 1466301, -968815], [[30582761, 10763203], [-17457959, 1466301, -968815]]}
-{[15076456, 324798], [-9578655, 138013, -497780], [[15076456, 324798], [-9578655, 138013, -497780]]}
-{[11164166, 282895], [-6926442, 136078, -306810], [[11164166, 282895], [-6926442, 136078, -306810]]}
-{[8991680, 198667], [-2847516, 125217, -56328], [[8991680, 198667], [-2847516, 125217, -56328]]}
-{[3323438, 6071], [-1662905, 53764, -56327], [[3323438, 6071], [-1662905, 53764, -56327]]}
-{[1748902, 6070], [-1540133, 53763, -56326], [[1748902, 6070], [-1540133, 53763, -56326]]}
- 
-Seed was 11689491367745
+Custom description functions will be retained when converting to a type with precursors. A description function for the converted type can be optionally passed to the asWithPrecursor function.
+
+```java
+  @Test
+  public void checkingEqualityOfTwoDimensionalArrays() {
+      qt()
+      .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
+              integers().allPositive().describesAs(h -> "Height = " + h)
+      asWithPrecursor( (r,h) -> new Cylinder(r,h), cylinder -> "" + cylinder.radius() + cylinder.height())        
+     .check(l -> whatever);
+  }
 ```
 
+A description function can be provider for a type converted without precursors as follows 
+
+```java
+  @Test
+  public void checkingEqualityOfTwoDimensionalArrays() {
+      qt()
+      .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
+              integers().allPositive().describesAs(h -> "Height = " + h)
+      as( (r,h) -> new Cylinder(r,h))
+      describedAs(cylinder -> "" + cylinder.radius() + cylinder.height())        
+     .check(l -> whatever);
+  }
+```
 
 ## Configuration properties
 

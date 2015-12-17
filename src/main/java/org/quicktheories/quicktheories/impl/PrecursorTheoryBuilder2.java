@@ -4,7 +4,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.api.Predicate3;
 import org.quicktheories.quicktheories.api.Subject3;
 import org.quicktheories.quicktheories.api.TriConsumer;
@@ -54,22 +53,5 @@ class PrecursorTheoryBuilder2<P, P2, T> implements Subject3<P, P2, T> {
       return true;
     });
   }
-
-  @Override
-  public Subject3<P, P2, T> describedAs(Function<P, String> pToString,
-      Function<P2, String> p2ToString,
-      Function<T, String> tToString) {
-    return new PrecursorTheoryBuilder2<P, P2, T>(this.state, 
-        this.ps.describedAs(combineToStrings(pToString,p2ToString,tToString)),
-        this.assumptions);
-  }
-
-  
-  private static <A,B,C> AsString<Tuple3<A, B, C>> combineToStrings(
-      Function<A, String> fa, Function<B, String> fb,
-      Function<C, String> fc) {
-    return tuple -> tuple.map(fa, fb, fc).toString();
-  }
-  
 
 }

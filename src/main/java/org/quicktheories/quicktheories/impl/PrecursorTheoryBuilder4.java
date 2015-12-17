@@ -3,7 +3,6 @@ package org.quicktheories.quicktheories.impl;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.api.Consumer5;
 import org.quicktheories.quicktheories.api.Predicate4;
 import org.quicktheories.quicktheories.api.Predicate5;
@@ -56,21 +55,5 @@ class PrecursorTheoryBuilder4<P, P2, P3, P4, T>
       return true;
     });
   }
-
-  @Override
-  public Subject5<P, P2, P3, P4, T> describedAs(
-      Function<P, String> pToString,
-      Function<P2, String> p2ToString, Function<P3, String> p3ToString,
-      Function<P4, String> p4ToString,
-      Function<T, String> tToString) {
-    return new PrecursorTheoryBuilder4<P, P2, P3, P4, T>(this.state, this.ps.describedAs(combineToStrings(pToString,p2ToString,p3ToString,p4ToString,tToString)),
-        this.assumptions);
-  }
-  
-  private static <A, B, C, D, E> AsString<Tuple5<A, B, C, D, E>> combineToStrings(
-      Function<A, String> fa, Function<B, String> fb,
-      Function<C, String> fc, Function<D, String> fd, Function<E, String> fe) {
-    return tuple -> tuple.map(fa, fb, fc, fd, fe).toString();
-  }
-
+ 
 }
