@@ -97,11 +97,9 @@ public class LocalDatesDSL {
 
     static Source<LocalDate> withDays(long daysFromEpoch) {
       if (daysFromEpoch < 0) {
-        return Longs.range(daysFromEpoch, 0).as(l -> LocalDate.ofEpochDay(l),
-            d -> d.toEpochDay());
+        return withDaysBetween(daysFromEpoch,0);
       }
-      return Longs.range(0, daysFromEpoch).as(l -> LocalDate.ofEpochDay(l),
-          d -> d.toEpochDay());
+      return withDaysBetween(0, daysFromEpoch);
     }
 
     static Source<LocalDate> withDaysBetween(long daysFromEpochStartInclusive,

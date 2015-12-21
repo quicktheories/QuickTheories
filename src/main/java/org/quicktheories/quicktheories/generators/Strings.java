@@ -15,12 +15,6 @@ final class Strings {
   private static final String LARGEST_DEFINED_BMP_CHARACTER = "\ufffd";
   private static final int LARGEST_DEFINED_BMP_CODEPOINT = 65533;
 
-  static Source<String> numericStrings() {
-    return Integers.range(Integer.MIN_VALUE, Integer.MAX_VALUE).as(
-        i -> i.toString(),
-        s -> Integer.parseInt(s));
-  }
-
   static Source<String> boundedNumericStrings(int startInclusive,
       int endInclusive) {
     return Integers.range(startInclusive, endInclusive)
@@ -32,7 +26,7 @@ final class Strings {
     return Source.of(
         (prng, step) -> Collections.nCopies(codePoints, prng)
             .stream()
-            .map(p -> (int) Longs.codePoints(minCodePoint, maxCodePoint)
+            .map(p -> (int) CodePoints.codePoints(minCodePoint, maxCodePoint)
                 .next(p, step).longValue())
             .map(i -> new StringBuilder().appendCodePoint(i).toString())
             .collect(Collectors.joining()))
@@ -41,22 +35,11 @@ final class Strings {
                 maxCodePoint));
   }
 
-  static Source<String> ofFixedLengthStrings(int minCodePoint,
-      int maxCodePoint,
-      int fixedLength) {
-    return Source.of(
-        (prng, step) -> generateFixedLengthString(
-            Longs.codePoints(minCodePoint, maxCodePoint), fixedLength, prng,
-            step))
-        .withShrinker(
-            Strings.shrinkFixedLengthOfString(minCodePoint, maxCodePoint));
-  }
-
   static Source<String> ofBoundedLengthStrings(int minCodePoint,
       int maxCodePoint,
       int minLength, int maxLength) {
     return Source.of((prng, step) -> generateFixedLengthString(
-        Longs.codePoints(minCodePoint, maxCodePoint),
+        CodePoints.codePoints(minCodePoint, maxCodePoint),
         (int) prng.generateRandomLongWithinInterval(minLength, maxLength),
         prng, step)).withShrinker(
             Strings.shrinkBoundedLengthString(minLength, minCodePoint,
@@ -67,13 +50,6 @@ final class Strings {
       int startInclusive, int endInclusive) {
     return (original, context) -> shrinkFixedSizeStringStream(original,
         c -> shrinkSingleElementStringOfFixedNumberOfCodePoints(c, context,
-            startInclusive, endInclusive));
-  }
-
-  private static Shrink<String> shrinkFixedLengthOfString(int startInclusive,
-      int endInclusive) {
-    return (original, context) -> shrinkFixedSizeStringStream(original,
-        c -> shrinkSingleElementStringOfFixedLength(c, context,
             startInclusive, endInclusive));
   }
 
@@ -97,7 +73,7 @@ final class Strings {
   private static String shrinkSingleElementStringOfFixedNumberOfCodePoints(
       long original, ShrinkContext context, int startInclusive,
       int endInclusive) {
-    long codePoint = Longs
+    long codePoint = CodePoints
         .codePoints(startInclusive, endInclusive).shrink(original, context)
         .findFirst()
         .orElse(original);

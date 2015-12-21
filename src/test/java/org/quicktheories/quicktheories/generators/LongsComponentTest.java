@@ -78,7 +78,7 @@ public class LongsComponentTest extends ComponentTest<Long> {
   @Test
   public void shouldShrinkCodePointToMinimumCodePointByOneInIntervalWhereDistanceToTargetIsLessThanRemainingCycles() {
     int target = 0x0021;
-    assertThatFor(Longs.codePoints(0x0020, 0x007E), withShrinkCycles(18))
+    assertThatFor(CodePoints.codePoints(0x0020, 0x007E), withShrinkCycles(18))
         .check(i -> false);
     listIsDecreasingByAtMostOne(); // Falsifies with this number of shrink
                                    // cycles and this seed
@@ -88,7 +88,7 @@ public class LongsComponentTest extends ComponentTest<Long> {
   @Test
   public void shouldShrinkCodePointToMinimumCodePointInIntervalWhereDistanceToTargetIsInitiallyGreaterThanRemainingCycles() {
     int target = 0x0021;
-    assertThatFor(Longs.codePoints(0x0020, 0x007E), withShrinkCycles(6))
+    assertThatFor(CodePoints.codePoints(0x0020, 0x007E), withShrinkCycles(6))
         .check(i -> false);
     listIsInDecreasingAbsValueOrder();
     smallestValueIsEqualTo(target);

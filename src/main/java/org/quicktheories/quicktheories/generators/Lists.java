@@ -23,13 +23,6 @@ final class Lists {
         listsOf(generator, linkedListCollector(), minimumSize, maximumSize));
   }
 
-  static <T> Source<List<T>> alternatingFixedListsOf(
-      Source<T> generator, int fixedSize) {
-    return Compositions.interleave(
-        listsOf(generator, arrayListCollector(), fixedSize),
-        listsOf(generator, linkedListCollector(), fixedSize));
-  }
-
   static <T, A extends List<T>> Collector<T, List<T>, List<T>> arrayListCollector() {
     return toList(ArrayList::new);
   }
@@ -47,25 +40,6 @@ final class Lists {
   }
 
   static <T> Source<List<T>> listsOf(Source<T> generator,
-      Collector<T, List<T>, List<T>> collector, int fixedSize) {
-    return Source.of(
-        (prng, step) -> Collections.nCopies(fixedSize, prng).stream()
-            .map(p -> generator.next(p, step))
-            .collect(collector))
-        .withShrinker(
-            shrinkFixedList(generator, collector));
-  }
-
-  static Shrink<List<Integer>> swapBetweenShrinkMethodsForBoundedIntegerLists(
-      Source<Integer> generator,
-      Collector<Integer, List<Integer>, List<Integer>> collector,
-      int minimumSize) {
-    return mostlyRandomShrinkWithIntegerLists(
-        shrinkBoundedList(generator, collector, minimumSize),
-        shrinkFixedList(generator, collector));
-  }
-
-  static <T> Source<List<T>> listsOf(Source<T> generator,
       Collector<T, List<T>, List<T>> collector, int minimumSize,
       int maximumSize) {
     return Source.of((prng, step) -> Collections
@@ -75,6 +49,15 @@ final class Lists {
         .map(p -> generator.next(p, step))
         .collect(collector)).withShrinker(
             shrinkBoundedList(generator, collector, minimumSize));
+  }
+  
+  static Shrink<List<Integer>> swapBetweenShrinkMethodsForBoundedIntegerLists(
+      Source<Integer> generator,
+      Collector<Integer, List<Integer>, List<Integer>> collector,
+      int minimumSize) {
+    return mostlyRandomShrinkWithIntegerLists(
+        shrinkBoundedList(generator, collector, minimumSize),
+        shrinkFixedList(generator, collector));
   }
 
   private static <T> Shrink<List<T>> shrinkFixedList(Source<T> generator,

@@ -522,7 +522,7 @@ public class SourceDSLTest {
   @Test
   public void shouldShrinkFixedSizedListsAsExpected() {
     Source<List<String>> testee = lists()
-        .allListsOf(Strings.numericStrings())
+        .allListsOf(strings().numeric())
         .ofSize(5);
     assertThatSource(testee).shrinksValueTo(
         java.util.Arrays.asList("5", "8", "-45", "60", "0"),

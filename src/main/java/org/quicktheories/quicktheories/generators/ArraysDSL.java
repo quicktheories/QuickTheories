@@ -91,10 +91,7 @@ public class ArraysDSL {
      * @return a Source of type T[]
      */
     public Source<T[]> withLength(int length) {
-      ArgumentAssertions.checkArguments(length >= 0,
-          "The length of an array cannot be negative; %s is not an accepted argument",
-          length);
-      return Arrays.arraysOf(source, c, length);
+      return withLengthBetween(length, length);
     }
 
     /**

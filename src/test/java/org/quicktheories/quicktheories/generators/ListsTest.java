@@ -1,12 +1,12 @@
 package org.quicktheories.quicktheories.generators;
 
 import static org.junit.Assert.assertTrue;
-import static org.quicktheories.quicktheories.generators.SourceAssert.assertThatSource;
 import static org.quicktheories.quicktheories.generators.IntegersTest.headsTowardsLowerAbsoluteValue;
-import static org.quicktheories.quicktheories.generators.Lists.alternatingFixedListsOf;
 import static org.quicktheories.quicktheories.generators.Lists.arrayListCollector;
 import static org.quicktheories.quicktheories.generators.Lists.linkedListCollector;
 import static org.quicktheories.quicktheories.generators.Lists.listsOf;
+import static org.quicktheories.quicktheories.generators.Lists.alternatingBoundedListsOf;
+import static org.quicktheories.quicktheories.generators.SourceAssert.assertThatSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,8 +50,8 @@ public class ListsTest {
   @SuppressWarnings("unchecked")
   @Test
   public void shouldGenerateBothTypesOfList() {
-    Source<List<Integer>> testee = alternatingFixedListsOf(
-        Integers.range(1, 1), 5);
+    Source<List<Integer>> testee = alternatingBoundedListsOf(
+        Integers.range(1, 1), 5, 5);
     assertThatSource(testee).generatesAllOf(Arrays.asList(1, 1, 1, 1, 1),
         new LinkedList<Integer>(Arrays.asList(1, 1, 1, 1, 1)));
   }
@@ -59,14 +59,14 @@ public class ListsTest {
   @Test
   public void shouldNotShrinkAnEmptyFixedSizeArrayList() {
     Source<List<Integer>> testee = listsOf(
-        Integers.range(1, Integer.MAX_VALUE), arrayListCollector(), 0);
+        Integers.range(1, Integer.MAX_VALUE), arrayListCollector(), 0, 0);
     assertThatSource(testee).cannotShrink(new ArrayList<>());
   }
 
   @Test
   public void shouldNotShrinkAnEmptyFixedSizeLinkedList() {
     Source<List<Integer>> testee = listsOf(
-        Integers.range(1, Integer.MAX_VALUE), linkedListCollector(), 0);
+        Integers.range(1, Integer.MAX_VALUE), linkedListCollector(), 0, 0);
     assertThatSource(testee).cannotShrink(new LinkedList<Integer>());
   }
 
@@ -87,7 +87,7 @@ public class ListsTest {
   @Test
   public void shouldShrinkAFixedLengthLinkedListToALinkedListOfSameLength() {
     Source<List<Integer>> testee = listsOf(
-        Integers.range(-9, 9), linkedListCollector(), 5);
+        Integers.range(-9, 9), linkedListCollector(), 5, 5);
     List<Integer> input = new LinkedList<Integer>(
         Arrays.asList(-6, -3, 0, -3, -5));
     List<Integer> shrunk = testee.shrink(input, someShrinkContext()).iterator()
@@ -99,7 +99,7 @@ public class ListsTest {
   @Test
   public void shouldShrinkAFixedLengthArrayListToAnArrayListOfSameLength() {
     Source<List<Integer>> testee = listsOf(
-        Integers.range(-9, 9), arrayListCollector(), 5);
+        Integers.range(-9, 9), arrayListCollector(), 5, 5);
     List<Integer> input = Arrays.asList(-6, -3, 0, -3, -5);
     List<Integer> shrunk = testee.shrink(input, someShrinkContext()).iterator()
         .next();
@@ -144,7 +144,7 @@ public class ListsTest {
   @Test
   public void shouldShrinkPositiveIntegersByOneInAFixedLengthArrayListWhereAllValuesAreWithinRemainingCyclesOfTarget() {
     Source<List<Integer>> testee = listsOf(Integers.range(0, 9),
-        arrayListCollector(), 5);
+        arrayListCollector(), 5, 5);
     assertThatSource(testee).shrinksValueTo(Arrays.asList(1, 2, 3, 4, 5),
         Arrays.asList(0, 1, 2, 3, 4), someShrinkContext());
   }
@@ -152,7 +152,7 @@ public class ListsTest {
   @Test
   public void shouldShrinkNegativeIntegersByOneInAFixedLengthLinkedListWhereAllValuesAreWithinRemainingCyclesOfTarget() {
     Source<List<Integer>> testee = listsOf(
-        Integers.range(-9, 0), linkedListCollector(), 3);
+        Integers.range(-9, 0), linkedListCollector(), 3, 3);
     assertThatSource(testee).shrinksValueTo(
         new LinkedList<Integer>(Arrays.asList(-6, -3, -1)),
         new LinkedList<Integer>(Arrays.asList(-5, -2, 0)), someShrinkContext());
@@ -160,8 +160,8 @@ public class ListsTest {
 
   @Test
   public void shouldShrinkAllIntegersByOneInAFixedLengthArrayListWhereAllValuesAreWithinRemainingCyclesOfTarget() {
-    Source<List<Integer>> testee = alternatingFixedListsOf(
-        Integers.range(-9, 9), 3);
+    Source<List<Integer>> testee = alternatingBoundedListsOf(
+        Integers.range(-9, 9), 3, 3);
     assertThatSource(testee).shrinksValueTo(Arrays.asList(-6, 3, -1),
         Arrays.asList(-5, 2, 0), someShrinkContext());
   }
@@ -179,15 +179,15 @@ public class ListsTest {
   @Test
   public void shouldShrinkAFixedLengthListIfOneEntryCanStillBeShrunk() {
     Source<List<Integer>> testee = listsOf(Integers.range(0, 9),
-        arrayListCollector(), 5);
+        arrayListCollector(), 5, 5);
     assertThatSource(testee).shrinksValueTo(Arrays.asList(0, 0, 3, 0, 0),
         Arrays.asList(0, 0, 2, 0, 0), someShrinkContext());
   }
 
   @Test
   public void shouldShrinkFixedLengthNegativelyRangedArrayLists() {
-    Source<List<Integer>> testee = alternatingFixedListsOf(
-        Integers.range(-2000, -1000), 5);
+    Source<List<Integer>> testee = alternatingBoundedListsOf(
+        Integers.range(-2000, -1000), 5, 5);
     assertThatSource(testee).shrinksConformTo(
         Arrays.asList(-1400, -2000, -1000, -1235, -1052),
         allItemsHeadTowardsLowerAbsoluteValue(-2000, -1000,
@@ -198,7 +198,7 @@ public class ListsTest {
   @Test
   public void shouldShrinkFixedLengthPositivelyRangedLinkedLists() {
     Source<List<Integer>> testee = listsOf(
-        Integers.range(1, Integer.MAX_VALUE), linkedListCollector(), 4);
+        Integers.range(1, Integer.MAX_VALUE), linkedListCollector(), 4, 4);
     assertThatSource(testee).shrinksConformTo(
         new LinkedList<Integer>(Arrays.asList(4342, 5435, 757, 12)),
         allItemsHeadTowardsLowerAbsoluteValue(1, Integer.MAX_VALUE,
@@ -209,7 +209,7 @@ public class ListsTest {
   @Test
   public void shouldShrinkFixedLengthIntegerArrayLists() {
     Source<List<Integer>> testee = listsOf(
-        Integers.range(-2000, 2000), arrayListCollector(), 5);
+        Integers.range(-2000, 2000), arrayListCollector(), 5, 5);
     assertThatSource(testee).shrinksConformTo(
         Arrays.asList(1400, 2000, -1000, -1235, 1052),
         allItemsHeadTowardsLowerAbsoluteValue(-2000, 2000,

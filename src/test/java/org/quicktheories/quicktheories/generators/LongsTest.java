@@ -102,7 +102,7 @@ public class LongsTest extends ComponentTest<Long> {
 
   @Test
   public void shouldShrinkCodePointsInRightDirectionWhenEndInclusiveIsLessThanTarget() {
-    Source<Long> testee = Longs.codePoints(0x0000, 0x0020);
+    Source<Long> testee = CodePoints.codePoints(0x0000, 0x0020);
     assertThatSource(testee).shrinksConformTo(0x0017l,
         i -> i <= 0x0017 && i >= 0x0000,
         new ShrinkContext(0, 30, Configuration.defaultPRNG(0)));

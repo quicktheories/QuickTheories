@@ -7,11 +7,6 @@ import org.quicktheories.quicktheories.core.Source;
 
 final class Arrays {
 
-  static <T> Source<T[]> arraysOf(Source<T> values, Class<T> c,
-      int length) {
-    return arraysOf(values, c, length, length);
-  }
-
   @SuppressWarnings("unchecked")
   static <T> Source<T[]> arraysOf(Source<T> values, Class<T> c,
       int minLength, int maxLength) {

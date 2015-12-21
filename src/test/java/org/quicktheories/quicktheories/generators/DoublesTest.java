@@ -122,6 +122,12 @@ public class DoublesTest {
       }
     }
   }
+  
+  @Test
+  public void shouldGenerateAtLeastThreeDistinctValuesUsingFromZeroToOne() {
+   Source<Double> testee = Doubles.fromZeroToOne();
+   assertThatSource(testee).generatesAtLeastNDistinctValues(3);
+  }
 
   private List<Double> generateValues(Source<Double> generator, int count) {
     PseudoRandom prng = Configuration.defaultPRNG(2);
