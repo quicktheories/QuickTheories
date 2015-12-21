@@ -73,7 +73,7 @@ public class ArraysDSL {
     return new ArrayGeneratorBuilder<T>(source, c);
   }
 
-  public class ArrayGeneratorBuilder<T> {
+  public static class ArrayGeneratorBuilder<T> {
 
     private final Source<T> source;
     private final Class<T> c;

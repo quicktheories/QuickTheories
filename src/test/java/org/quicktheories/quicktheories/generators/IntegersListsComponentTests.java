@@ -14,19 +14,11 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import org.junit.Test;
-import org.quicktheories.quicktheories.core.Configuration;
 import org.quicktheories.quicktheories.core.PseudoRandom;
-import org.quicktheories.quicktheories.core.Reporter;
-import org.quicktheories.quicktheories.core.Source;
-import org.quicktheories.quicktheories.core.Strategy;
-import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
 
-  Reporter reporter = mock(Reporter.class);
   PseudoRandom prng = mock(PseudoRandom.class);
-  Strategy strategy = new Strategy(Configuration.defaultPRNG(5), 1000, 10000,
-      this.reporter);
 
   @Test
   public void shouldReturnALinkedListAfterShrinkageIfOneGenerated() {
@@ -236,21 +228,6 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
             .check(list -> list instanceof ArrayList);
     isLinkedListAfterShrinking();
     smallestValueIsEqualTo(new LinkedList<Integer>(Arrays.asList(1, 1)));
-  }
-
-  private TheoryBuilder<List<Integer>> assertThatFor(
-      Source<List<Integer>> generator) {
-    return theoryBuilder(generator, this.strategy, this.reporter);
-  }
-
-  private TheoryBuilder<List<Integer>> assertThatFor(
-      Source<List<Integer>> generator, Strategy strategy) {
-    return theoryBuilder(generator, strategy, this.reporter);
-  }
-
-  private Strategy withShrinkCycles(int shrinkCycles) {
-    return new Strategy(Configuration.defaultPRNG(0), 100, shrinkCycles,
-        this.reporter);
   }
 
   private void isLinkedListAfterShrinking() {

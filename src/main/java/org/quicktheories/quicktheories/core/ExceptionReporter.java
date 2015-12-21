@@ -33,7 +33,7 @@ public class ExceptionReporter implements Reporter {
       Throwable cause, List<Object> examples, AsString<Object> toString) {
     StringWriter sw = new StringWriter();
     cause.printStackTrace(new PrintWriter(sw));
-    String failure = "\nCause was :-\n" + sw.toString();
+    String failure = String.format("%nCause was :-%n%s", sw);
     this.falsify(seed, examplesUsed, smallest, failure, examples, toString);
   }
 
@@ -41,12 +41,12 @@ public class ExceptionReporter implements Reporter {
       String failure, List<Object> examples,
       AsString<Object> toString) {
     throw new AssertionError(String.format(
-        "Property falsified after %s example(s) \nSmallest found falsifying value(s) :-\n%s%s\nOther found falsifying value(s) :- \n%s\n \nSeed was %s",
+        "Property falsified after %s example(s) %nSmallest found falsifying value(s) :-%n%s%s%nOther found falsifying value(s) :- %n%s%n %nSeed was %s",
         examplesUsed, toString.asString(smallest), failure,
         examples.stream()
             .limit(10)
             .map(o -> toString.asString(o))
-            .collect(Collectors.joining("\n")),
+            .collect(Collectors.joining(System.lineSeparator())),
         seed));
 
   }

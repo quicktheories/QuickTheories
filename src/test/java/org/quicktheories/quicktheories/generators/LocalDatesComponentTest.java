@@ -8,10 +8,8 @@ import java.time.LocalDate;
 import org.junit.Test;
 import org.quicktheories.quicktheories.core.Configuration;
 import org.quicktheories.quicktheories.core.Reporter;
-import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.generators.LocalDatesDSL.LocalDates;
-import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 public class LocalDatesComponentTest extends ComponentTest<LocalDate> {
 
@@ -48,11 +46,6 @@ public class LocalDatesComponentTest extends ComponentTest<LocalDate> {
                 .check(i -> i.getMonthValue() != 2);
     atLeastFiveDistinctFalsifyingValuesAreFound();
     smallestValueIsEqualTo(LocalDate.of(1977, 2, 1));
-  }
-
-  private TheoryBuilder<LocalDate> assertThatFor(
-      Source<LocalDate> generator) {
-    return theoryBuilder(generator, this.strategy, this.reporter);
   }
 
   private void smallestValueIsEqualTo(LocalDate target) {

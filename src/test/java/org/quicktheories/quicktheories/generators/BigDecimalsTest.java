@@ -1,7 +1,6 @@
 package org.quicktheories.quicktheories.generators;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.quicktheories.quicktheories.generators.SourceAssert.assertThatSource;
 
 import java.math.BigDecimal;
@@ -9,18 +8,11 @@ import java.util.function.Predicate;
 
 import org.junit.Test;
 import org.quicktheories.quicktheories.core.Configuration;
-import org.quicktheories.quicktheories.core.Reporter;
 import org.quicktheories.quicktheories.core.ShrinkContext;
-import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.generators.BigDecimalsDSL.BigDecimals;
-import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 public class BigDecimalsTest extends ComponentTest<BigDecimal> {
-
-  Reporter reporter = mock(Reporter.class);
-  Strategy strategy = new Strategy(Configuration.defaultPRNG(2), 1000, 10000,
-      this.reporter);
 
   @Test
   public void shouldShrinkZeroToItself() {
@@ -88,10 +80,6 @@ public class BigDecimalsTest extends ComponentTest<BigDecimal> {
     return new ShrinkContext(0, 1, Configuration.defaultPRNG(2));
   }
 
-  private TheoryBuilder<BigDecimal> assertThatFor(
-      Source<BigDecimal> generator) {
-    return theoryBuilder(generator, this.strategy, this.reporter);
-  }
 
   private void listIsInDecreasingAbsValueOrder() {
     for (int i = 1; i < listOfShrunkenItems().size(); i++) {

@@ -23,7 +23,7 @@ public class BigDecimalsDSL {
     return new BigDecimalsBuilder(maxNumberOfBytes);
   }
 
-  public class BigDecimalsBuilder {
+  public static class BigDecimalsBuilder {
 
     private final int maxLengthOfBigIntegerByteArray;
 

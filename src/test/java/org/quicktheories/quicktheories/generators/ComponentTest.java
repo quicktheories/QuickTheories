@@ -5,6 +5,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -12,24 +13,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.mockito.ArgumentCaptor;
+import org.quicktheories.quicktheories.core.Configuration;
 import org.quicktheories.quicktheories.core.Reporter;
 import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 abstract class ComponentTest<T> {
-  public Reporter reporter;
-  public Source<T> source;
-  public Strategy strategy;
+  
+  protected Reporter reporter = mock(Reporter.class);
+  protected Strategy defaultStrategy = new Strategy(Configuration.defaultPRNG(2), 1000, 10000,
+      this.reporter);
 
-  public TheoryBuilder<T> theoryBuilder(Source<T> source,
-      Strategy strategy, Reporter reporter) {
-    this.source = source;
-    this.strategy = strategy;
-    this.reporter = reporter;
+  public TheoryBuilder<T> assertThatFor(Source<T> generator) {
+    return assertThatFor(generator, defaultStrategy);
+  }
+
+  public TheoryBuilder<T> assertThatFor(Source<T> source, Strategy strategy) {
     return new TheoryBuilder<>(() -> strategy, source, i -> true);
   }
 
+  public Strategy withShrinkCycles(int shrinkCycles) {
+    return defaultStrategy.withShrinkCycles(shrinkCycles);
+  }
+  
   @SuppressWarnings({ "unchecked", "rawtypes" })
   protected List<T> listOfShrunkenItems() {
     ArgumentCaptor<List> shrunkList = ArgumentCaptor.forClass(List.class);

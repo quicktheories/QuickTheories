@@ -7,10 +7,8 @@ import java.util.Date;
 import org.junit.Test;
 import org.quicktheories.quicktheories.core.Configuration;
 import org.quicktheories.quicktheories.core.Reporter;
-import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.generators.DatesDSL.Dates;
-import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 public class DatesComponentTest extends ComponentTest<Date> {
 
@@ -36,11 +34,6 @@ public class DatesComponentTest extends ComponentTest<Date> {
       assertThatFor(Dates.withMilliSecondsBetween(32523, 789709709780952l)).check(i -> false);
       listIsInDecreasingValueOrder();
       smallestValueIsEqualTo(new Date(32523));
-    }
-
-    private TheoryBuilder<Date> assertThatFor(
-        Source<Date> generator) {
-      return theoryBuilder(generator, this.strategy, this.reporter);
     }
 
     private void listIsInDecreasingValueOrder() {
