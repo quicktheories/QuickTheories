@@ -1,23 +1,13 @@
 package org.quicktheories.quicktheories.generators;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
-import org.quicktheories.quicktheories.core.Configuration;
-import org.quicktheories.quicktheories.core.Reporter;
-import org.quicktheories.quicktheories.core.Strategy;
-import org.quicktheories.quicktheories.core.Source;
-import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 public class StringsComponentTest extends ComponentTest<String> {
 
   private static final int BASIC_LATIN_LAST_CODEPOINT = 0x007E;
   private static final int BASIC_LATIN_FIRST_CODEPOINT = 0x0020;
-
-  Reporter reporter = mock(Reporter.class);
-  Strategy strategy = new Strategy(Configuration.defaultPRNG(2), 1000, 1000,
-      this.reporter);
 
   @Test
   public void shouldFindStringEqualToZeroWhereZeroFalsifies() {
@@ -143,7 +133,7 @@ public class StringsComponentTest extends ComponentTest<String> {
   @Test
   public void shouldFindAtLeastFiveStringsThatContainAnAmpersand() {
     assertThatFor(Strings.ofBoundedLengthStrings(BASIC_LATIN_FIRST_CODEPOINT,
-        BASIC_LATIN_LAST_CODEPOINT, 6, 6), withShrinkCycles(10))
+        BASIC_LATIN_LAST_CODEPOINT, 6, 6))
             .check(i -> i.indexOf('\u0026') < 0);
     atLeastFiveDistinctFalsifyingValuesAreFound();
   }
@@ -194,20 +184,6 @@ public class StringsComponentTest extends ComponentTest<String> {
     atLeastNDistinctFalsifyingValuesAreFound(2);
   }
 
-  private TheoryBuilder<String> assertThatFor(
-      Source<String> generator) {
-    return theoryBuilder(generator, this.strategy, this.reporter);
-  }
-
-  private TheoryBuilder<String> assertThatFor(
-      Source<String> generator, Strategy strategy) {
-    return theoryBuilder(generator, this.strategy, this.reporter);
-  }
-
-  private Strategy withShrinkCycles(int shrinkCycles) {
-    return new Strategy(Configuration.defaultPRNG(2), 100000, shrinkCycles,
-        this.reporter);
-  }
 
   private void smallestValueIsEqualTo(String target) {
     assertTrue("Expected " + smallestValueFound() + " to be equal to " + target,

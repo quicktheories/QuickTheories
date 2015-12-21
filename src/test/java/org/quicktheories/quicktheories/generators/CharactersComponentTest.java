@@ -1,14 +1,10 @@
 package org.quicktheories.quicktheories.generators;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
 import org.quicktheories.quicktheories.core.Configuration;
-import org.quicktheories.quicktheories.core.Reporter;
 import org.quicktheories.quicktheories.core.Strategy;
-import org.quicktheories.quicktheories.core.Source;
-import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 public class CharactersComponentTest extends ComponentTest<Character> {
 
@@ -18,9 +14,6 @@ public class CharactersComponentTest extends ComponentTest<Character> {
   private static final int FIRST_CODEPOINT = 0x0000;
   private static final int LARGEST_DEFINED_BMP_CODEPOINT = 65533;
 
-  Reporter reporter = mock(Reporter.class);
-  Strategy strategy = new Strategy(Configuration.defaultPRNG(2), 1000, 1000,
-      this.reporter);
 
   @Test
   public void shouldShrinkToTargetByOneCodePointWhenRemainingShrinkCyclesIsGreaterThanBLCDomain() {
@@ -116,16 +109,6 @@ public class CharactersComponentTest extends ComponentTest<Character> {
     smallestValueIsEqualTo('\u0000');
   }
 
-  private TheoryBuilder<Character> assertThatFor(
-      Source<Character> generator) {
-    return theoryBuilder(generator, this.strategy, this.reporter);
-  }
-
-  private TheoryBuilder<Character> assertThatFor(
-      Source<Character> generator, Strategy strategy) {
-    return theoryBuilder(generator, strategy, this.reporter);
-  }
-
   private void smallestValueIsEqualTo(char target) {
     assertTrue("Expected " + smallestValueFound() + " to be equal to " + target,
         Character.compare(smallestValueFound(), target) == 0);
@@ -154,11 +137,6 @@ public class CharactersComponentTest extends ComponentTest<Character> {
               + " to be a defined character, but it was not",
           Character.isDefined(i));
     }
-  }
-
-  private Strategy withShrinkCycles(int shrinkCycles) {
-    return new Strategy(Configuration.defaultPRNG(2), 1000000, shrinkCycles,
-        this.reporter);
   }
 
 }

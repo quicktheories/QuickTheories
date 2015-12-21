@@ -1,20 +1,10 @@
 package org.quicktheories.quicktheories.generators;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
-import org.quicktheories.quicktheories.core.Configuration;
-import org.quicktheories.quicktheories.core.Reporter;
-import org.quicktheories.quicktheories.core.Source;
-import org.quicktheories.quicktheories.core.Strategy;
-import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 public class LongsComponentTest extends ComponentTest<Long> {
-
-  Reporter reporter = mock(Reporter.class);
-  Strategy strategy = new Strategy(Configuration.defaultPRNG(2), 1000, 1000,
-      this.reporter);
 
   @Test
   public void shouldFindFalsifyingValueOutsideOfIntegerRange() {
@@ -102,16 +92,6 @@ public class LongsComponentTest extends ComponentTest<Long> {
             .check(i -> i % 10 != 2);
     atLeastFiveDistinctFalsifyingValuesAreFound();
     smallestValueIsEqualTo(target);
-  }
-
-  private TheoryBuilder<Long> assertThatFor(
-      Source<Long> generator, Strategy strategy) {
-    return theoryBuilder(generator, strategy, this.reporter);
-  }
-
-  private Strategy withShrinkCycles(int shrinkCycles) {
-    return new Strategy(Configuration.defaultPRNG(2), 10000, shrinkCycles,
-        this.reporter).withExamples(100000);
   }
 
   private void listIsInDecreasingAbsValueOrder() {

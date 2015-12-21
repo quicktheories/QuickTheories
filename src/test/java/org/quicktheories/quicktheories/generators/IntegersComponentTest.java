@@ -1,20 +1,12 @@
 package org.quicktheories.quicktheories.generators;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
 import org.quicktheories.quicktheories.core.Configuration;
-import org.quicktheories.quicktheories.core.Reporter;
 import org.quicktheories.quicktheories.core.Strategy;
-import org.quicktheories.quicktheories.core.Source;
-import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 public class IntegersComponentTest extends ComponentTest<Integer> {
-
-  Reporter reporter = mock(Reporter.class);
-  Strategy strategy = new Strategy(Configuration.defaultPRNG(0), 1000, 1000,
-      this.reporter);
 
   @Test
   public void shouldFindAValueTowardsTargetWithDomainAcrossZeroMarker() {
@@ -131,7 +123,7 @@ public class IntegersComponentTest extends ComponentTest<Integer> {
   public void shouldProvideAtLeastFiveDistinctFalsifyingValuesWithDomainAcrossZeroMarker() {
     int target = -1;
     assertThatFor(Integers.range(-23532, 74745),
-        withShrinkCycles(150)).check(i -> i % 2 == 0);
+        defaultStrategy.withFixedSeed(0)).check(i -> i % 2 == 0);
     atLeastFiveDistinctFalsifyingValuesAreFound();
     smallestValueIsEqualTo(target); // Could be +1 with other seeds
   }
@@ -176,7 +168,7 @@ public class IntegersComponentTest extends ComponentTest<Integer> {
   public void shouldProvideAtLeastFiveDistinctFalsifyingValuesWithNegativeDomainSizeEqualToMinInteger() {
     int target = 0;
     assertThatFor(Integers.range(Integer.MIN_VALUE, 0),
-        withShrinkCycles(150)).check(i -> Math.abs(i) >= 6000);
+        defaultStrategy.withExamples(1000000)).check(i -> Math.abs(i) >= 6000);
     atLeastFiveDistinctFalsifyingValuesAreFound();
     smallestValueIsEqualTo(target);
   }
@@ -185,7 +177,7 @@ public class IntegersComponentTest extends ComponentTest<Integer> {
   public void shouldProvideAtLeastFiveDistinctFalsifyingValuesWithPositiveDomainSizeEqualToMaxInteger() {
     int target = 0;
     assertThatFor(Integers.range(0, Integer.MAX_VALUE),
-        withShrinkCycles(150)).check(i -> Math.abs(i) >= 6000);
+        defaultStrategy.withExamples(1000000)).check(i -> Math.abs(i) >= 6000);
     atLeastFiveDistinctFalsifyingValuesAreFound();
     smallestValueIsEqualTo(target);
   }
@@ -194,7 +186,7 @@ public class IntegersComponentTest extends ComponentTest<Integer> {
   public void shouldProvideAtLeastFiveDistinctFalsifyingValuesWithDomainSizeMuchLargerToMaxInteger() {
     int target = 0;
     assertThatFor(Integers.range(-Integer.MAX_VALUE / 2, Integer.MAX_VALUE),
-        withShrinkCycles(150))
+       defaultStrategy.withExamples(1000000))
             .check(i -> Math.abs(i) >= 6000);
     atLeastFiveDistinctFalsifyingValuesAreFound();
     smallestValueIsEqualTo(target);
@@ -208,21 +200,6 @@ public class IntegersComponentTest extends ComponentTest<Integer> {
             .check(i -> i % 2 == 1);
     atLeastFiveDistinctFalsifyingValuesAreFound();
     smallestValueIsEqualTo(target);
-  }
-
-  private TheoryBuilder<Integer> assertThatFor(
-      Source<Integer> generator) {
-    return theoryBuilder(generator, this.strategy, this.reporter);
-  }
-
-  private TheoryBuilder<Integer> assertThatFor(
-      Source<Integer> generator, Strategy strategy) {
-    return theoryBuilder(generator, strategy, this.reporter);
-  }
-
-  private Strategy withShrinkCycles(int shrinkCycles) {
-    return new Strategy(Configuration.defaultPRNG(0), 1000000, shrinkCycles,
-        this.reporter);
   }
 
   private void listIsInDecreasingAbsValueOrder() {

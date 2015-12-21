@@ -11,10 +11,9 @@ import org.junit.Test;
 import org.quicktheories.quicktheories.core.Configuration;
 import org.quicktheories.quicktheories.core.Reporter;
 import org.quicktheories.quicktheories.core.ShrinkContext;
-import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.generators.BigIntegersDSL.BigIntegers;
-import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 public class BigIntegersTest extends ComponentTest<BigInteger> {
 
@@ -95,11 +94,6 @@ public class BigIntegersTest extends ComponentTest<BigInteger> {
           listOfShrunkenItems().get(i - 1).abs()
               .compareTo(listOfShrunkenItems().get(i).abs()) != -1);
     }
-  }
-
-  private TheoryBuilder<BigInteger> assertThatFor(
-      Source<BigInteger> generator) {
-    return theoryBuilder(generator, this.strategy, this.reporter);
   }
 
   private Predicate<BigInteger> smallerAbsoluteValueThan(BigInteger original) {

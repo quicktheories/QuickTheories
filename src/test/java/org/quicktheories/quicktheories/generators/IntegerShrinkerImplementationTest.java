@@ -9,15 +9,11 @@ import java.util.List;
 
 import org.junit.Test;
 import org.quicktheories.quicktheories.core.PseudoRandom;
-import org.quicktheories.quicktheories.core.Reporter;
 import org.quicktheories.quicktheories.core.Strategy;
-import org.quicktheories.quicktheories.core.Source;
-import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 public class IntegerShrinkerImplementationTest extends ComponentTest<Integer> {
 
   PseudoRandom prng = mock(PseudoRandom.class);
-  Reporter reporter = mock(Reporter.class);
 
   @Test
   public void shouldShrinkByIncrementsOfOneWhenRemainingCyclesIsGreaterThanDistanceToTarget() {
@@ -90,11 +86,6 @@ public class IntegerShrinkerImplementationTest extends ComponentTest<Integer> {
     assertThatFor(Integers.range(-6, -1), strategy(examples, shrinkCycles))
         .check(i -> false);
     shrinkIsExpectedValue(listOfShrunkenItems().get(0), -1);
-  }
-
-  private TheoryBuilder<Integer> assertThatFor(
-      Source<Integer> generator, Strategy strategy) {
-    return theoryBuilder(generator, strategy, this.reporter);
   }
 
   private Strategy strategy(int examples, int shrinkCycles) {
