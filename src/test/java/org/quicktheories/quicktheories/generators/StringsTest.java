@@ -18,13 +18,15 @@ public class StringsTest {
 
   @Test
   public void shouldNotShrinkNumericStringConsistingOfZero() {
-    Source<String> testee = Strings.numericStrings();
+    Source<String> testee = Strings.boundedNumericStrings(Integer.MIN_VALUE,
+        Integer.MAX_VALUE);
     assertThatSource(testee).cannotShrink("0");
   }
 
   @Test
   public void shouldShrinkPositiveNumericStringByOneIntegerWhenRemainingCyclesGreaterThanDomainSize() {
-    Source<String> testee = Strings.numericStrings();
+    Source<String> testee = Strings.boundedNumericStrings(Integer.MIN_VALUE,
+        Integer.MAX_VALUE);
     assertThatSource(testee).shrinksValueTo("65", "64", someShrinkContext());
   }
 
@@ -37,7 +39,8 @@ public class StringsTest {
 
   @Test
   public void shouldShrinkPositiveNumericStringWhenRemainingCyclesLessThanDomainSize() {
-    Source<String> testee = Strings.numericStrings();
+    Source<String> testee = Strings.boundedNumericStrings(Integer.MIN_VALUE,
+        Integer.MAX_VALUE);
     String original = "13253";
     Predicate<String> stringShrinksInRightDirection = (
         i) -> Integer.parseInt(i) <= Integer.parseInt(original)
@@ -60,9 +63,9 @@ public class StringsTest {
 
   @Test
   public void shouldReturnEmptyStringIfFixedLengthSetToZero() {
-    Source<String> testee = Strings.ofFixedLengthStrings(
+    Source<String> testee = Strings.ofBoundedLengthStrings(
         BASIC_LATIN_FIRST_CODEPOINT,
-        BASIC_LATIN_LAST_CODEPOINT, 0);
+        BASIC_LATIN_LAST_CODEPOINT, 0, 0);
     assertThatSource(testee).generatesAllOf("");
   }
 
@@ -75,9 +78,9 @@ public class StringsTest {
 
   @Test
   public void shouldNotShrinkStringOfLengthZero() {
-    Source<String> testee = Strings.ofFixedLengthStrings(
+    Source<String> testee = Strings.ofBoundedLengthStrings(
         BASIC_LATIN_FIRST_CODEPOINT,
-        BASIC_LATIN_LAST_CODEPOINT, 0);
+        BASIC_LATIN_LAST_CODEPOINT, 0, 0);
     assertThatSource(testee).cannotShrink("");
   }
 
@@ -134,9 +137,9 @@ public class StringsTest {
 
   @Test
   public void shouldShrinkBasicLatinAlphabetStringOfFixedLength() {
-    Source<String> testee = Strings.ofFixedLengthStrings(
+    Source<String> testee = Strings.ofBoundedLengthStrings(
         BASIC_LATIN_FIRST_CODEPOINT,
-        BASIC_LATIN_LAST_CODEPOINT, 8);
+        BASIC_LATIN_LAST_CODEPOINT, 8, 8);
     assertThatSource(testee).shrinksConformTo("Agji{{&C",
         allLatinCharactersShrink(0x0020, "Agji{{&C"),
         new ShrinkContext(0, 1, Configuration.defaultPRNG(0)));
@@ -144,9 +147,9 @@ public class StringsTest {
 
   @Test
   public void shouldShrinkAllPossibleWhenRemainingCyclesGreaterThanDomainSize() {
-    Source<String> testee = Strings.ofFixedLengthStrings(
+    Source<String> testee = Strings.ofBoundedLengthStrings(
         Character.MIN_CODE_POINT,
-        Character.MAX_CODE_POINT, 5);
+        Character.MAX_CODE_POINT, 5, 5);
     assertThatSource(testee).shrinksValueTo("\ud800\udc00\u0001\ud800\udc00",
         "\ufffd\ufffd\u0002\ufffd\ufffd",
         new ShrinkContext(0, 100000000, Configuration.defaultPRNG(0)));
@@ -154,9 +157,9 @@ public class StringsTest {
 
   @Test
   public void shouldNotShrinkToAnUndefinedCharacterInStringWhenRemainingCyclesGreaterThanDomainSize() {
-    Source<String> testee = Strings.ofFixedLengthStrings(
+    Source<String> testee = Strings.ofBoundedLengthStrings(
         Character.MIN_CODE_POINT,
-        Character.MAX_CODE_POINT, 5);
+        Character.MAX_CODE_POINT, 5, 5);
     assertThatSource(testee).shrinksValueTo("\ud800\udc00\u0020\ud801\udca0",
         "\ufffd\ufffd\u0021\ud801\udc9d",
         new ShrinkContext(0, 100000000, Configuration.defaultPRNG(0)));

@@ -103,6 +103,12 @@ public class FloatsTest {
     assertThatSource(testee).shrinksConformTo(1f, inclusivelyBetween(0f, 1f),
         withCycles(1));
   }
+  
+  @Test
+  public void shouldGenerateAtLeastThreeDistinctValuesUsingFromZeroToOne() {
+   Source<Float> testee = Floats.fromZeroToOne();
+   assertThatSource(testee).generatesAtLeastNDistinctValues(3);
+  }
 
   private ShrinkContext withCycles(int cycles) {
     return new ShrinkContext(0, cycles, Configuration.defaultPRNG(2));

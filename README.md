@@ -393,17 +393,17 @@ Be careful when creating custom shrinkers.
 
 Values produces by the sources DSL should provide produce clear falsification messages.
 
-If you are working with your own sources, or would like to modify the defaults you can supply your own function to be used when describing the falisfying values.
+If you are working with your own sources, or would like to modify the defaults, you can supply your own function to be used when describing the falsifying values.
 
 For example
 
 
 ```java
   @Test
-  public void checkingEqualityOfTwoDimensionalArrays() {
+  public void someTestInvolvingCylinders() {
       qt()
       .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
-              integers().allPositive().describesAs(h -> "Height = " + h)
+              integers().allPositive().describedAs(h -> "Height = " + h)
       .check(l -> whatever);
   }
 ```
@@ -412,7 +412,7 @@ Custom description functions will be retained when converting to a type with pre
 
 ```java
   @Test
-  public void checkingEqualityOfTwoDimensionalArrays() {
+  public void someTestInvolvingCylinders() {
       qt()
       .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
               integers().allPositive().describesAs(h -> "Height = " + h)
@@ -425,7 +425,7 @@ A description function can be provider for a type converted without precursors a
 
 ```java
   @Test
-  public void checkingEqualityOfTwoDimensionalArrays() {
+  public void someTestInvolvingCylinders() {
       qt()
       .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
               integers().allPositive().describesAs(h -> "Height = " + h)

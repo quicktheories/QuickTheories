@@ -11,8 +11,6 @@ import org.quicktheories.quicktheories.core.Source;
 
 final class Longs {
 
-  private static final int FIRST_NON_WHITESPACE_CHARACTER_IN_BLC = 0x0021;
-
   static Source<Long> range(final long startInclusive,
       final long endInclusive) {
     return Source.of(
@@ -22,36 +20,12 @@ final class Longs {
             shrinkTowardsTarget(findTarget(startInclusive, endInclusive)));
   }
 
-  static Source<Long> codePoints(int startInclusive,
-      int endInclusive) {
-    long target = setTargetForCodePoints(startInclusive, endInclusive);
-    return Source.of(
-        (prng, step) -> generateValidCodePoint(prng, startInclusive,
-            endInclusive))
-        .withShrinker(
-            shrinkCodePoint(target));
-  }
-
-  private static long setTargetForCodePoints(int startInclusive,
-      int endInclusive) {
-    long target = FIRST_NON_WHITESPACE_CHARACTER_IN_BLC;
-    if (startInclusive > target || endInclusive < target) {
-      target = startInclusive;
-    }
-    return target;
-  }
-
-  private static Shrink<Long> shrinkCodePoint(long target) {
-    return shrinkTowardsTarget(target, i -> Character.isDefined((int) i),
-        (prng, start, end) -> (long) generateValidCodePoint(prng, start, end));
-  }
-
   static Shrink<Long> shrinkTowardsTarget(long target) {
     return shrinkTowardsTarget(target, s -> true,
         (prng, start, end) -> generateLongWithinInterval(prng, start, end));
   }
 
-  private static Shrink<Long> shrinkTowardsTarget(long target,
+  static Shrink<Long> shrinkTowardsTarget(long target,
       LongPredicate filter,
       Function3<PseudoRandom, Long, Long, Long> longGenerator) {
     return (original, context) -> {
@@ -108,18 +82,7 @@ final class Longs {
     return LongStream.empty();
   }
 
-  static long generateValidCodePoint(PseudoRandom prng, long startInclusive,
-      long endInclusive) {
-    long codePoint = prng.generateRandomLongWithinInterval(
-        startInclusive, endInclusive);
-    while (!Character.isDefined((int) codePoint)) {
-      codePoint = prng.generateRandomLongWithinInterval(
-          startInclusive, endInclusive);
-    }
-    return codePoint;
-  }
-
-  static long generateLongWithinInterval(PseudoRandom prng,
+  private static long generateLongWithinInterval(PseudoRandom prng,
       long startInclusive, long endInclusive) {
     return prng.generateRandomLongWithinInterval(startInclusive, endInclusive);
   }

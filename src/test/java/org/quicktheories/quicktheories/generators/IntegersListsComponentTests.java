@@ -3,7 +3,6 @@ package org.quicktheories.quicktheories.generators;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.quicktheories.quicktheories.generators.Lists.alternatingBoundedListsOf;
-import static org.quicktheories.quicktheories.generators.Lists.alternatingFixedListsOf;
 import static org.quicktheories.quicktheories.generators.Lists.arrayListCollector;
 import static org.quicktheories.quicktheories.generators.Lists.linkedListCollector;
 import static org.quicktheories.quicktheories.generators.Lists.listsOf;
@@ -18,8 +17,8 @@ import org.junit.Test;
 import org.quicktheories.quicktheories.core.Configuration;
 import org.quicktheories.quicktheories.core.PseudoRandom;
 import org.quicktheories.quicktheories.core.Reporter;
-import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.impl.TheoryBuilder;
 
 public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
@@ -32,7 +31,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
   @Test
   public void shouldReturnALinkedListAfterShrinkageIfOneGenerated() {
     assertThatFor(
-        listsOf(Integers.range(-4000, 4000), linkedListCollector(), 6))
+        listsOf(Integers.range(-4000, 4000), linkedListCollector(), 6, 6))
             .check(i -> false);
     isLinkedListAfterShrinking();
   }
@@ -40,7 +39,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
   @Test
   public void shouldReturnAnArrayListAfterShrinkageIfOneGenerated() {
     assertThatFor(
-        alternatingFixedListsOf(Integers.range(-4000, 4000), 6))
+        alternatingBoundedListsOf(Integers.range(-4000, 4000), 6, 6))
             .check(i -> false);
     isArrayListAfterShrinking();
   }
@@ -48,7 +47,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
   @Test
   public void shouldFindAFixedLengthListEqualToTargetWithItemsWhoseDomainIsAcrossZeroMarker() {
     assertThatFor(
-        listsOf(Integers.range(-4000, 4000), linkedListCollector(), 6))
+        listsOf(Integers.range(-4000, 4000), linkedListCollector(), 6, 6))
             .check(i -> false);
     smallestValueIsEqualTo(
         new LinkedList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 0)));
@@ -65,15 +64,16 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
   @Test
   public void shouldFindAFixedLengthListEqualToTargetWithItemsWhoseDomainIsWithinThePositiveIntegers() {
     assertThatFor(
-        alternatingFixedListsOf(Integers.range(1, Integer.MAX_VALUE), 5))
+        alternatingBoundedListsOf(Integers.range(1, Integer.MAX_VALUE), 5, 5))
             .check(i -> false);
     smallestValueIsEqualTo(Arrays.asList(1, 1, 1, 1, 1));
   }
 
   @Test
   public void shouldFindAFixedLengthListEqualToTargetWithItemsWhoseDomainHasUpperBoundZero() {
-    assertThatFor(listsOf(Integers.range(-4000, 0), linkedListCollector(), 7))
-        .check(i -> false);
+    assertThatFor(
+        listsOf(Integers.range(-4000, 0), linkedListCollector(), 7, 7))
+            .check(i -> false);
     smallestValueIsEqualTo(
         new LinkedList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 0, 0)));
   }
@@ -81,7 +81,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
   @Test
   public void shouldFindAFixedLengthListEqualToTargetWithItemsWhoseDomainHasLowerBoundZero() {
     assertThatFor(
-        listsOf(Integers.range(0, 6000), linkedListCollector(), 7))
+        listsOf(Integers.range(0, 6000), linkedListCollector(), 7, 7))
             .check(i -> false);
     smallestValueIsEqualTo(
         new LinkedList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 0, 0)));
@@ -90,7 +90,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
   @Test
   public void shouldFindAFixedLengthListEqualToTargetWithItemsWhoseDomainIsBelowZeroMarker() {
     assertThatFor(
-        alternatingFixedListsOf(Integers.range(-6000, -2001), 5))
+        alternatingBoundedListsOf(Integers.range(-6000, -2001), 5, 5))
             .check(i -> false);
     smallestValueIsEqualTo(Arrays.asList(-2001, -2001, -2001, -2001, -2001));
   }
@@ -105,7 +105,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
 
   @Test
   public void shouldCreateAListOfFixedLengthIntegerArrayListsWithItemsOfDecreasingAbsValueOrderWhoseDomainIsAboveZeroMarker() {
-    assertThatFor(listsOf(Integers.range(50, 8940), arrayListCollector(), 6))
+    assertThatFor(listsOf(Integers.range(50, 8940), arrayListCollector(), 6, 6))
         .check(list -> false);
     listIsInDecreasingAbsValueOrder();
   }
@@ -113,7 +113,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
   @Test
   public void shouldCreateAListOfFixedLengthIntegerArrayListsWithItemsOfDecreasingAbsValueOrderWhoseDomainIsBelowZeroMarker() {
     assertThatFor(
-        listsOf(Integers.range(-4000, -1000), arrayListCollector(), 6))
+        listsOf(Integers.range(-4000, -1000), arrayListCollector(), 6, 6))
             .check(list -> false);
     listIsInDecreasingAbsValueOrder();
   }
@@ -121,7 +121,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
   @Test
   public void shouldCreateAListOfFixedLengthIntegerLinkedListsWithItemsOfDecreasingAbsValueOrderWhoseDomainIsAcrossZeroMarker() {
     assertThatFor(
-        listsOf(Integers.range(-40000, 40000), linkedListCollector(), 6))
+        listsOf(Integers.range(-40000, 40000), linkedListCollector(), 6, 6))
             .check(list -> false);
     listIsInDecreasingAbsValueOrder();
   }
@@ -139,7 +139,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
     Predicate<List<Integer>> sumGreaterThanOrEqualTo50 = list -> list.stream()
         .mapToInt(Number::intValue).sum() >= 50;
     assertThatFor(
-        listsOf(Integers.range(-40000, 40000), linkedListCollector(), 6))
+        listsOf(Integers.range(-40000, 40000), linkedListCollector(), 6, 6))
             .assuming(sumGreaterThanOrEqualTo50)
             .check(list -> false);
     for (List<Integer> list : listOfShrunkenItems()) {
@@ -151,7 +151,8 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
   public void willGetStuckAtLocalMinimaWhenOneValueInListShrinksToBottomWithoutFalsifiying() {
     Predicate<List<Integer>> allEntriesOdd = list -> list.stream()
         .filter(v -> v % 2 == 0).findFirst().isPresent();
-    assertThatFor(listsOf(Integers.range(-2333, 232), linkedListCollector(), 5),
+    assertThatFor(
+        listsOf(Integers.range(-2333, 232), linkedListCollector(), 5, 5),
         withShrinkCycles(3000))
             .check(allEntriesOdd);
     atLeastFiveDistinctFalsifyingValuesAreFound();
@@ -164,7 +165,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
     List<Integer> target = Arrays.asList(-3523, -3523, -3523, -3523, -3523,
         -3523, -3523);
     assertThatFor(
-        listsOf(Integers.range(-23435, -3523), arrayListCollector(), 7),
+        listsOf(Integers.range(-23435, -3523), arrayListCollector(), 7, 7),
         withShrinkCycles(3000)).check(sumLessThanMinus5000);
     atLeastFiveDistinctFalsifyingValuesAreFound();
     smallestValueIsEqualTo(target);

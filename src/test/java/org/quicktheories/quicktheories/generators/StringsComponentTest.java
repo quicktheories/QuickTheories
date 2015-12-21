@@ -21,7 +21,9 @@ public class StringsComponentTest extends ComponentTest<String> {
 
   @Test
   public void shouldFindStringEqualToZeroWhereZeroFalsifies() {
-    assertThatFor(Strings.numericStrings()).check(i -> i.length() >= 10);
+    assertThatFor(
+        Strings.boundedNumericStrings(Integer.MIN_VALUE, Integer.MAX_VALUE))
+            .check(i -> i.length() >= 10);
     smallestValueIsEqualTo("0");
   }
 
@@ -42,7 +44,7 @@ public class StringsComponentTest extends ComponentTest<String> {
 
   @Test
   public void shouldNotShrinkToAnUndefinedCharacterInStringWhereRemainingCyclesInitiallyLessThanDomainSize() {
-    assertThatFor(Strings.ofFixedLengthStrings(0, 196607, 5),
+    assertThatFor(Strings.ofBoundedLengthStrings(0, 196607, 5, 5),
         withShrinkCycles(100))
             .check(i -> false);
     listContainsOnlyDefinedCharacters();
@@ -50,7 +52,7 @@ public class StringsComponentTest extends ComponentTest<String> {
 
   @Test
   public void shouldNotShrinkToUndefinedCharacterInStringWhereRemainingCyclesGreaterThanDomainSize() {
-    assertThatFor(Strings.ofFixedLengthStrings(0, 196607, 5),
+    assertThatFor(Strings.ofBoundedLengthStrings(0, 196607, 5, 5),
         withShrinkCycles(196608))
             .check(i -> false);
     listContainsOnlyDefinedCharacters();
@@ -59,8 +61,8 @@ public class StringsComponentTest extends ComponentTest<String> {
   @Test
   public void shouldNotShrinkToUndefinedCharacterInStringWhereRemainingCyclesEqualsTheDomainSize() {
     assertThatFor(
-        Strings.ofFixedLengthStrings(Character.MIN_CODE_POINT,
-            Character.MAX_CODE_POINT, 6),
+        Strings.ofBoundedLengthStrings(Character.MIN_CODE_POINT,
+            Character.MAX_CODE_POINT, 6, 6),
         withShrinkCycles(Character.MAX_CODE_POINT)).check(i -> false);
     listContainsOnlyDefinedCharacters();
   }
@@ -77,8 +79,8 @@ public class StringsComponentTest extends ComponentTest<String> {
 
   @Test
   public void shouldProvideAtLeastFiveDistinctFalsifyingValuesForAllPossibleStringsWithFixedLength() {
-    assertThatFor(Strings.ofFixedLengthStrings(BASIC_LATIN_FIRST_CODEPOINT,
-        BASIC_LATIN_LAST_CODEPOINT, 8)).check(i -> i.indexOf('\u0020') >= 0);
+    assertThatFor(Strings.ofBoundedLengthStrings(BASIC_LATIN_FIRST_CODEPOINT,
+        BASIC_LATIN_LAST_CODEPOINT, 8, 8)).check(i -> i.indexOf('\u0020') >= 0);
     atLeastFiveDistinctFalsifyingValuesAreFound();
   }
 
@@ -94,8 +96,8 @@ public class StringsComponentTest extends ComponentTest<String> {
   @Test
   public void shouldOnlyGenerateCharactersWhenFixedLengthIsSetToOne() {
     assertThatFor(
-        Strings.ofFixedLengthStrings(Character.MIN_CODE_POINT,
-            Character.MAX_CODE_POINT, 1))
+        Strings.ofBoundedLengthStrings(Character.MIN_CODE_POINT,
+            Character.MAX_CODE_POINT, 1, 1))
                 .check(i -> false);
     listContainsOnlyBMPCharacters();
   }
@@ -140,8 +142,8 @@ public class StringsComponentTest extends ComponentTest<String> {
 
   @Test
   public void shouldFindAtLeastFiveStringsThatContainAnAmpersand() {
-    assertThatFor(Strings.ofFixedLengthStrings(BASIC_LATIN_FIRST_CODEPOINT,
-        BASIC_LATIN_LAST_CODEPOINT, 6), withShrinkCycles(10))
+    assertThatFor(Strings.ofBoundedLengthStrings(BASIC_LATIN_FIRST_CODEPOINT,
+        BASIC_LATIN_LAST_CODEPOINT, 6, 6), withShrinkCycles(10))
             .check(i -> i.indexOf('\u0026') < 0);
     atLeastFiveDistinctFalsifyingValuesAreFound();
   }

@@ -25,10 +25,13 @@ public class ListsDSL {
    * Creates an appropriate Collector for a type of List by specifying the
    * Supplier used as a parameter
    * 
-   * @param <T> type to generate
-   * @param <A> list type
+   * @param <T>
+   *          type to generate
+   * @param <A>
+   *          list type
    * 
-   * @param collectionFactory a supplier of A
+   * @param collectionFactory
+   *          a supplier of A
    * @return a Collector
    */
   public <T, A extends List<T>> Collector<T, A, A> createListCollector(
@@ -39,7 +42,8 @@ public class ListsDSL {
   /**
    * Creates a ListGeneratorBuilder.
    * 
-   * @param <T> type to generate
+   * @param <T>
+   *          type to generate
    * 
    * @param source
    *          a Source of type T for the items in the list
@@ -54,7 +58,8 @@ public class ListsDSL {
    * Creates a TypedListGeneratorBuilder. The Collector cannot be changed and is
    * set to collect ArrayLists.
    * 
-   * @param <T> type to generate
+   * @param <T>
+   *          type to generate
    * 
    * @param source
    *          a Source of type T for the items in the List
@@ -70,7 +75,8 @@ public class ListsDSL {
    * Creates a TypedListGeneratorBuilder. The Collector cannot be changed and is
    * set to collect LinkedLists.
    * 
-   * @param <T> type to generate
+   * @param <T>
+   *          type to generate
    * 
    * @param source
    *          a Source of type T for the items in the List
@@ -88,7 +94,8 @@ public class ListsDSL {
    * be used to create a TypedListGeneratorBuilder, where the Collector is
    * specified.
    * 
-   * @param <T> type to generate
+   * @param <T>
+   *          type to generate
    */
   public static class ListGeneratorBuilder<T> {
 
@@ -101,12 +108,12 @@ public class ListsDSL {
     /**
      * Generates a List of objects, where the size of the List is fixed
      * 
-     * @param size size of lists to generate
+     * @param size
+     *          size of lists to generate
      * @return a Source of Lists of type T
      */
     public Source<List<T>> ofSize(int size) {
-      checkSizeNotNegative(size);
-      return Lists.alternatingFixedListsOf(source, size);
+      return ofSizeBetween(size, size);
     }
 
     /**
@@ -129,7 +136,8 @@ public class ListsDSL {
      * Determines how the Lists will be collected and returns an
      * TypedListGeneratorBuilder with the Collector specified
      * 
-     * @param collector collector to use to contruct list
+     * @param collector
+     *          collector to use to construct list
      * @return a TypedListGeneratorBuilder
      */
     public TypedListGeneratorBuilder<T> ofType(
@@ -156,12 +164,12 @@ public class ListsDSL {
     /**
      * Generates a List of objects, where the size of the List is fixed
      * 
-     * @param size size of lists to generate
+     * @param size
+     *          size of lists to generate
      * @return a Source of Lists of type T
      */
     public Source<List<T>> ofSize(int size) {
-      checkSizeNotNegative(size);
-      return listsOf(source, collector, size);
+      return ofSizeBetween(size, size);
     };
 
     /**
@@ -185,9 +193,7 @@ public class ListsDSL {
     ArgumentAssertions.checkArguments(minimumSize <= maximumSize,
         "The minimumSize (%s) is longer than the maximumSize(%s)",
         minimumSize, maximumSize);
-    ArgumentAssertions.checkArguments(minimumSize >= 0,
-        "The size of a List cannot be negative; %s is not an accepted argument",
-        minimumSize);
+    checkSizeNotNegative(minimumSize);
   }
 
   private static void checkSizeNotNegative(int size) {

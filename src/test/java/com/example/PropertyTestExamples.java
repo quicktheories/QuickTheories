@@ -17,7 +17,7 @@ import org.junit.Test;
 public class PropertyTestExamples {
 
   // Failing property tests:
-
+  
   @Test
   public void addingTwoPositiveIntegersAlwaysGivesAPositiveInteger() {
     qt()

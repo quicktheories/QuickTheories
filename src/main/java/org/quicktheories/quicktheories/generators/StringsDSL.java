@@ -25,9 +25,7 @@ public class StringsDSL {
    * @return a Source of type String
    */
   public Source<String> numeric() {
-    return Compositions.weightWithValues(Strings.numericStrings(),
-        Integer.toString(Integer.MAX_VALUE),
-        Integer.toString(Integer.MIN_VALUE), "0");
+    return numericBetween(Integer.MIN_VALUE, Integer.MAX_VALUE);
   }
 
   /**
@@ -134,11 +132,7 @@ public class StringsDSL {
      * @return a Source of type String
      */
     public Source<String> ofLength(int fixedLength) {
-      ArgumentAssertions.checkArguments(fixedLength >= 0,
-          "The length of a String cannot be negative; %s is not an accepted argument",
-          fixedLength);
-      return Strings.ofFixedLengthStrings(minCodePoint, maxCodePoint,
-          fixedLength);
+      return ofLengthBetween(fixedLength, fixedLength);
     }
 
     /**
