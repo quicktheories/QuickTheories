@@ -192,12 +192,12 @@ public class StringsComponentTest extends ComponentTest<String> {
     atLeastNDistinctFalsifyingValuesAreFound(2);
   }
 
-  private TheoryBuilder<String, String> assertThatFor(
+  private TheoryBuilder<String> assertThatFor(
       Source<String> generator) {
     return theoryBuilder(generator, this.strategy, this.reporter);
   }
 
-  private TheoryBuilder<String, String> assertThatFor(
+  private TheoryBuilder<String> assertThatFor(
       Source<String> generator, Strategy strategy) {
     return theoryBuilder(generator, this.strategy, this.reporter);
   }

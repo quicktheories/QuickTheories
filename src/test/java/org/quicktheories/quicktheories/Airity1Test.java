@@ -126,7 +126,7 @@ public class Airity1Test {
     String actual = verifier.smallestFalsifiedValue();
     assertThat(actual).isEqualTo("2");
   }
-
+  
   @Test
   public void shouldAllowRetentionOfPrecursorValuesWhenConvertingTypes() {
     qt()
@@ -147,6 +147,16 @@ public class Airity1Test {
 
     verifier.isFalsifiedByException();
   }
+  
+  @Test
+  public void shouldFalisyWhenAssertionsThrownAfterTypeConversion() {
+    qt()
+        .forAll(arbitrary().sequence(1, 2, 3, 4, 5, 6, 7))
+        .as(i -> i.toString())
+        .checkAssert(a -> assertEquals("1",a));
+
+    verifier.isFalsifiedByException();
+  }  
 
   @Test
   public void shouldAllowRetentionOfPrecursorValuesWhenAsserting() {

@@ -50,7 +50,7 @@ public class LocalDatesComponentTest extends ComponentTest<LocalDate> {
     smallestValueIsEqualTo(LocalDate.of(1977, 2, 1));
   }
 
-  private TheoryBuilder<LocalDate, LocalDate> assertThatFor(
+  private TheoryBuilder<LocalDate> assertThatFor(
       Source<LocalDate> generator) {
     return theoryBuilder(generator, this.strategy, this.reporter);
   }

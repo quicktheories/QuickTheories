@@ -2,6 +2,7 @@ package org.quicktheories.quicktheories.api;
 
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.function.Function;
 
 public final class Tuple4<A, B, C, D> {
   public final A _1;
@@ -64,6 +65,11 @@ public final class Tuple4<A, B, C, D> {
   public <T> Tuple5<A, B, C, D, T> extend(Function4<A, B, C, D, T> mapping) {
     return Tuple5.of(_1, _2, _3, _4, mapping.apply(_1, _2, _3, _4));
   }
+  
+  public <A1, B1, C1, D1> Tuple4<A1, B1, C1, D1> map(Function<A, A1> fa,
+      Function<B, B1> fb, Function<C, C1> fc, Function<D, D1> fd) {
+    return Tuple4.of(fa.apply(_1), fb.apply(_2), fc.apply(_3), fd.apply(_4));
+  }  
 
   @Override
   public String toString() {

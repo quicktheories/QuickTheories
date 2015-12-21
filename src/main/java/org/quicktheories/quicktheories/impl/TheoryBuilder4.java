@@ -3,10 +3,12 @@ package org.quicktheories.quicktheories.impl;
 import static org.quicktheories.quicktheories.impl.Util.equaliseShrinkLength;
 import static org.quicktheories.quicktheories.impl.Util.zip;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.api.Function4;
 import org.quicktheories.quicktheories.api.Pair;
 import org.quicktheories.quicktheories.api.Predicate4;
@@ -16,9 +18,9 @@ import org.quicktheories.quicktheories.api.Subject5;
 import org.quicktheories.quicktheories.api.Tuple3;
 import org.quicktheories.quicktheories.api.Tuple4;
 import org.quicktheories.quicktheories.api.Tuple5;
-import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Generator;
 import org.quicktheories.quicktheories.core.Shrink;
+import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Strategy;
 
 public final class TheoryBuilder4<A, B, C, D> {
@@ -31,7 +33,7 @@ public final class TheoryBuilder4<A, B, C, D> {
 
   /**
    * Builds theories about values of type A, B, C and D
-   * 
+   *
    * @param state
    *          supplies the strategy to be implemented
    * @param as
@@ -62,7 +64,7 @@ public final class TheoryBuilder4<A, B, C, D> {
 
   /**
    * Constrains the values a theory must be true for by the given assumption
-   * 
+   *
    * @param newAssumption
    *          an assumption that must be true of all values
    * @return theory builder based on the given assumption
@@ -76,7 +78,7 @@ public final class TheoryBuilder4<A, B, C, D> {
 
   /**
    * Converts theory to one about a different type using the given function
-   * 
+   *
    * @param <T>
    *          type to convert to
    * @param mapping
@@ -85,8 +87,8 @@ public final class TheoryBuilder4<A, B, C, D> {
    */
   public <T> Subject1<T> as(
       Function4<A, B, C, D, T> mapping) {
-    return new MappingTheoryBuilder<>(state, combine(),
-        precursor -> assumptions.test(precursor._1, precursor._2,
+    return new MappingTheoryBuilder<>(this.state, combine(),
+        precursor -> this.assumptions.test(precursor._1, precursor._2,
             precursor._3, precursor._4),
         tuple -> mapping.apply(tuple._1, tuple._2,
             tuple._3, tuple._4),
@@ -96,39 +98,65 @@ public final class TheoryBuilder4<A, B, C, D> {
   /**
    * Converts theory to one about a different type using the given function
    * retaining all precursor values
+   *
+   * @param <T>
+   *          type to create theory about
+   *
    * @param mapping
    *          Function from types A,B,C,D to type T
    * @return a Subject5 relating to the state of a theory involving five values
    */
   public <T> Subject5<A, B, C, D, T> asWithPrecursor(
       Function4<A, B, C, D, T> mapping) {
-    Shrink<Tuple5<A, B, C, D, T>> shrink = (original,
+    return asWithPrecursor(mapping, t -> t.toString());
+  }
+
+  /**
+   * Converts theory to one about a different type using the given function
+   * retaining all precursor values
+   *
+   * @param <T>
+   *          type to create theory about
+   *
+   * @param mapping
+   *          Function from types A,B,C,D to type T
+   * @param typeToString
+   *          Function to describe generated type
+   * @return a Subject5 relating to the state of a theory involving five values
+   */
+  public <T> Subject5<A, B, C, D, T> asWithPrecursor(
+      Function4<A, B, C, D, T> mapping, Function<T, String> typeToString) {
+    final Shrink<Tuple5<A, B, C, D, T>> shrink = (original,
         context) -> combineShrinks()
             .shrink(
                 Tuple4.of(original._1, original._2, original._3, original._4),
                 context)
             .map(precursor -> precursor.extend(mapping));
 
-    Source<Tuple5<A, B, C, D, T>> gen = Source
-        .of(generatePrecursorValueTuple(mapping)).withShrinker(shrink);
-    return new PrecursorTheoryBuilder4<A, B, C, D, T>(state, gen, assumptions,
-        a -> a.toString(), b -> b.toString(), c -> c.toString(),
-        d -> d.toString(),
-        t -> t.toString());
+    final AsString<Tuple5<A, B, C, D, T>> desc = tuple -> tuple
+        .map(this.as.asToStringFunction(), this.bs.asToStringFunction(),
+            this.cs.asToStringFunction(), this.ds.asToStringFunction(),
+            typeToString)
+        .toString();
+
+    final Source<Tuple5<A, B, C, D, T>> gen = Source
+        .of(generatePrecursorValueTuple(mapping)).withShrinker(shrink)
+        .describedAs(desc);
+    return new PrecursorTheoryBuilder4<A, B, C, D, T>(this.state, gen,
+        this.assumptions);
   }
 
   /**
    * Checks a boolean property across a random sample of possible values
-   * 
+   *
    * @param property
    *          property to check
    */
   public void check(final Predicate4<A, B, C, D> property) {
-    final TheoryRunner<Tuple4<A, B, C, D>, Tuple4<A, B, C, D>> qc = new TheoryRunner<>(
-        this.state.get(),
-        combine(), convertPredicate(), x -> x,
-        tuple4 -> "{" + tuple4._1.toString() + ", " + tuple4._2.toString()
-            + ", " + tuple4._3.toString() + ", " + tuple4._4.toString() + "}");
+    final TheoryRunner<Tuple4<A, B, C, D>, Tuple4<A, B, C, D>> qc = TheoryRunner
+        .runner(
+            this.state.get(),
+            combine(), convertPredicate());
     qc.check(
         x -> property.test(x._1, x._2, x._3, x._4));
   }
@@ -136,7 +164,7 @@ public final class TheoryBuilder4<A, B, C, D> {
   /**
    * Checks a property across a random sample of possible values where
    * falsification is indicated by an unchecked exception such as an assertion
-   * 
+   *
    * @param property
    *          property to check
    */
@@ -158,25 +186,30 @@ public final class TheoryBuilder4<A, B, C, D> {
   }
 
   private Source<Tuple4<A, B, C, D>> combine() {
-    return Source.of(prgnToTuple()).withShrinker(combineShrinks());
+    return Source.of(prgnToTuple()).withShrinker(combineShrinks())
+        .describedAs(joinToString());
   }
 
   private Shrink<Tuple4<A, B, C, D>> combineShrinks() {
     return (tuple, context) -> {
-      Stream<A> equalLengthedSteamOfA = equaliseShrinkLength(as, () -> tuple._1,
+      final Stream<A> equalLengthedSteamOfA = equaliseShrinkLength(this.as,
+          () -> tuple._1,
           context);
-      Stream<B> equalLengthedSteamOfB = equaliseShrinkLength(bs, () -> tuple._2,
+      final Stream<B> equalLengthedSteamOfB = equaliseShrinkLength(this.bs,
+          () -> tuple._2,
           context);
-      Stream<C> equalLengthedSteamOfC = equaliseShrinkLength(cs, () -> tuple._3,
+      final Stream<C> equalLengthedSteamOfC = equaliseShrinkLength(this.cs,
+          () -> tuple._3,
           context);
-      Stream<D> equalLengthedSteamOfD = equaliseShrinkLength(ds, () -> tuple._4,
+      final Stream<D> equalLengthedSteamOfD = equaliseShrinkLength(this.ds,
+          () -> tuple._4,
           context);
 
-      Stream<Pair<C, D>> cdStream = zip(equalLengthedSteamOfC,
+      final Stream<Pair<C, D>> cdStream = zip(equalLengthedSteamOfC,
           equalLengthedSteamOfD,
           (c, d) -> Pair.of(c, d));
 
-      Stream<Tuple3<B, C, D>> bcdStream = zip(equalLengthedSteamOfB,
+      final Stream<Tuple3<B, C, D>> bcdStream = zip(equalLengthedSteamOfB,
           cdStream,
           (b, cd) -> cd.prepend(b));
 
@@ -193,6 +226,13 @@ public final class TheoryBuilder4<A, B, C, D> {
         this.bs.next(prng, step),
         this.cs.next(prng, step),
         this.ds.next(prng, step));
+  }
+
+  private AsString<Tuple4<A, B, C, D>> joinToString() {
+    return tuple -> tuple
+        .map(this.as.asToStringFunction(), this.bs.asToStringFunction(),
+            this.cs.asToStringFunction(), this.ds.asToStringFunction())
+        .toString();
   }
 
 }

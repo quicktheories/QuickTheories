@@ -2,6 +2,7 @@ package org.quicktheories.quicktheories.generators;
 
 import static org.junit.Assert.assertTrue;
 import static org.quicktheories.quicktheories.generators.SourceAssert.assertThatSource;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.quicktheories.quicktheories.core.Configuration;
@@ -102,6 +103,14 @@ public class ArraysTest {
         new Character[] { 'b', 'b', 'b', 'b' },
         new Character[] { 'a', 'a', 'a', 'a' },
         new ShrinkContext(0, 100, Configuration.defaultPRNG(2)));
+  }
+  
+  @Test
+  public void shouldDescribeArrayContents() {
+    Source<Integer[]> testee = Arrays.arraysOf(Integers.range(0, 1),
+        Integer.class, 2);
+    Integer[] anArray = {1,2,3};
+    assertThat(testee.asString(anArray)).isEqualTo("[1, 2, 3]");
   }
 
   private <T> void isExpectedLength(T[] shrunkOutput, int expected) {

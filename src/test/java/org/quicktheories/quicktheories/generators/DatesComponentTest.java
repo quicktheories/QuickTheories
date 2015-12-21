@@ -38,7 +38,7 @@ public class DatesComponentTest extends ComponentTest<Date> {
       smallestValueIsEqualTo(new Date(32523));
     }
 
-    private TheoryBuilder<Date, Date> assertThatFor(
+    private TheoryBuilder<Date> assertThatFor(
         Source<Date> generator) {
       return theoryBuilder(generator, this.strategy, this.reporter);
     }

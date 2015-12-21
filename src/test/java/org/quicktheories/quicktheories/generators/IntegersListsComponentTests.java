@@ -237,12 +237,12 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> {
     smallestValueIsEqualTo(new LinkedList<Integer>(Arrays.asList(1, 1)));
   }
 
-  private TheoryBuilder<List<Integer>, List<Integer>> assertThatFor(
+  private TheoryBuilder<List<Integer>> assertThatFor(
       Source<List<Integer>> generator) {
     return theoryBuilder(generator, this.strategy, this.reporter);
   }
 
-  private TheoryBuilder<List<Integer>, List<Integer>> assertThatFor(
+  private TheoryBuilder<List<Integer>> assertThatFor(
       Source<List<Integer>> generator, Strategy strategy) {
     return theoryBuilder(generator, strategy, this.reporter);
   }

@@ -3,6 +3,7 @@ package org.quicktheories.quicktheories.core;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.generators.Compositions;
 
 /**
@@ -16,10 +17,11 @@ import org.quicktheories.quicktheories.generators.Compositions;
  * @param <T>
  *          Type of values to generate
  */
-public final class Source<T> implements Shrink<T>, Generator<T> {
+public final class Source<T> implements Shrink<T>, Generator<T>, AsString<T> {
 
   private final Generator<T> prngToValue;
   private final Shrink<T> shrink;
+  private final AsString<T> asString;
 
   /**
    * Creates a Source of type T
@@ -29,9 +31,10 @@ public final class Source<T> implements Shrink<T>, Generator<T> {
    * @param shrinker
    *          Shrink strategy for values from this generator
    */
-  private Source(Generator<T> prngToValue, Shrink<T> shrinker) {
+  private Source(Generator<T> prngToValue, Shrink<T> shrinker, AsString<T> asString) {
     this.prngToValue = prngToValue;
     this.shrink = shrinker;
+    this.asString = asString;
   }
 
   /**
@@ -45,7 +48,7 @@ public final class Source<T> implements Shrink<T>, Generator<T> {
    * @return a Source of values that cannot be shrunk
    */
   public static <T> Source<T> of(Generator<T> generator) {
-    return new Source<>(generator, noShrink());
+    return new Source<>(generator, noShrink(), defaultAsString());
   }
 
   /**
@@ -59,8 +62,17 @@ public final class Source<T> implements Shrink<T>, Generator<T> {
    * @return a Source of T using the given Shrink instance
    */
   public Source<T> withShrinker(Shrink<T> shrink) {
-    return new Source<>(this.prngToValue, shrink);
+    return new Source<>(this.prngToValue, shrink, this.asString);
   }
+  
+  /**
+   *  Produces a Source which will be described using the supplied function.
+   * @param asString function to use to convert to string
+   * @return a Source of T
+   */
+  public Source<T> describedAs(AsString<T> asString) {
+    return new Source<>(this.prngToValue, this.shrink, asString);
+  }  
 
   /**
    * Produce a single value
@@ -101,7 +113,7 @@ public final class Source<T> implements Shrink<T>, Generator<T> {
    * @return A Source of type B
    */
   public <B> Source<B> asWithoutShrinking(Function<T, B> conversion) {
-    return new Source<>(prngToValue.andThen(conversion), noShrink());
+    return new Source<>(prngToValue.andThen(conversion), noShrink(), defaultAsString());
   }
 
   /**
@@ -123,7 +135,7 @@ public final class Source<T> implements Shrink<T>, Generator<T> {
       Function<B, T> backFunction) {
     return new Source<>(prngToValue.andThen(conversion),
         (original, context) -> shrink
-            .shrink(backFunction.apply(original), context).map(conversion));
+            .shrink(backFunction.apply(original), context).map(conversion), defaultAsString());
   }
 
   /**
@@ -153,6 +165,11 @@ public final class Source<T> implements Shrink<T>, Generator<T> {
   public Source<T> andAlternateWithSource(Source<T> rhs) {
     return Compositions.interleave(this, rhs);
   }
+  
+  @Override
+  public String asString(T t) {
+    return this.asString.asString(t);
+  }
 
   /**
    * Composes the given Source with the Source supplied as a parameter such that
@@ -175,5 +192,10 @@ public final class Source<T> implements Shrink<T>, Generator<T> {
   private static <T> Shrink<T> noShrink() {
     return (original, context) -> Stream.empty();
   }
+  
+  private static <T> AsString<T> defaultAsString() {
+    return (value) -> value.toString();
+  }
+
 
 }

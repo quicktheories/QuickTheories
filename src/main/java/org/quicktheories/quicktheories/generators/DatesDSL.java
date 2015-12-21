@@ -42,7 +42,7 @@ public class DatesDSL {
    * @param millisecondsFromEpochEndInclusive
    *          the number of milliseconds from epoch for the desired more recent
    *          Date
-   * @return
+   * @return a source of Dates
    */
   public Source<Date> withMillisecondsBetween(
       long millisecondsFromEpochStartInclusive,

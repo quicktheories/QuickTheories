@@ -1,6 +1,7 @@
 package org.quicktheories.quicktheories;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.quicktheories.quicktheories.generators.SourceDSL.integers;
 import static org.quicktheories.quicktheories.generators.SourceDSL.arbitrary;
 
@@ -130,6 +131,19 @@ public class Airity4Test {
 
     verifier.isFalsifiedByException();
   }
+  
+  @Test
+  public void shouldFalisyWhenAssertionsThrownAfterTypeConversion() {
+    qt()
+        .forAll(arbitrary().sequence(1, 2, 3, 4, 5, 6, 7),
+                arbitrary().sequence(1, 2, 3, 4, 5, 6, 7),
+                arbitrary().sequence(1, 2, 3, 4, 5, 6, 7),
+                arbitrary().sequence(1, 2, 3, 4, 5, 6, 7))
+        .as( (a,b,c,d) -> a.toString() + b + c + d)
+        .checkAssert(a -> assertEquals("111a",a));
+
+    verifier.isFalsifiedByException();
+  }  
 
   @Test
   public void shouldAllowRetentionOfPrecursorValuesWhenConvertingTypes() {

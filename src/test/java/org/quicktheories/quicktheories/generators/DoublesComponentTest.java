@@ -32,7 +32,7 @@ public class DoublesComponentTest extends ComponentTest<Double> {
     listElementsAreAllNegativeInDecreasingAbsValueOrder();
   }
 
-  private TheoryBuilder<Double, Double> assertThatFor(
+  private TheoryBuilder<Double> assertThatFor(
       Source<Double> generator) {
     return theoryBuilder(generator, this.strategy, this.reporter);
   }

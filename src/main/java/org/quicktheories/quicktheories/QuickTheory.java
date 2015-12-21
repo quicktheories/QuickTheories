@@ -85,9 +85,8 @@ public class QuickTheory {
    *          the source of values over which the property should be true
    * @return state for which a property can be defined
    */
-  public <A> TheoryBuilder<A, A> forAll(final Source<A> values) {
-    return new TheoryBuilder<>(state, values, a -> true, x -> x,
-        a -> a.toString());
+  public <A> TheoryBuilder<A> forAll(final Source<A> values) {
+    return new TheoryBuilder<>(state, values, a -> true);
   }
 
   /**
