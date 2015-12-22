@@ -7,6 +7,7 @@ import static org.quicktheories.quicktheories.generators.SourceDSL.arbitrary;
 import static org.quicktheories.quicktheories.generators.SourceDSL.arrays;
 import static org.quicktheories.quicktheories.generators.SourceDSL.bigDecimals;
 import static org.quicktheories.quicktheories.generators.SourceDSL.bigIntegers;
+import static org.quicktheories.quicktheories.generators.SourceDSL.booleans;
 import static org.quicktheories.quicktheories.generators.SourceDSL.characters;
 import static org.quicktheories.quicktheories.generators.SourceDSL.dates;
 import static org.quicktheories.quicktheories.generators.SourceDSL.doubles;
@@ -1078,6 +1079,12 @@ public class SourceDSLTest {
     Source<LocalDate> testee = localDates().withDaysBetween(3245352, 729385723);
     assertThatSource(testee).generatesAllOf(LocalDate.ofEpochDay(3245352),
         LocalDate.ofEpochDay(729385723));
+  }
+
+  @Test
+  public void shouldGenerateBooleansAsExpected() {
+    Source<Boolean> testee = booleans().all();
+    assertThatSource(testee).generatesAllOf(true, false);
   }
 
 }

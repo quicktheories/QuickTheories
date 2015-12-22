@@ -53,5 +53,9 @@ public class SourceDSL {
   public static LocalDatesDSL localDates() {
     return new LocalDatesDSL();
   }
+  
+  public static BooleansDSL booleans() {
+    return new BooleansDSL();
+  }
 
 }
