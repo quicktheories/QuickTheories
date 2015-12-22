@@ -68,7 +68,6 @@ public class ArraysTest {
         .shrink(input, new ShrinkContext(0, 100, Configuration.defaultPRNG(-2)))
         .iterator()
         .next();
-    isArrayAfterShrinking(shrunk);
     isExpectedLength(shrunk, 4);
   }
 
@@ -115,16 +114,9 @@ public class ArraysTest {
 
   private <T> void isExpectedLength(T[] shrunkOutput, int expected) {
     assertTrue(
-        "Expected " + shrunkOutput + " to be of length " + expected
+        "Expected " + java.util.Arrays.toString(shrunkOutput) + " to be of length " + expected
             + "rather than " + shrunkOutput.length,
         shrunkOutput.length == expected);
-  }
-
-  private <T> void isArrayAfterShrinking(T[] shrunkOutput) {
-    assertTrue(
-        "Expected " + shrunkOutput + " to be of type Array, but was of type "
-            + shrunkOutput.getClass().getSimpleName(),
-        shrunkOutput instanceof Object[]);
   }
 
 }

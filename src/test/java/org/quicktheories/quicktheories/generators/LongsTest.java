@@ -26,7 +26,7 @@ public class LongsTest extends ComponentTest<Long> {
   @Test
   public void shouldShrinkTowardsTargetByOneIfRemainingcyclesGreaterThanDistanceToTarget() {
     Source<Long> testee = Longs.range(-5, 450);
-    assertThatSource(testee).shrinksValueTo(-4l, -3l,
+    assertThatSource(testee).shrinksValueTo(-4L, -3L,
         new ShrinkContext(0, 100, Configuration.defaultPRNG(0)));
   }
 
@@ -103,7 +103,7 @@ public class LongsTest extends ComponentTest<Long> {
   @Test
   public void shouldShrinkCodePointsInRightDirectionWhenEndInclusiveIsLessThanTarget() {
     Source<Long> testee = CodePoints.codePoints(0x0000, 0x0020);
-    assertThatSource(testee).shrinksConformTo(0x0017l,
+    assertThatSource(testee).shrinksConformTo(0x0017L,
         i -> i <= 0x0017 && i >= 0x0000,
         new ShrinkContext(0, 30, Configuration.defaultPRNG(0)));
   }

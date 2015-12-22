@@ -86,7 +86,7 @@ public class LongsComponentTest extends ComponentTest<Long> {
 
   @Test
   public void shouldShrinkUpwardsFindingAtLeastFiveDistinctFalsifyingValuesAndTheTarget() {
-    long target = 22999992l;
+    long target = 22999992L;
     assertThatFor(Longs.range(13523522, 23523522).withShrinker(
         Longs.shrinkTowardsTarget(23000000)), withShrinkCycles(1000000))
             .check(i -> i % 10 != 2);

@@ -43,19 +43,19 @@ public class SourceDSLTest {
   @Test
   public void shouldGenerateLongStartAndEndInclusive() {
     Source<Long> testee = longs().from(-87078).upToAndIncluding(8706);
-    assertThatSource(testee).generatesAllOf(-87078l, 8706l);
+    assertThatSource(testee).generatesAllOf(-87078L, 8706L);
   }
 
   @Test
   public void shouldGenerateLongStartAndEndExclusive() {
     Source<Long> testee = longs().from(-87078).upTo(8706);
-    assertThatSource(testee).generatesAllOf(-87078l, 8705l);
+    assertThatSource(testee).generatesAllOf(-87078L, 8705L);
   }
 
   @Test
   public void shouldGenerateLongsBetween() {
     Source<Long> testee = longs().between(-87078, 8706);
-    assertThatSource(testee).generatesAllOf(-87078l, 8706l);
+    assertThatSource(testee).generatesAllOf(-87078L, 8706L);
   }
 
   @SuppressWarnings("unused")
@@ -551,8 +551,8 @@ public class SourceDSLTest {
   public void shouldShrinkFixedSizedArrayListsAsExpected() {
     Source<List<Long>> testee = lists().arrayListsOf(longs().between(0, 35))
         .ofSize(2);
-    assertThatSource(testee).shrinksValueTo(java.util.Arrays.asList(1l, 9l),
-        java.util.Arrays.asList(0l, 8l));
+    assertThatSource(testee).shrinksValueTo(java.util.Arrays.asList(1L, 9L),
+        java.util.Arrays.asList(0L, 8L));
   }
 
   @Test
@@ -686,7 +686,7 @@ public class SourceDSLTest {
     Source<Long[]> testee = arrays()
         .ofClass(longs().between(-35, 700), Long.class).withLength(3);
     assertThatSource(testee).shrinksArrayValueTo(
-        new Long[] { 45l, 45l, 45l }, new Long[] { 44l, 44l, 44l },
+        new Long[] { 45L, 45L, 45L }, new Long[] { 44L, 44L, 44L },
         new ShrinkContext(0, 50, Configuration.defaultPRNG(2)));
   }
 
@@ -970,9 +970,9 @@ public class SourceDSLTest {
   @Test
   public void shouldGenerateDateAtStartAndEndInclusive() {
     Source<Date> testee = dates().withMillisecondsBetween(3245352,
-        72938572398752l);
+        72938572398752L);
     assertThatSource(testee).generatesAllOf(new Date(3245352),
-        new Date(72938572398752l));
+        new Date(72938572398752L));
   }
 
   @SuppressWarnings("unused")
