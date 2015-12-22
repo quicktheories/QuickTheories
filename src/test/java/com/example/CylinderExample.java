@@ -22,6 +22,14 @@ public class CylinderExample {
       this.height = height;
     }
 
+    int radius() {
+      return radius;
+    }
+
+    int height() {
+      return height;
+    }
+
     BigDecimal area() {
       BigDecimal r = new BigDecimal(radius);
       BigDecimal h = new BigDecimal(height);
@@ -32,12 +40,34 @@ public class CylinderExample {
           .multiply(r.add(h));
     }
 
-//    @Override
-//    public String toString() {
-//      return "Cylinder [radius=" + radius + ", height=" + height + ", area"
-//          + area() + "]";
-//    }
+    // @Override
+    // public String toString() {
+    // return "Cylinder [radius=" + radius + ", height=" + height + ", area"
+    // + area() + "]";
+    // }
 
+  }
+
+  @Test
+  public void someTestInvolvingCylinders() {
+    qt()
+        .forAll(integers().allPositive().describedAs(r -> "Radius = " + r),
+            integers().allPositive().describedAs(h -> "Height = " + h))
+        .as((r, h) -> new Cylinder(r, h))
+        .describedAs(cylinder -> "Cylinder r =" + cylinder.radius() + " h ="
+            + cylinder.height())
+        .check(l -> false);
+  }
+
+  @Test
+  public void someTestInvolvingCylinders2() {
+    qt()
+        .forAll(integers().allPositive().describedAs(r -> "Radius = " + r),
+            integers().allPositive().describedAs(h -> "Height = " + h))
+        .asWithPrecursor((r, h) -> new Cylinder(r, h),
+            cylinder -> "Cylinder r =" + cylinder.radius() + " h ="
+                + cylinder.height())
+        .check((i, j, l) -> false);
   }
 
   @Test
