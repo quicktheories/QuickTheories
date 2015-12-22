@@ -2,7 +2,10 @@ package org.quicktheories.quicktheories.core;
 
 import java.util.stream.Stream;
 
+import javax.annotation.CheckReturnValue;
+
 @FunctionalInterface
+@CheckReturnValue
 public interface Shrink<T> {
 
   /**

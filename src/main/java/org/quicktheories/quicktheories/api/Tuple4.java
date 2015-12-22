@@ -4,6 +4,11 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.function.Function;
 
+import javax.annotation.CheckReturnValue;
+import javax.annotation.concurrent.Immutable;
+
+@Immutable
+@CheckReturnValue
 public final class Tuple4<A, B, C, D> {
   public final A _1;
   public final B _2;
