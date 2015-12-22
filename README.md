@@ -403,7 +403,7 @@ For example:
       qt()
       .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
              , integers().allPositive().describedAs(h -> "Height = " + h))
-      .check(l -> whatever);
+      .check((r,h) -> whatever);
   }
 ```
 
