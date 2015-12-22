@@ -18,7 +18,7 @@ public class DatesComponentTest extends ComponentTest<Date> {
 
     @Test
     public void shouldShrinkToEpoch() {
-      assertThatFor(Dates.withMilliSeconds(53252224233l)).check(i -> false);
+      assertThatFor(Dates.withMilliSeconds(53252224233L)).check(i -> false);
       listIsInDecreasingValueOrder();
       smallestValueIsEqualTo(new Date(0));
     }
@@ -31,7 +31,7 @@ public class DatesComponentTest extends ComponentTest<Date> {
     
     @Test
     public void shouldShrinkToSmallestDateWhenBetween() {
-      assertThatFor(Dates.withMilliSecondsBetween(32523, 789709709780952l)).check(i -> false);
+      assertThatFor(Dates.withMilliSecondsBetween(32523, 789709709780952L)).check(i -> false);
       listIsInDecreasingValueOrder();
       smallestValueIsEqualTo(new Date(32523));
     }

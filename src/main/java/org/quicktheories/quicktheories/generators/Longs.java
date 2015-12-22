@@ -94,7 +94,7 @@ final class Longs {
     if (endInclusive < 0) {
       return endInclusive;
     }
-    return 0l;
+    return 0L;
   }
 
 }
