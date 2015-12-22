@@ -391,19 +391,18 @@ Be careful when creating custom shrinkers.
 
 ## Modifying the falsification output
 
-Values produces by the sources DSL should provide produce clear falsification messages.
+Values produces by the sources DSL should provide clear falsification messages.
 
-If you are working with your own sources, or would like to modify the defaults, you can supply your own function to be used when describing the falsifying values.
+If you are working with your own Sources, or would like to modify the defaults, you can supply your own function to be used when describing the falsifying values.
 
-For example
-
+For example:
 
 ```java
   @Test
   public void someTestInvolvingCylinders() {
       qt()
       .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
-              integers().allPositive().describedAs(h -> "Height = " + h)
+             , integers().allPositive().describedAs(h -> "Height = " + h))
       .check(l -> whatever);
   }
 ```
@@ -415,23 +414,24 @@ Custom description functions will be retained when converting to a type with pre
   public void someTestInvolvingCylinders() {
       qt()
       .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
-              integers().allPositive().describesAs(h -> "Height = " + h)
-      asWithPrecursor( (r,h) -> new Cylinder(r,h), cylinder -> "" + cylinder.radius() + cylinder.height())        
-     .check(l -> whatever);
+             , integers().allPositive().describedAs(h -> "Height = " + h))
+      .asWithPrecursor((r,h) -> new Cylinder(r,h)
+                       , cylinder -> "Cylinder r =" + cylinder.radius() + " h =" + cylinder.height())        
+      .check((i,j,k) -> whatever);
   }
 ```
 
-A description function can be provider for a type converted without precursors as follows 
+A description function can be provided for a type converted without precursors as follows:
 
 ```java
   @Test
   public void someTestInvolvingCylinders() {
       qt()
       .forAll(integers().allPositive().describedAs(r -> "Radius = " + r)
-              integers().allPositive().describesAs(h -> "Height = " + h)
-      as( (r,h) -> new Cylinder(r,h))
-      describedAs(cylinder -> "" + cylinder.radius() + cylinder.height())        
-     .check(l -> whatever);
+             , integers().allPositive().describesAs(h -> "Height = " + h))
+      .as( (r,h) -> new Cylinder(r,h))
+      .describedAs(cylinder -> "Cylinder r =" + cylinder.radius() + " h =" + cylinder.height())        
+      .check(l -> whatever);
   }
 ```
 
