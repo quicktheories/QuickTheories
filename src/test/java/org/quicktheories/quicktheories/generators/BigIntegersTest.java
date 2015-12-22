@@ -1,7 +1,6 @@
 package org.quicktheories.quicktheories.generators;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.quicktheories.quicktheories.generators.SourceAssert.assertThatSource;
 
 import java.math.BigInteger;
@@ -9,17 +8,11 @@ import java.util.function.Predicate;
 
 import org.junit.Test;
 import org.quicktheories.quicktheories.core.Configuration;
-import org.quicktheories.quicktheories.core.Reporter;
 import org.quicktheories.quicktheories.core.ShrinkContext;
 import org.quicktheories.quicktheories.core.Source;
-import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.generators.BigIntegersDSL.BigIntegers;
 
 public class BigIntegersTest extends ComponentTest<BigInteger> {
-
-  Reporter reporter = mock(Reporter.class);
-  Strategy strategy = new Strategy(Configuration.defaultPRNG(2), 1000, 1000,
-      this.reporter);
 
   @Test
   public void shouldShrinkZeroToItself() {

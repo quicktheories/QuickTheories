@@ -20,7 +20,7 @@ public class DatesTest {
 
   @Test
   public void shouldNotShrinkEpochWhenMilliSecondsBetweenTwoValues() {
-    Source<Date> testee = Dates.withMilliSecondsBetween(0, 8687689756l);
+    Source<Date> testee = Dates.withMilliSecondsBetween(0, 8687689756L);
     assertThatSource(testee).cannotShrink(new Date(0));
   }
 
@@ -38,7 +38,7 @@ public class DatesTest {
 
   @Test
   public void shouldShrinkBoundedDateTowardsSmallerDate() {
-    Source<Date> testee = Dates.withMilliSecondsBetween(97987, 797098708732l);
+    Source<Date> testee = Dates.withMilliSecondsBetween(97987, 797098708732L);
     assertThatSource(testee).shrinksConformTo(new Date(7899078),
         d -> d.before(new Date(7899078)) && d.compareTo(new Date(97987)) >= 0,
         withCycles(100));

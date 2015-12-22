@@ -4,6 +4,8 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import javax.annotation.CheckReturnValue;
+
 import org.quicktheories.quicktheories.api.Function3;
 import org.quicktheories.quicktheories.api.Function4;
 
@@ -14,6 +16,7 @@ import org.quicktheories.quicktheories.api.Function4;
  *          The type to generate
  */
 @FunctionalInterface
+@CheckReturnValue
 public interface Generator<T> {
 
   /**

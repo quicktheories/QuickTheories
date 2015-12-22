@@ -39,13 +39,13 @@ public class PRNGsTest {
   @Test
   public void javaUtilPrngGeneratesOnlyLongPossibleWhenIntervalIsZeroWide() {
     generatesExactly(javaUtilPrng,
-        prng -> prng.generateRandomLongWithinInterval(0l, 0l), 0l);
+        prng -> prng.generateRandomLongWithinInterval(0L, 0L), 0L);
   }
 
   @Test
   public void xOrShiftPrngGeneratesOnlyLongPossibleWhenIntervalIsZeroWide() {
     generatesExactly(xOrShiftPrng,
-        prng -> prng.generateRandomLongWithinInterval(0l, 0l), 0l);
+        prng -> prng.generateRandomLongWithinInterval(0L, 0L), 0L);
   }
 
   @Test

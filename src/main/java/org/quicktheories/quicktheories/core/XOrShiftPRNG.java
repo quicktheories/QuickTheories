@@ -1,5 +1,8 @@
 package org.quicktheories.quicktheories.core;
 
+import javax.annotation.concurrent.NotThreadSafe;
+
+@NotThreadSafe
 final class XOrShiftPRNG implements PseudoRandom {
 
   private final long initialSeed;

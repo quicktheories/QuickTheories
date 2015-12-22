@@ -4,6 +4,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import javax.annotation.CheckReturnValue;
+
 /**
  * The state for a theory involving one value
  *
@@ -37,6 +39,7 @@ public interface Subject1<T> {
    *          function to transform the value of type T to a String
    * @return a Subject1 of type T
    */
+  @CheckReturnValue
   public Subject1<T> describedAs(Function<T,String> tToString);
 
 }

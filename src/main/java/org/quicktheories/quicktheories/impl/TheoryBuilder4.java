@@ -8,6 +8,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import javax.annotation.CheckReturnValue;
+
 import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.api.Function4;
 import org.quicktheories.quicktheories.api.Pair;
@@ -69,6 +71,7 @@ public final class TheoryBuilder4<A, B, C, D> {
    *          an assumption that must be true of all values
    * @return theory builder based on the given assumption
    */
+  @CheckReturnValue
   public TheoryBuilder4<A, B, C, D> assuming(
       Predicate4<A, B, C, D> newAssumption) {
     return new TheoryBuilder4<A, B, C, D>(this.state, this.as, this.bs, this.cs,
@@ -85,6 +88,7 @@ public final class TheoryBuilder4<A, B, C, D> {
    *          function with which to map values to desired type
    * @return theory builder about type T
    */
+  @CheckReturnValue
   public <T> Subject1<T> as(
       Function4<A, B, C, D, T> mapping) {
     return new MappingTheoryBuilder<>(this.state, combine(),
@@ -106,6 +110,7 @@ public final class TheoryBuilder4<A, B, C, D> {
    *          Function from types A,B,C,D to type T
    * @return a Subject5 relating to the state of a theory involving five values
    */
+  @CheckReturnValue
   public <T> Subject5<A, B, C, D, T> asWithPrecursor(
       Function4<A, B, C, D, T> mapping) {
     return asWithPrecursor(mapping, t -> t.toString());
@@ -124,6 +129,7 @@ public final class TheoryBuilder4<A, B, C, D> {
    *          Function to describe generated type
    * @return a Subject5 relating to the state of a theory involving five values
    */
+  @CheckReturnValue
   public <T> Subject5<A, B, C, D, T> asWithPrecursor(
       Function4<A, B, C, D, T> mapping, Function<T, String> typeToString) {
     final Shrink<Tuple5<A, B, C, D, T>> shrink = (original,

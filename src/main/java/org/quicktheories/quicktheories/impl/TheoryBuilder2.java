@@ -11,6 +11,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import javax.annotation.CheckReturnValue;
+
 import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.api.Pair;
 import org.quicktheories.quicktheories.api.Subject1;
@@ -57,6 +59,7 @@ public final class TheoryBuilder2<A, B> implements Subject2<A, B> {
    *          an assumption that must be true of all values
    * @return theory builder based on the given assumption
    */
+  @CheckReturnValue
   public TheoryBuilder2<A, B> assuming(BiPredicate<A, B> newAssumption) {
     return new TheoryBuilder2<A, B>(this.state, this.as, this.bs,
         this.assumptions.and(newAssumption));
@@ -100,6 +103,7 @@ public final class TheoryBuilder2<A, B> implements Subject2<A, B> {
    *          function with which to map values to desired type
    * @return theory builder about type T
    */
+  @CheckReturnValue
   public <T> Subject1<T> as(
       BiFunction<A, B, T> mapping) {
     return new MappingTheoryBuilder<>(this.state, combine(),
@@ -120,6 +124,7 @@ public final class TheoryBuilder2<A, B> implements Subject2<A, B> {
    *          Function from types A and B to type T
    * @return a Subject3 relating to the state of a theory involving three values
    */
+  @CheckReturnValue
   public <T> Subject3<A, B, T> asWithPrecursor(BiFunction<A, B, T> mapping) {
     return this.asWithPrecursor(mapping, t -> t.toString());
   }
@@ -137,6 +142,7 @@ public final class TheoryBuilder2<A, B> implements Subject2<A, B> {
    *          Function to use to display built type
    * @return a Subject3 relating to the state of a theory involving three values
    */
+  @CheckReturnValue
   public <T> Subject3<A, B, T> asWithPrecursor(BiFunction<A, B, T> mapping,
       Function<T, String> typeToString) {
     final Generator<Tuple3<A, B, T>> g = (prng, step) -> {

@@ -2,6 +2,8 @@ package org.quicktheories.quicktheories;
 
 import java.util.function.Supplier;
 
+import javax.annotation.CheckReturnValue;
+
 import org.quicktheories.quicktheories.core.Configuration;
 import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Strategy;
@@ -13,6 +15,7 @@ import org.quicktheories.quicktheories.impl.TheoryBuilder4;
 /**
  * Entry point for property based testing.
  */
+@CheckReturnValue
 public class QuickTheory {
 
   private final Supplier<Strategy> state;
