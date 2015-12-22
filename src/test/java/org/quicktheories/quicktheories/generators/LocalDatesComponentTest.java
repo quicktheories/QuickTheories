@@ -1,21 +1,13 @@
 package org.quicktheories.quicktheories.generators;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import java.time.LocalDate;
 
 import org.junit.Test;
-import org.quicktheories.quicktheories.core.Configuration;
-import org.quicktheories.quicktheories.core.Reporter;
-import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.generators.LocalDatesDSL.LocalDates;
 
 public class LocalDatesComponentTest extends ComponentTest<LocalDate> {
-
-  Reporter reporter = mock(Reporter.class);
-  Strategy strategy = new Strategy(Configuration.defaultPRNG(5), 1000, 1000,
-      this.reporter);
 
   @Test
   public void shouldShrinkToEpoch() {

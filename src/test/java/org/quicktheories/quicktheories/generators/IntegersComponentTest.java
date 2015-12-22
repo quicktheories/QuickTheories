@@ -102,11 +102,11 @@ public class IntegersComponentTest extends ComponentTest<Integer> {
   }
 
   @Test
-  public void shoulCreateAListWhoseElementsAllPassTheInitialAssumptionsPredicateTest() {
+  public void shouldCreateAListWhoseElementsAllPassTheInitialAssumptionsPredicateTest() {
     assertThatFor(Integers.range(-40000, 40000))
-        .assuming(i -> i % 2 == 1).check(i -> false);
+        .assuming(i -> i % 2 != 0).check(i -> false);
     for (int i : listOfShrunkenItems()) {
-      assertTrue(i % 2 == 1);
+      assertTrue(i % 2 != 0);
     }
   }
 

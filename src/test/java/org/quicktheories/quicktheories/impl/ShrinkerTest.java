@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import org.junit.Test;
 import org.quicktheories.quicktheories.api.Pair;
 import org.quicktheories.quicktheories.core.Configuration;
+import org.quicktheories.quicktheories.core.ExceptionReporter;
 import org.quicktheories.quicktheories.core.Shrink;
 import org.quicktheories.quicktheories.core.Strategy;
 import org.quicktheories.quicktheories.impl.Shrinker.ShrinkResult;
@@ -18,7 +19,7 @@ public class ShrinkerTest {
 
   Shrinker<Integer, Integer> testee;
 
-  Strategy strategy = new Strategy(Configuration.defaultPRNG(0), 10, 10, null);
+  Strategy strategy = new Strategy(Configuration.defaultPRNG(0), 10, 10, new ExceptionReporter());
 
   @Test
   public void shouldReportOriginalAsSmallestFalsifyingValueWhenNoSmallerValueFound() {

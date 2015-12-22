@@ -5,6 +5,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import javax.annotation.CheckReturnValue;
+
 import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.api.Pair;
 import org.quicktheories.quicktheories.api.Subject1;
@@ -50,6 +52,7 @@ public final class TheoryBuilder<A> implements Subject1<A> {
    *          an assumption that must be true of all values
    * @return TheoryBuilder based on the given assumption
    */
+  @CheckReturnValue
   public TheoryBuilder<A> assuming(Predicate<A> newAssumption) {
     return new TheoryBuilder<A>(this.state, this.ps,
         this.assumptions.and(newAssumption));
@@ -64,6 +67,7 @@ public final class TheoryBuilder<A> implements Subject1<A> {
    *          function with which to map values to desired type
    * @return theory builder about type T
    */
+  @CheckReturnValue
   public <T> Subject1<T> as(Function<A, T> mapping) {
     return new MappingTheoryBuilder<>(this.state, this.ps, this.assumptions,
         mapping,
@@ -81,6 +85,7 @@ public final class TheoryBuilder<A> implements Subject1<A> {
    *          Function from types A and B to type T
    * @return a Subject3 relating to the state of a theory involving three values
    */
+  @CheckReturnValue
   public <T> Subject2<A, T> asWithPrecursor(Function<A, T> mapping) {
     return asWithPrecursor(mapping, t -> t.toString());
   }
@@ -98,6 +103,7 @@ public final class TheoryBuilder<A> implements Subject1<A> {
    *          Function to use when describing the built type
    * @return a Subject3 relating to the state of a theory involving three values
    */
+  @CheckReturnValue
   public <T> Subject2<A, T> asWithPrecursor(Function<A, T> mapping,
       Function<T, String> typeToString) {
     final Generator<Pair<A, T>> g = (prng, step) -> {
@@ -118,6 +124,7 @@ public final class TheoryBuilder<A> implements Subject1<A> {
   }
 
   @Override
+  @CheckReturnValue
   public Subject1<A> describedAs(Function<A, String> toString) {
     return new TheoryBuilder<A>(this.state,
         this.ps.describedAs(a -> toString.apply(a)), this.assumptions);

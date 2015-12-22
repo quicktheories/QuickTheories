@@ -3,6 +3,8 @@ package org.quicktheories.quicktheories.core;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import javax.annotation.CheckReturnValue;
+
 import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.generators.Compositions;
 
@@ -17,6 +19,7 @@ import org.quicktheories.quicktheories.generators.Compositions;
  * @param <T>
  *          Type of values to generate
  */
+@CheckReturnValue
 public final class Source<T> implements Shrink<T>, Generator<T>, AsString<T> {
 
   private final Generator<T> prngToValue;
