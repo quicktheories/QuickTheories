@@ -7,6 +7,7 @@ import javax.annotation.CheckReturnValue;
 import org.quicktheories.quicktheories.core.Configuration;
 import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Strategy;
+import org.quicktheories.quicktheories.generators.SourceDSL;
 import org.quicktheories.quicktheories.impl.TheoryBuilder;
 import org.quicktheories.quicktheories.impl.TheoryBuilder2;
 import org.quicktheories.quicktheories.impl.TheoryBuilder3;
@@ -172,6 +173,14 @@ public class QuickTheory {
       final Source<C> cs,
       final Source<D> ds) {
     return new TheoryBuilder4<>(state, as, bs, cs, ds, (a, b, c, d) -> true);
+  }
+  
+  /**
+   * Entry point for DSL from which sources for common Java types can be built
+   * @return a SourceDSL
+   */
+  public static SourceDSL values() {
+    return new SourceDSL(){};
   }
 
 }
