@@ -70,6 +70,24 @@ The falsified theory has highlighted something that we forgot.
 
 Math works just fine, but in Java integers can overflow.
 
+### Without static imports
+
+If you prefer the QuickTheories entry points can be brought into scope by implementing and interface, removing the need for static imports.
+
+```java
+public class SomeTests implements WithQuickTheories {
+
+  @Test
+  public void addingTwoPositiveIntegersAlwaysGivesAPositiveInteger(){
+    qt()
+    .forAll(integers().allPositive()
+          , integers().allPositive())
+    .check((i,j) -> i + j > 0); 
+  }
+
+}
+```
+
 ### Shrinking
 
 QuickTheories supports shrinking. 

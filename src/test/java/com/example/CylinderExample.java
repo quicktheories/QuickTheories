@@ -1,17 +1,15 @@
 package com.example;
 
-import static org.quicktheories.quicktheories.QuickTheory.qt;
-import static org.quicktheories.quicktheories.generators.SourceDSL.integers;
-
 import java.math.BigDecimal;
 import java.util.stream.IntStream;
 
 import org.junit.Test;
+import org.quicktheories.quicktheories.WithQuickTheories;
 import org.quicktheories.quicktheories.core.Generator;
 import org.quicktheories.quicktheories.core.Shrink;
 import org.quicktheories.quicktheories.core.Source;
 
-public class CylinderExample {
+public class CylinderExample implements WithQuickTheories {
 
   static class Cylinder {
     private final int radius;
