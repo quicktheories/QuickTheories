@@ -579,9 +579,10 @@ We're happy to share the results as open source when we think they're successful
 
 ## Other property based testing systems for Java
 
-If you don't like QuickTheories you might want to try one of the other systems below which have different design goals. None of them look at implementing shrinking, but all provide ways of generating random values and should work on earlier versions of Java.
+If you don't like QuickTheories you might want to try one of the other systems below which have different design goals. Besides junit-quickcheck, none of them look at implementing shrinking, but all provide ways of generating random values and should work on earlier versions of Java.
 
-* [JUnit-quickcheck](https://github.com/pholser/junit-quickcheck). Tightly integrated with JUnit, uses annotations to configure generators.
+* [JUnit-quickcheck](http://pholser.github.io/junit-quickcheck). Tightly integrated with JUnit, uses annotations to configure generators.
+    + As of v0.6 junit-quickcheck also supports shrinking.
 * [JCheck](http://www.jcheck.org/). Tightly integrated with JUnit. Does not look to be maintained.
 * [QuickCheck](https://bitbucket.org/blob79/quickcheck). Not tied to a test framework - provides generators of random values to be used in tests.
 * [FunctionalJava](http://www.functionaljava.org/). Apparently contains a property based testing system, but appears to be completely undocumented.
