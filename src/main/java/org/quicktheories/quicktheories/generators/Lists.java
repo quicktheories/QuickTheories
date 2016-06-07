@@ -48,7 +48,8 @@ final class Lists {
         .stream()
         .map(p -> generator.next(p, step))
         .collect(collector)).withShrinker(
-            shrinkBoundedList(generator, collector, minimumSize));
+            shrinkBoundedList(generator, collector, minimumSize))
+            .describedAs(list -> list.stream().map(generator::asString).collect(arrayListCollector()).toString());
   }
   
   static Shrink<List<Integer>> swapBetweenShrinkMethodsForBoundedIntegerLists(

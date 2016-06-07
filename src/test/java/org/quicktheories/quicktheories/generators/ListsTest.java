@@ -1,5 +1,6 @@
 package org.quicktheories.quicktheories.generators;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.quicktheories.quicktheories.generators.IntegersTest.headsTowardsLowerAbsoluteValue;
 import static org.quicktheories.quicktheories.generators.Lists.arrayListCollector;
@@ -16,6 +17,7 @@ import java.util.function.Predicate;
 
 import org.junit.Test;
 import org.quicktheories.quicktheories.core.Configuration;
+import org.quicktheories.quicktheories.core.Generator;
 import org.quicktheories.quicktheories.core.ShrinkContext;
 import org.quicktheories.quicktheories.core.Source;
 
@@ -226,6 +228,14 @@ public class ListsTest {
                 generator, arrayListCollector(), 3));
     assertThatSource(testee).shrinksValueTo(Arrays.asList(15, 19, 1),
         Arrays.asList(14, 18, 1));
+  }
+
+  @Test
+  public void shouldDescribeListContentsUsingProvidedSource() {
+    Source<String> sourceWithCustomDescription = Arbitrary.constant("x").describedAs(x -> "custom description for x");
+    Source<List<String>> testee = listsOf(sourceWithCustomDescription, arrayListCollector(), 2, 3);
+    List<String> aList = new ArrayList<String>(Arrays.asList("x","x"));
+    assertThat(testee.asString(aList)).isEqualTo("[custom description for x, custom description for x]");
   }
 
   private void isLinkedListAfterShrinking(List<Integer> shrunkOutput) {
