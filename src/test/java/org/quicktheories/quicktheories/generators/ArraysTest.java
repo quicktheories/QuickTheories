@@ -1,6 +1,8 @@
 package org.quicktheories.quicktheories.generators;
 
 import static org.junit.Assert.assertTrue;
+import static org.quicktheories.quicktheories.generators.Lists.arrayListCollector;
+import static org.quicktheories.quicktheories.generators.Lists.listsOf;
 import static org.quicktheories.quicktheories.generators.SourceAssert.assertThatSource;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,6 +10,9 @@ import org.junit.Test;
 import org.quicktheories.quicktheories.core.Configuration;
 import org.quicktheories.quicktheories.core.ShrinkContext;
 import org.quicktheories.quicktheories.core.Source;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArraysTest {
 
@@ -110,6 +115,16 @@ public class ArraysTest {
         Integer.class, 2, 2);
     Integer[] anArray = { 1, 2, 3 };
     assertThat(testee.asString(anArray)).isEqualTo("[1, 2, 3]");
+  }
+
+  @Test
+  public void shouldDescribeListContentsUsingProvidedSource() {
+    Source<String> sourceWithCustomDescription = Arbitrary.constant("x").describedAs(x -> "custom description for x");
+    Source<String[]> testee = Arrays.arraysOf(sourceWithCustomDescription, String.class, 2, 2);
+
+    String[] anArray = { "foo", "bar"};
+
+    assertThat(testee.asString(anArray)).isEqualTo("[custom description for x, custom description for x]");
   }
 
   private <T> void isExpectedLength(T[] shrunkOutput, int expected) {

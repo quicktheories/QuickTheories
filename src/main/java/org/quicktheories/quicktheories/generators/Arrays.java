@@ -1,9 +1,11 @@
 package org.quicktheories.quicktheories.generators;
 
-import java.lang.reflect.Array;
-
 import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.core.Source;
+
+import java.lang.reflect.Array;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 final class Arrays {
 
@@ -17,11 +19,11 @@ final class Arrays {
                                                            // zero is less than
                                                            // the length of the
                                                            // array
-            a -> java.util.Arrays.asList(a)).describedAs(arrayDescriber());
+            a -> java.util.Arrays.asList(a)).describedAs(arrayDescriber(values::asString));
   }
   
-  private static <T> AsString<T[]> arrayDescriber() {
-    return a -> java.util.Arrays.deepToString(a);
+  private static <T> AsString<T[]> arrayDescriber(Function<T, String> valueDescriber) {
+    return a -> java.util.Arrays.stream(a).map(valueDescriber).collect(Collectors.joining(", ", "[", "]"));
   }
 
 }
