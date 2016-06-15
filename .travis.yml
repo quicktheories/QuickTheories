@@ -4,3 +4,4 @@ language: java
 
 jdk:
   - oraclejdk8
+script: mvn -e clean verify
