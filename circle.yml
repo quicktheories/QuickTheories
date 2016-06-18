@@ -1,5 +1,5 @@
 machine:
   java:
     version: openjdk8
-environment:
+  environment:
     JAVA_OPTIONS: "-Xms512m -Xmx1024m"
