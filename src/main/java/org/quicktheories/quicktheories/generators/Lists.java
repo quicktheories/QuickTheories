@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.core.Source;
 import org.quicktheories.quicktheories.core.Shrink;
 import org.quicktheories.quicktheories.core.ShrinkContext;
@@ -48,9 +51,14 @@ final class Lists {
         .stream()
         .map(p -> generator.next(p, step))
         .collect(collector)).withShrinker(
-            shrinkBoundedList(generator, collector, minimumSize));
+            shrinkBoundedList(generator, collector, minimumSize))
+            .describedAs(listDescriber(generator::asString));
   }
-  
+
+  private static <T> AsString<List<T>> listDescriber(Function<T, String> valueDescriber) {
+    return list -> list.stream().map(valueDescriber).collect(Collectors.joining(", ", "[", "]"));
+  }
+
   static Shrink<List<Integer>> swapBetweenShrinkMethodsForBoundedIntegerLists(
       Source<Integer> generator,
       Collector<Integer, List<Integer>, List<Integer>> collector,
