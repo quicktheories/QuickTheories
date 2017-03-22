@@ -158,7 +158,17 @@ public class ToStringTest {
           .hasMessageContaining(Arrays.deepToString(new Integer[] { 0 }));
     }
   }
-
+  
+  @Test
+  public void shouldPrintReadableRepresentationOfNull() throws Exception {
+      try {
+        qt().withFixedSeed(5).forAll(arbitrary().pick(null, "test")).check(value -> value != null);
+    } catch (final AssertionError error) {
+        assertThat(error)
+            .hasMessageContaining("null");
+    }
+  }
+  
   private void failIfReached() throws AssertionError {
     throw new Error("Expected an AssertionError but didn't get one");
   }

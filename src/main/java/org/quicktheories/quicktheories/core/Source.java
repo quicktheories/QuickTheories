@@ -197,7 +197,7 @@ public final class Source<T> implements Shrink<T>, Generator<T>, AsString<T> {
   }
   
   private static <T> AsString<T> defaultAsString() {
-    return (value) -> value.toString();
+    return (value) -> value == null ? "null" : value.toString();
   }
 
 
