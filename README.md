@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/NCR-CoDE/QuickTheories.svg)](https://travis-ci.org/NCR-CoDE/QuickTheories)
+[![Build Status](https://travis-ci.org/NCR-CoDE/QuickTheories.svg)](https://travis-ci.org/ncredinburgh/QuickTheories)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.quicktheories/quicktheories/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.quicktheories/quicktheories)
 
 # QuickTheories
