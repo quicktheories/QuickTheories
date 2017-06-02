@@ -1,0 +1,6 @@
+Bundle-SymbolicName: org.quicktheories.quicktheories
+Import-Package: javax.annotation.*;resolution:=optional, *
+-exportcontents:\
+	*
+
+-sources: false
