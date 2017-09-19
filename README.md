@@ -142,9 +142,9 @@ This can be done using the checkAssert method.
 	  
 Any block of code that returns void can be passed to checkAssert. Any unchecked exception will be interpreted as falsifying the theory.
 
-### Source and assumptions
+### Assumptions
 
-As we've seen we can create theories from a pair of Sources - which produce a pair of values. 
+As we've seen we can create theories from a pair of Gens - which produce a pair of values. 
 
 In fact we can create theories about any number of values between 1 and 4.
 
@@ -159,18 +159,11 @@ In fact we can create theories about any number of values between 1 and 4.
   }
 ```
 
-In the example above we use three Sources, as you can see QuickTheories provides ways of generating most common Java types.
+In the example above we use three Gens, as you can see QuickTheories provides ways of generating most common Java types.
 
-Sources are made up of two parts
+A Gen is just a simple function from a random number generator to a value. As we can see, the DSL provides a way to put constraints on the values we generate (e.g we will only generate positive integers and the lists in this example will only be of size 42).
 
-* A Generator
-* A Shrinker
-
-A generator is just a simple function from a random number generator to a value. A shrinker is something that can intelligently produce simpler instances of that type.
-
-As we can see, the Sources DSL provides a way to put constraints on the values we generate (e.g we will only generate positive integers and the lists in this example will only be of size 42).
-
-Whenever possible you should use the Sources DSL to provide constraints, but sometimes you might need to constrain the domain in ways that cannot be expressed with the DSL.
+Whenever possible you should use the DSL to provide constraints, but sometimes you might need to constrain the domain in ways that cannot be expressed with the DSL.
 
 When this happens use assumptions. 
 
@@ -188,7 +181,7 @@ When this happens use assumptions.
 
 Assumptions further constrain the values which form the subject of the theory.
 
-Although we could always replace the constraints we created in the Sources DSL with assumptions, this would be very inefficient. QuickTheories would have to spend a lot of effort just trying to find valid values before it could try to invalidate a theory.
+Although we could always replace the constraints we created in the DSL with assumptions, this would be very inefficient. QuickTheories would have to spend a lot of effort just trying to find valid values before it could try to invalidate a theory.
 
 As difficult to find values probably represent a coding error, QuickTheories will throw an error if less than 10% of the generated values pass the assumptions:
 
