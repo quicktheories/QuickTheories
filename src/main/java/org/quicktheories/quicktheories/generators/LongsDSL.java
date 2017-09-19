@@ -1,16 +1,10 @@
 package org.quicktheories.quicktheories.generators;
 
-import org.quicktheories.quicktheories.core.Source;
-import static org.quicktheories.quicktheories.generators.Longs.range;
+import org.quicktheories.quicktheories.core.Gen;
 
 /**
  * A Class for creating Long Sources that will produces Longs within a set
- * interval and will shrink within this domain. If the distance between the
- * target and original value is greater than the number of remaining shrink
- * cycles, shrinking is random with the domain; otherwise, shrinking is
- * deterministic with Longs getting closer to the target value by increments of
- * one.
- *
+ * interval and will shrink within this domain. 
  */
 public class LongsDSL {
 
@@ -29,12 +23,9 @@ public class LongsDSL {
    * Generates all possible Longs in Java bounded below by Long.MIN_VALUE and
    * above by Long.MAX_VALUE.
    * 
-   * The Source is weighted so it is likely to generate the upper and lower
-   * limits of the domain one or more times.
-   * 
    * @return a Source of type Long
    */
-  public Source<Long> all() {
+  public Gen<Long> all() {
     return between(Long.MIN_VALUE, Long.MAX_VALUE);
   }
 
@@ -50,14 +41,11 @@ public class LongsDSL {
      * Generates Longs within the interval specified with an inclusive lower and
      * upper bound.
      * 
-     * The Source is weighted so it is likely to generate the upper and lower
-     * limits of the domain one or more times.
-     * 
      * @param endInclusive
      *          - inclusive upper bound of domain
      * @return a Source of type Long
      */
-    public Source<Long> upToAndIncluding(final long endInclusive) {
+    public Gen<Long> upToAndIncluding(final long endInclusive) {
       return between(startInclusive, endInclusive);
     }
 
@@ -65,14 +53,11 @@ public class LongsDSL {
      * Generates Longs within the interval specified with an inclusive lower
      * bound and exclusive upper bound.
      * 
-     * The Source is weighted so it is likely to generate the upper and lower
-     * limits of the domain one or more times.
-     * 
      * @param endExclusive
      *          - exclusive upper bound of domain
      * @return a Source of type Long
      */
-    public Source<Long> upTo(final long endExclusive) {
+    public Gen<Long> upTo(final long endExclusive) {
       return between(startInclusive, endExclusive - 1);
     }
   }
@@ -90,13 +75,12 @@ public class LongsDSL {
    *          - inclusive upper bound of domain
    * @return a Source of type Long
    */
-  public Source<Long> between(final long startInclusive,
+  public Gen<Long> between(final long startInclusive,
       final long endInclusive) {
     ArgumentAssertions.checkArguments(startInclusive <= endInclusive,
         "There are no Long values to be generated between (%s) and (%s)",
         startInclusive, endInclusive);
-    return Compositions.weightWithValues(
-        range(startInclusive, endInclusive), startInclusive, endInclusive);
+    return Generate.longRange(startInclusive, endInclusive);
   }
 
 }

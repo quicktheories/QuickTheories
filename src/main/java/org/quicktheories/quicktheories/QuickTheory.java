@@ -5,13 +5,12 @@ import java.util.function.Supplier;
 import javax.annotation.CheckReturnValue;
 
 import org.quicktheories.quicktheories.core.Configuration;
-import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Gen;
 import org.quicktheories.quicktheories.core.Strategy;
-import org.quicktheories.quicktheories.generators.SourceDSL;
-import org.quicktheories.quicktheories.impl.TheoryBuilder;
-import org.quicktheories.quicktheories.impl.TheoryBuilder2;
-import org.quicktheories.quicktheories.impl.TheoryBuilder3;
-import org.quicktheories.quicktheories.impl.TheoryBuilder4;
+import org.quicktheories.quicktheories.dsl.TheoryBuilder;
+import org.quicktheories.quicktheories.dsl.TheoryBuilder2;
+import org.quicktheories.quicktheories.dsl.TheoryBuilder3;
+import org.quicktheories.quicktheories.dsl.TheoryBuilder4;
 
 /**
  * Entry point for property based testing.
@@ -89,8 +88,8 @@ public class QuickTheory {
    *          the source of values over which the property should be true
    * @return state for which a property can be defined
    */
-  public <A> TheoryBuilder<A> forAll(final Source<A> values) {
-    return new TheoryBuilder<>(state, values, a -> true);
+  public <A> TheoryBuilder<A> forAll(final Gen<A> values) {
+    return new TheoryBuilder<>(state, values);
   }
 
   /**
@@ -109,8 +108,8 @@ public class QuickTheory {
    * @return state for which a property can be defined
    */
   public <A, B> TheoryBuilder2<A, B> forAll(
-      final Source<A> as,
-      final Source<B> bs) {
+      final Gen<A> as,
+      final Gen<B> bs) {
     return new TheoryBuilder2<>(state, as, bs, (a, b) -> true);
   }
 
@@ -135,9 +134,9 @@ public class QuickTheory {
    * @return state for which a property can be defined
    */
   public <A, B, C> TheoryBuilder3<A, B, C> forAll(
-      final Source<A> as,
-      final Source<B> bs,
-      final Source<C> cs) {
+      final Gen<A> as,
+      final Gen<B> bs,
+      final Gen<C> cs) {
     return new TheoryBuilder3<>(state, as, bs, cs, (a, b, c) -> true);
   }
 
@@ -168,19 +167,12 @@ public class QuickTheory {
    * @return state for which a property can be defined
    */
   public <A, B, C, D> TheoryBuilder4<A, B, C, D> forAll(
-      final Source<A> as,
-      final Source<B> bs,
-      final Source<C> cs,
-      final Source<D> ds) {
+      final Gen<A> as,
+      final Gen<B> bs,
+      final Gen<C> cs,
+      final Gen<D> ds) {
     return new TheoryBuilder4<>(state, as, bs, cs, ds, (a, b, c, d) -> true);
   }
   
-  /**
-   * Entry point for DSL from which sources for common Java types can be built
-   * @return a SourceDSL
-   */
-  public static SourceDSL values() {
-    return new SourceDSL(){};
-  }
 
 }

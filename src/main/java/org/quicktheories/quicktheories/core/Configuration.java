@@ -11,6 +11,7 @@ public abstract class Configuration {
   public final static String SEED = "QT_SEED";
   public final static String EXAMPLES = "QT_EXAMPLES";
   public final static String SHRINKS = "QT_SHRINKS";
+  public final static String GENERATE_ATTEMPRS = "QT_ATTEMPTS";
 
   /**
    * Sets the strategy for the corresponding QuickTheory. Default values are set
@@ -19,8 +20,13 @@ public abstract class Configuration {
    * @return a Strategy
    */
   public static Strategy systemStrategy() {
-    return new Strategy(defaultPRNG(pickSeed()), pickExamples(), pickShrinks(),
+    return new Strategy(defaultPRNG(pickSeed()), pickExamples(), pickShrinks(), pickAttempts(),
         new ExceptionReporter());
+  }
+
+  private static int pickAttempts() {
+    Optional<String> userValue = Optional.ofNullable(System.getProperty(SEED));
+    return userValue.map(Integer::valueOf).orElseGet(() -> 10);
   }
 
   private static int pickShrinks() {

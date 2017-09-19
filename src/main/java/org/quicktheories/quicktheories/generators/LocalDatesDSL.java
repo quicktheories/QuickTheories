@@ -1,7 +1,8 @@
 package org.quicktheories.quicktheories.generators;
 
 import java.time.LocalDate;
-import org.quicktheories.quicktheories.core.Source;
+
+import org.quicktheories.quicktheories.core.Gen;
 
 /**
  * A Class for creating LocalDate Sources that will produce LocalDates based on
@@ -17,19 +18,14 @@ public class LocalDatesDSL {
    * LocalDate.of(daysFromEpoch) (which can be a negative long, in accordance
    * with the LocalDate API).
    * 
-   * The Source is weighted so it is likely to produce
-   * LocalDate.of(daysFromEpoch) one or more times.
-   * 
    * @param daysFromEpoch
    *          the number of days from the epoch such that LocalDates are
    *          generated within this interval.
    * @return a Source of type LocalDate
    */
-  public Source<LocalDate> withDays(long daysFromEpoch) {
+  public Gen<LocalDate> withDays(long daysFromEpoch) {
     lowerBoundGEQLongLocalDateMin(daysFromEpoch);
-    return Compositions.weightWithValues(LocalDates.withDays(daysFromEpoch),
-        LocalDate.ofEpochDay(daysFromEpoch));
-
+    return LocalDates.withDays(daysFromEpoch);
   }
 
   /**
@@ -37,10 +33,6 @@ public class LocalDatesDSL {
    * LocalDate.of(daysFromEpochStartInclusive) and
    * LocalDate.of(daysFromEpochEndInclusive) (these can be negative longs, in
    * accordance with the LocalDate API).
-   * 
-   * The Source is weighted so it is likely to produce
-   * LocalDate.of(daysFromEpochStartInclusive) and
-   * LocalDate.of(daysFromEpochEndInclusive) one or more times.
    * 
    * @param daysFromEpochStartInclusive
    *          the number of days from epoch for the desired older LocalDate
@@ -50,17 +42,15 @@ public class LocalDatesDSL {
    * 
    * @return a Source of type LocalDate
    */
-  public Source<LocalDate> withDaysBetween(long daysFromEpochStartInclusive,
+  public Gen<LocalDate> withDaysBetween(long daysFromEpochStartInclusive,
       long daysFromEpochEndInclusive) {
     acceptableIntervalForLongLocalDate(daysFromEpochStartInclusive,
         daysFromEpochEndInclusive);
     maxGEQMin(daysFromEpochStartInclusive,
         daysFromEpochEndInclusive);
-    return Compositions.weightWithValues(
+    return 
         LocalDates.withDaysBetween(daysFromEpochStartInclusive,
-            daysFromEpochEndInclusive),
-        LocalDate.ofEpochDay(daysFromEpochEndInclusive),
-        LocalDate.ofEpochDay(daysFromEpochStartInclusive));
+            daysFromEpochEndInclusive);
 
   }
 
@@ -95,18 +85,17 @@ public class LocalDatesDSL {
 
   static class LocalDates {
 
-    static Source<LocalDate> withDays(long daysFromEpoch) {
+    static Gen<LocalDate> withDays(long daysFromEpoch) {
       if (daysFromEpoch < 0) {
         return withDaysBetween(daysFromEpoch,0);
       }
       return withDaysBetween(0, daysFromEpoch);
     }
 
-    static Source<LocalDate> withDaysBetween(long daysFromEpochStartInclusive,
+    static Gen<LocalDate> withDaysBetween(long daysFromEpochStartInclusive,
         long daysFromEpochEndInclusive) {
-      return Longs.range(daysFromEpochStartInclusive, daysFromEpochEndInclusive)
-          .as(l -> LocalDate.ofEpochDay(l),
-              d -> d.toEpochDay());
+      return Generate.longRange(daysFromEpochStartInclusive, daysFromEpochEndInclusive)
+          .map(l -> LocalDate.ofEpochDay(l));
     }
 
   }

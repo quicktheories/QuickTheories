@@ -173,7 +173,8 @@ public class PropertyTestExamples {
   // Fermat's Little Theorem Example
   @Test
   public void truthOfFermatsLittleTheorem() {
-    qt().forAll(longs().between(1, Long.MAX_VALUE), longs().between(2, 1000))
+    qt().forAll(longs().between(1, Long.MAX_VALUE), 
+                longs().between(2, 1000))
         .assuming((i, j) -> isPrime(j))
         .check((n, p) -> fermatsLittleTheorem().test(n, p));
   }
@@ -203,8 +204,9 @@ public class PropertyTestExamples {
 
   @Test
   public void goodCongruenceDefinition() {
-    qt().forAll(longs().between(0, 50), longs().between(0, 50),
-        longs().between(1, 50))
+    qt().forAll(longs().between(0, 50), 
+                longs().between(0, 50),
+                longs().between(1, 50))
         .assuming((a, b, n) -> areCongruentModN(a, b, n))
         .check((a, b, n) -> (a % n + b % n) % n == (a + b) % n);
   }

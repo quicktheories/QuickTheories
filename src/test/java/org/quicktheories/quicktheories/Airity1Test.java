@@ -2,19 +2,19 @@ package org.quicktheories.quicktheories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.quicktheories.quicktheories.generators.SourceDSL.integers;
 import static org.quicktheories.quicktheories.generators.SourceDSL.arbitrary;
+import static org.quicktheories.quicktheories.generators.SourceDSL.integers;
 
 import org.junit.Test;
 import org.quicktheories.quicktheories.api.Pair;
-import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Gen;
 import org.quicktheories.quicktheories.impl.QTTester;
 
 public class Airity1Test {
 
   QTTester verifier = new QTTester();
 
-  Source<Integer> g = integers().all();
+  Gen<Integer> g = integers().all();
 
   @Test
   public void shouldNotFalisifyTheTruth() {
@@ -119,7 +119,7 @@ public class Airity1Test {
   @Test
   public void shouldConvertAndShrinkValues() {
     qt()
-        .forAll(arbitrary().sequence(1, 2, 3, 4, 5, 6, 7))
+        .forAll(arbitrary().pick(1, 2, 3, 4, 5, 6, 7))
         .as(i -> i.toString())
         .check(a -> a.equals("1"));
 
@@ -130,7 +130,8 @@ public class Airity1Test {
   @Test
   public void shouldAllowRetentionOfPrecursorValuesWhenConvertingTypes() {
     qt()
-        .forAll(arbitrary().sequence(1, 2, 3, 4, 5, 6, 7))
+    .withShrinkCycles(10)
+        .forAll(arbitrary().pick(1, 2, 3, 4, 5, 6, 7))
         .assuming(i -> i != 2)
         .asWithPrecursor(i -> i.toString())
         .check((precursor, a) -> a.equals("1"));
@@ -140,28 +141,49 @@ public class Airity1Test {
   }
 
   @Test
-  public void shouldFalisyWhenAssertionsThrown() {
+  public void shouldFalsifyWhenAssertionsThrown() {
     qt()
-        .forAll(arbitrary().sequence(1, 2, 3, 4, 5, 6, 7))
+        .forAll(arbitrary().pick(1, 2, 3, 4, 5, 6, 7))
         .checkAssert(i -> assertThat(i).isEqualTo(1));
 
     verifier.isFalsifiedByException();
   }
   
   @Test
-  public void shouldFalisyWhenAssertionsThrownAfterTypeConversion() {
+  public void shouldFalsifyWhenAssertionsThrownAfterTypeConversion() {
     qt()
-        .forAll(arbitrary().sequence(1, 2, 3, 4, 5, 6, 7))
+        .forAll(arbitrary().pick(1, 2, 3, 4, 5, 6, 7))
         .as(i -> i.toString())
         .checkAssert(a -> assertEquals("1",a));
 
     verifier.isFalsifiedByException();
   }  
+  
+  @Test
+  public void shouldPrintUsingToStringAfterTypeConversion() {
+    qt()
+    .forAll(arbitrary().pick(1))
+    .as(FooInteger::new)
+    .check( l -> false);
+
+    verifier.falsificationContainsText("Foo 1");
+  }
+  
+  @Test
+  public void shouldPrintUsingToStringAfterTypeConversionWithPrecursor() {
+    qt()
+    .forAll(arbitrary().pick(1))
+    .asWithPrecursor(FooInteger::new)
+    .check( (p,l) -> false);
+
+    verifier.falsificationContainsText("{1, Foo 1}");
+  }
+  
 
   @Test
   public void shouldAllowRetentionOfPrecursorValuesWhenAsserting() {
     qt()
-        .forAll(arbitrary().sequence(1, 2, 3, 4, 5, 6, 7))
+        .forAll(arbitrary().pick(1, 2, 3, 4, 5, 6, 7))
         .assuming(i -> i != 2)
         .asWithPrecursor(i -> i.toString())
         .checkAssert((precursor, i) -> assertThat(i).isEqualTo("1"));
@@ -169,6 +191,16 @@ public class Airity1Test {
     verifier.isFalsifiedByException();
   }
 
+  @Test
+  public void shouldUseSuppliedFunctionToDescribeValues() {
+    qt()
+    .forAll(arbitrary().pick(1))
+    .describedAs( i -> "Bar " + 1)
+    .check( l -> false);
+
+    verifier.falsificationContainsText("Bar 1");
+  }
+  
   private QuickTheory qt() {
     return this.verifier.qt();
   }

@@ -13,17 +13,11 @@ final class XOrShiftPRNG implements PseudoRandom {
     this.seed = ensureSeedIsNotZero(seed);
   }
 
-  @Override
-  public int nextInt(int startInclusive, int endInclusive) {
-    return (int) nextLongWithinCheckedInterval(startInclusive, endInclusive);
-  }
-
   // xorshift64* generator chosen after reading texts including:
   // 1) An experimental exploration of Marsaglia's xorshift generators,
   // scrambled - Sebastiano Vigna
   // 2) On the Xorshift Random Number Generators - Francois Panneton and Pierre
   // L'Ecuyer
-  @Override
   public long nextLong() {
     this.seed ^= this.seed >> 12;
     this.seed ^= this.seed << 25;
@@ -37,14 +31,20 @@ final class XOrShiftPRNG implements PseudoRandom {
   }
 
   @Override
-  public long nextLongWithinCheckedInterval(long startInclusive,
+  public long nextLong(long startInclusive,
       long endInclusive) {
+    if (startInclusive == Long.MIN_VALUE && endInclusive == Long.MAX_VALUE) {
+      return nextLong();
+    }
+    
     final long temp = nextLong();
     final long temp2 = temp % ((endInclusive - startInclusive) + 1);
     if (temp2 < 0) {
-      return temp2 + endInclusive + 1;
+      long t = temp2 + endInclusive + 1;
+      return t;
     }
-    return (temp2 + startInclusive);
+    long t = (temp2 + startInclusive);
+    return t;
   }
 
   @Override

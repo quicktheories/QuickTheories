@@ -15,6 +15,7 @@ import java.util.function.BiPredicate;
 
 import org.mockito.ArgumentCaptor;
 import org.quicktheories.quicktheories.QuickTheory;
+import org.quicktheories.quicktheories.api.AsString;
 import org.quicktheories.quicktheories.api.Pair;
 import org.quicktheories.quicktheories.api.Predicate3;
 import org.quicktheories.quicktheories.api.Predicate4;
@@ -24,12 +25,14 @@ import org.quicktheories.quicktheories.core.Configuration;
 import org.quicktheories.quicktheories.core.Reporter;
 import org.quicktheories.quicktheories.core.Strategy;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class QTTester {
 
   private Reporter r = mock(Reporter.class);
 
   public QuickTheory qt(long seed) {
-    Strategy s = new Strategy(Configuration.defaultPRNG(seed), 100, 10000, r);
+    Strategy s = new Strategy(Configuration.defaultPRNG(seed), 100, 10000, 10, r);
     return org.quicktheories.quicktheories.QuickTheory.qt(() -> s);
   }
 
@@ -106,6 +109,17 @@ public class QTTester {
     if (!p.test(v._1, v._2, v._3, v._4)) {
       throw new AssertionError(v.toString() + " does not satisfy expectations");
     }
+
+  }
+
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  public void falsificationContainsText(String string) {
+    ArgumentCaptor value = ArgumentCaptor.forClass(Object.class);
+    ArgumentCaptor<AsString> asString = ArgumentCaptor.forClass(AsString.class);
+    verify(r, times(1)).falisification(anyLong(), anyInt(), value.capture(),
+        any(List.class), asString.capture());
+
+    assertThat(asString.getValue().asString(value.getValue())).contains(string);
 
   }
 

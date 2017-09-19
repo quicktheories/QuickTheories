@@ -1,13 +1,10 @@
 package com.example;
 
 import java.math.BigDecimal;
-import java.util.stream.IntStream;
 
 import org.junit.Test;
 import org.quicktheories.quicktheories.WithQuickTheories;
-import org.quicktheories.quicktheories.core.Generator;
-import org.quicktheories.quicktheories.core.Shrink;
-import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Gen;
 
 public class CylinderExample implements WithQuickTheories {
 
@@ -38,11 +35,11 @@ public class CylinderExample implements WithQuickTheories {
           .multiply(r.add(h));
     }
 
-    // @Override
-    // public String toString() {
-    // return "Cylinder [radius=" + radius + ", height=" + height + ", area"
-    // + area() + "]";
-    // }
+     @Override
+     public String toString() {
+     return "Cylinder [radius=" + radius + ", height=" + height + ", area"
+     + area() + "]";
+     }
 
   }
 
@@ -71,31 +68,22 @@ public class CylinderExample implements WithQuickTheories {
   @Test
   public void areaIsAlwaysPositive() {
     qt()
-        .forAll(anyCylinder())
+        .forAll(cylinders())
         .assuming(cylinder -> cylinder.height > 0 && cylinder.radius > 0)
         .check(cylinder -> cylinder.area().compareTo(BigDecimal.ZERO) > 1000);
 
   }
 
-  private Source<Cylinder> anyCylinder() {
-    return Source.of(cylinders()).withShrinker(shrinkCylinder());
-  }
-
-  private Shrink<Cylinder> shrinkCylinder() {
-    return (original, context) -> IntStream.range(1, context.remainingCycles())
-        .mapToObj(i -> new Cylinder(original.radius - i, original.height - i));
-  }
-
-  private Generator<Cylinder> cylinders() {
+  private Gen<Cylinder> cylinders() {
     return radii().combine(heights(),
         (radius, height) -> new Cylinder(radius, height));
   }
 
-  private Source<Integer> heights() {
+  private Gen<Integer> heights() {
     return integers().from(79).upToAndIncluding(1004856);
   }
 
-  private Source<Integer> radii() {
+  private Gen<Integer> radii() {
     return integers().allPositive();
   }
 

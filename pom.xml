@@ -4,7 +4,7 @@
 
 	<groupId>org.quicktheories</groupId>
 	<artifactId>quicktheories</artifactId>
-	<version>0.15-SNAPSHOT</version>
+	<version>1.00-SNAPSHOT</version>
 
 	<name>QuickTheories</name>
 	<description>Property based testing for Java</description>
@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>2.0.0</version>
+			<version>3.8.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -91,6 +91,7 @@
 			<plugin>
 				<groupId>biz.aQute.bnd</groupId>
 				<artifactId>bnd-maven-plugin</artifactId>
+				<version>3.4.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -102,6 +103,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
 				<configuration>
 					<archive>
 						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -122,6 +124,9 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.5</version>
 				<configuration>
+				    <excludes>
+				      <exclude>com/example/**.java</exclude>
+				    </excludes>
 					<argLine>-Xms512m -Xmx512m -XX:MaxMetaspaceSize=128m</argLine>
 				</configuration>
 			</plugin>
@@ -168,7 +173,7 @@
 					<plugin>
 						<groupId>org.pitest</groupId>
 						<artifactId>pitest-maven</artifactId>
-						<version>1.1.7</version>
+						<version>1.2.3</version>
 						<executions>
 							<execution>
 								<id>pitest</id>
@@ -180,6 +185,7 @@
 						</executions>
 						<configuration>
 							<threads>2</threads>
+							<avoidCallsTo><value>org.quicktheories.quicktheories.generators.ArgumentAssertions</value></avoidCallsTo>
 							<excludedClasses>
 								<value>com.example.*</value>
 							</excludedClasses>

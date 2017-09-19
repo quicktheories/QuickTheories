@@ -2,43 +2,31 @@ package org.quicktheories.quicktheories.impl;
 
 import java.util.Optional;
 
-import org.quicktheories.quicktheories.api.Pair;
-
-final class Falsification<P, T> {
+final class Falsification<T> {
 
   private final Optional<Throwable> cause;
-  private final Pair<P, T> value;
-  private final int step;
+  private final T value;
 
-  Falsification(Pair<P, T> value, Optional<Throwable> cause, int step) {
+  Falsification(T value, Optional<Throwable> cause) {
     this.value = value;
     this.cause = cause;
-    this.step = step;
   }
 
-  static <P, T> Falsification<P, T> fromException(Throwable t, Pair<P, T> value,
-      int step) {
-    return new Falsification<>(value, Optional.of(t), step);
+  static <T> Falsification<T> fromException(Throwable t, T value) {
+    return new Falsification<>(value, Optional.of(t));
   }
 
-  static <P, T> Falsification<P, T> fromProperty(Pair<P, T> value, int step) {
-    return new Falsification<>(value, Optional.empty(), step);
-  }
-
-  P precursor() {
-    return this.value._1;
+  static <T> Falsification<T> fromProperty(T value) {
+    return new Falsification<>(value, Optional.empty());
   }
 
   T value() {
-    return this.value._2;
+    return this.value;
   }
 
   Optional<Throwable> cause() {
     return cause;
   }
 
-  int step() {
-    return step;
-  }
 
 }

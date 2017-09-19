@@ -6,17 +6,11 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Gen;
 
 /**
  * A Class for creating List Sources that will produce List objects of either
- * fixed or bounded size. If fixed size, a List will be shrunk by reducing the
- * individual items in tandem. If the List is of bounded size, it will begin
- * shrinking by removing random items until the List is of minimum size, at
- * which point it will continue to shrink as if a List of fixed size.
- * 
- * There is a possibility that the shrinker will get stuck at local minima when
- * one value in the List shrinks to it's "smallest" value without falsifying
+ * fixed or bounded size.
  *
  */
 public class ListsDSL {
@@ -49,43 +43,9 @@ public class ListsDSL {
    *          a Source of type T for the items in the list
    * @return a ListGeneratorBuilder of type T
    */
-  public <T> ListGeneratorBuilder<T> allListsOf(
-      Source<T> source) {
+  public <T> ListGeneratorBuilder<T> of(
+      Gen<T> source) {
     return new ListGeneratorBuilder<T>(source);
-  }
-
-  /**
-   * Creates a TypedListGeneratorBuilder. The Collector cannot be changed and is
-   * set to collect ArrayLists.
-   * 
-   * @param <T>
-   *          type to generate
-   * 
-   * @param source
-   *          a Source of type T for the items in the List
-   * @return a TypedListGeneratorBuilder of type T
-   */
-  public <T> TypedListGeneratorBuilder<T> arrayListsOf(
-      Source<T> source) {
-    return new TypedListGeneratorBuilder<T>(source,
-        Lists.arrayListCollector());
-  }
-
-  /**
-   * Creates a TypedListGeneratorBuilder. The Collector cannot be changed and is
-   * set to collect LinkedLists.
-   * 
-   * @param <T>
-   *          type to generate
-   * 
-   * @param source
-   *          a Source of type T for the items in the List
-   * @return a TypedListGeneratorBuilder of type T
-   */
-  public <T> TypedListGeneratorBuilder<T> linkedListsOf(
-      Source<T> source) {
-    return new TypedListGeneratorBuilder<T>(source,
-        Lists.linkedListCollector());
   }
 
   /**
@@ -99,9 +59,9 @@ public class ListsDSL {
    */
   public static class ListGeneratorBuilder<T> {
 
-    protected final Source<T> source;
+    protected final Gen<T> source;
 
-    ListGeneratorBuilder(Source<T> source) {
+    ListGeneratorBuilder(Gen<T> source) {
       this.source = source;
     }
 
@@ -112,7 +72,7 @@ public class ListsDSL {
      *          size of lists to generate
      * @return a Source of Lists of type T
      */
-    public Source<List<T>> ofSize(int size) {
+    public Gen<List<T>> ofSize(int size) {
       return ofSizeBetween(size, size);
     }
 
@@ -126,9 +86,9 @@ public class ListsDSL {
      *          - inclusive maximum size of List
      * @return a Source of Lists of type T
      */
-    public Source<List<T>> ofSizeBetween(int minimumSize, int maximumSize) {
+    public Gen<List<T>> ofSizeBetween(int minimumSize, int maximumSize) {
       checkBoundedListArguments(minimumSize, maximumSize);
-      return Lists.alternatingBoundedListsOf(source, minimumSize,
+      return Lists.boundedListsOf(source, minimumSize,
           maximumSize);
     }
 
@@ -144,6 +104,7 @@ public class ListsDSL {
         Collector<T, List<T>, List<T>> collector) {
       return new TypedListGeneratorBuilder<T>(source, collector);
     };
+    
   }
 
   /**
@@ -152,10 +113,10 @@ public class ListsDSL {
    */
   public static class TypedListGeneratorBuilder<T> {
 
-    private final Source<T> source;
+    private final Gen<T> source;
     private final Collector<T, List<T>, List<T>> collector;
 
-    TypedListGeneratorBuilder(Source<T> source,
+    TypedListGeneratorBuilder(Gen<T> source,
         Collector<T, List<T>, List<T>> collector) {
       this.source = source;
       this.collector = collector;
@@ -168,7 +129,7 @@ public class ListsDSL {
      *          size of lists to generate
      * @return a Source of Lists of type T
      */
-    public Source<List<T>> ofSize(int size) {
+    public Gen<List<T>> ofSize(int size) {
       return ofSizeBetween(size, size);
     };
 
@@ -182,10 +143,12 @@ public class ListsDSL {
      *          - inclusive maximum size of List
      * @return a Source of Lists of type T
      */
-    public Source<List<T>> ofSizeBetween(int minimumSize, int maximumSize) {
+    public Gen<List<T>> ofSizeBetween(int minimumSize, int maximumSize) {
       checkBoundedListArguments(minimumSize, maximumSize);
       return listsOf(source, collector, minimumSize, maximumSize);
     };
+    
+    
   }
 
   private static void checkBoundedListArguments(int minimumSize,
@@ -200,6 +163,14 @@ public class ListsDSL {
     ArgumentAssertions.checkArguments(size >= 0,
         "The size of a List cannot be negative; %s is not an accepted argument",
         size);
+  }
+
+  public <T, A extends List<T>> Collector<T, List<T>, List<T>> arrayList() {
+    return Lists.arrayList();
+  }
+
+  public <T, A extends List<T>> Collector<T, List<T>, List<T>> linkedList() {
+    return Lists.linkedList();
   }
 
 }

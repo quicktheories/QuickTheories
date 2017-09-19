@@ -237,7 +237,7 @@ Other found falsifying value(s) :-
 Seed was 2563360080237
 ```  
 
-### Subjects
+### Gens 
 
 It is likely that you will want to construct instances of your own types. You could do this within each check, but this would result in a lot of code duplication.
 
@@ -297,121 +297,39 @@ Notice that shrinking works for our custom type without any effort on our part.
 
 Defining the values that make up the valid domain for your objects might not be straightforward and could result in a lot of repeated code between theories.
 
-There are various ways in which this can be tackled.
+Fortunately the Gen<T> objects that produce the random values can be freely reused and combined with other Gens.
 
-Methods can be extracted to describe the values that make up the domain and the construction of custom types.
+e.g
 
 ```java
   @Test
   public void cylindersHavePositiveAreas() {
     qt()
-    .forAll(radii(), heights())
-    .as( (radius,height) -> new Cylinder(radius,height))
+    .forAll(cylinders())
     .check( cylinder -> cylinder.area().compareTo(BigDecimal.ZERO) > 0);
   }
   
+  private Gen<Cylinder> cylinders() {
+    return radii().combine(heights(),
+        (radius, height) -> new Cylinder(radius, height))
+        .assuming(cylinder -> some sort of validation );
+  }
 
-  private Source<Integer> heights() {
+
+  private Gen<Integer> heights() {
     return integers().from(79).upToAndIncluding(1004856);
   }
 
-  private Source<Integer> radii() {
+  private Gen<Integer> radii() {
     return integers().allPositive();
   }
 ```
-
-An alternative approach is to reuse Subjects.
-
-Subjects are very easy to create, in fact we've been implicitly creating subjects in all of our examples so far.
-
-To reuse them, all we need to do is extract a method with the repeated code.
-
-```java
-  @Test
-  public void theory1() {
-    forAllCylinders()
-    .check(cylinder -> xxx);
-  }
-  
-  @Test
-  public void theory2() {
-    forAllCylinders()
-    .check(cylinder -> yyy);
-  }
-
-  private Subject1<Cylinder> forAllCylinders() {
-    return qt()
-    .forAll(radii(), heights())
-    .as((radius,height) -> new Cylinder(radius,height));
-  }
-```
-
-Subjects are similar to Sources except that they cannot be combined together to create new theories in the way that a Source can be. 
-
-We could not reuse our Cylinder subject in a theory about boxes that contain cylinders, we would need to create our boxes of cylinders out of Sources.
-
-## Creating new Generators and Sources
-
-If you want to create theories that combine one or more custom types you may need to create custom Sources that can be combined via the DSL to create new Subjects.
-
-Source is the combination of a Generator and a Shrinker. 
-
-As Generators are just simple functions. Creating new ones is easy:
-
-```java
-(prng,step) -> new Point(prng.nextInt(10000), prng.nextInt(10000))
-
-```
-
-The second parameter provides a count of how many examples have been created. For most Generators it can be ignored.
-
-Although raw generators are easy enough to create, it's usually easier to combine the existing ones:
-
-```java
-  private Generator<Cylinder> cylinders() {
-    return integers().from(0).upTo(10000)
-        .combine(integers().allPositive(), (radius,height) -> new Cylinder(radius,height));
-  }
-```
-
-A Generator can be converted into a Source easily:
-
-```java
-Source.of(myGenerator)
-```
-
-However, these values will never shrink. To enable shrinking we need to supply a custom shrinker.
-
-A shrinker is a function from one value of a type to a stream of smaller values of that type:
-
-```java
-  private Source<Cylinder> anyCylinder() {
-    return Values.of(cylinders()).withShrinker(shrinkCylinder());
-  }
-  
-  private Shrink<Cylinder> shrinkCylinder() {
-    return (original,context) ->  IntStream.range(1, context.remainingCycles()).mapToObj(i -> new Cylinder(original.radius - i, original.height - i));
-  }
-  
-  private Generator<Cylinder> cylinders() {
-    return integers().from(0).upTo(10000)
-        .combine(integers().allPositive(), (radius,height) -> new Cylinder(radius,height));
-  }
-```
-
-In the example here cylinders will be shrunk deterministically by decreasing both the radius and the height by 1.
-
-This isn't a particularly good shrink function as it does not explore a large amount of the space of possible cylinders. It may also create cylinders with negative radii and heights.
-
-If a theory explicitly assumes that heights and radii are positive these values will be filtered out, but if not they will be reported and might obscure the real falsifying values.
-
-Be careful when creating custom shrinkers.
 
 ## Modifying the falsification output
 
 Values produces by the sources DSL should provide clear falsification messages.
 
-If you are working with your own Sources, or would like to modify the defaults, you can supply your own function to be used when describing the falsifying values.
+If you are working with your own Gens, or would like to modify the defaults, you can supply your own function to be used when describing the falsifying values.
 
 For example:
 
@@ -566,8 +484,9 @@ QuickTheories was written with the following design goals
 2. Support for shrinking
 3. Independent of test api (JUnit, TestNG etc)
 
-It turned out that number 2 was the hard bit as it had many implications for the design.
+It turned out that number 2 was the hard bit as it had many implications for the design. The approach was completely changed between releases in the 0.x and 1.x series.
 
+As of 1.x shrinking uses an approach similar to the python library hypothesis, whereby shrinking is unaware of the type it is generating. This approach is less flexible than the original approach but allows Gens to be freely composed together while greatly reducing the size of the codebase.
 
 ## Background
 

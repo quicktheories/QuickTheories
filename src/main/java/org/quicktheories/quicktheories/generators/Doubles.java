@@ -1,8 +1,8 @@
 package org.quicktheories.quicktheories.generators;
 
-import org.quicktheories.quicktheories.core.Source;
-
 import java.util.function.Function;
+
+import org.quicktheories.quicktheories.core.Gen;
 
 final class Doubles {
 
@@ -13,56 +13,38 @@ final class Doubles {
   private static final double DOUBLE_UNIT = 0x1.0p-53; // 1.0 / (1L << 53)
   private static final long NEGATIVE_ZERO_CORRESPONDING_LONG = Long.MIN_VALUE;
 
-  static Source<Double> fromNegativeInfinityToPositiveInfinity() {
-    return Compositions.interleave(fromNegativeInfinityToNegativeZero(),
-        fromZeroToPositiveInfinity());
+  static Gen<Double> fromNegativeInfinityToPositiveInfinity() {
+    return negative().mix(positive());
   }
 
-  static Source<Double> fromNegativeDoubleMaxToDoubleMax() {
-    return Compositions.interleave(fromNegativeDoubleMaxToNegativeZero(),
-        fromZeroToDoubleMax());
-  }
-
-  static Source<Double> fromNegativeInfinityToNegativeZero() {
+  static Gen<Double> negative() {
     return range(NEGATIVE_ZERO_CORRESPONDING_LONG,
         NEGATIVE_INFINITY_CORRESPONDING_LONG, NEGATIVE_ZERO_CORRESPONDING_LONG);
   }
 
-  static Source<Double> fromNegativeDoubleMaxToNegativeZero() {
-    return range(NEGATIVE_ZERO_CORRESPONDING_LONG,
-        NEGATIVE_INFINITY_CORRESPONDING_LONG - 1,
-        NEGATIVE_ZERO_CORRESPONDING_LONG);
-  }
-
-  static Source<Double> fromZeroToPositiveInfinity() {
+  static Gen<Double> positive() {
     return range(0, POSITIVE_INFINITY_CORRESPONDING_LONG);
   }
 
-  static Source<Double> fromZeroToDoubleMax() {
-    return range(0, POSITIVE_INFINITY_CORRESPONDING_LONG - 1);
-  }
-
-  static Source<Double> fromZeroToOne() {
+  static Gen<Double> fromZeroToOne() {
     return range(0, FRACTION_BITS, 0,
-        l -> l * DOUBLE_UNIT, d -> (long) (d / DOUBLE_UNIT));
+        l -> l * DOUBLE_UNIT);
   }
 
-  static Source<Double> range(long startInclusive, long endInclusive) {
+  static Gen<Double> range(long startInclusive, long endInclusive) {
     return range(startInclusive, endInclusive, 0);
   }
 
-  static Source<Double> range(long startInclusive, long endInclusive,
+  static Gen<Double> range(long startInclusive, long endInclusive,
       long target) {
     return range(startInclusive, endInclusive, target,
-        Double::longBitsToDouble, Double::doubleToLongBits);
+        Double::longBitsToDouble);
   }
 
-  static Source<Double> range(long startInclusive, long endInclusive,
-      long target, Function<Long, Double> conversion,
-      Function<Double, Long> backFunction) {
-    return Longs.range(startInclusive, endInclusive)
-        .withShrinker(Longs.shrinkTowardsTarget(target))
-        .as(conversion, backFunction);
+  static Gen<Double> range(long startInclusive, long endInclusive,
+      long target, Function<Long, Double> conversion) {
+    return Generate.longRange(startInclusive, endInclusive)
+        .map(conversion);
   }
 
 }
