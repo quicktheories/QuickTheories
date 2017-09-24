@@ -4,7 +4,7 @@
 
 	<groupId>org.quicktheories</groupId>
 	<artifactId>quicktheories</artifactId>
-	<version>0.16-SNAPSHOT</version>
+	<version>0.15-SNAPSHOT</version>
 
 	<name>QuickTheories</name>
 	<description>Property based testing for Java</description>
