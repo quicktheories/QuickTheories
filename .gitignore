@@ -4,3 +4,5 @@ target
 .settings
 *.swp
 hist.txt
+/bin/
+dependency-reduced-pom.xml

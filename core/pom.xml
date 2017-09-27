@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>quicktheories-parent</artifactId>
+		<groupId>org.quicktheories</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>quicktheories</artifactId>
+
+
+	<name>QuickTheories</name>
+	<description>Property based testing for Java</description>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>com.ea.agentloader</groupId>
+			<artifactId>ea-agent-loader</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quicktheories</groupId>
+			<artifactId>coverage</artifactId>
+			<version>1.00-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>1.3.9</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>biz.aQute.bnd</groupId>
+				<artifactId>bnd-maven-plugin</artifactId>
+				<version>3.4.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>bnd-process</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<archive>
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.3</version>
+				<executions>
+					<execution>
+						<id>fail-on-bug</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+	<profiles>
+		<profile>
+			<id>pitest</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<version>1.2.3</version>
+						<executions>
+							<execution>
+								<id>pitest</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>mutationCoverage</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<threads>2</threads>
+							<avoidCallsTo>
+								<value>org.quicktheories.quicktheories.generators.ArgumentAssertions</value>
+							</avoidCallsTo>
+							<excludedClasses>
+								<value>com.example.*</value>
+							</excludedClasses>
+							<timestampedReports>false</timestampedReports>
+							<mutators>
+								<value>STRONGER</value>
+							</mutators>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>not-eclipse</id>
+			<activation>
+				<property>
+					<name>!m2e.version</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.6.0</version>
+						<configuration>
+							<source>1.8</source>
+							<target>1.8</target>
+							<compilerId>javac-with-errorprone</compilerId>
+							<forceJavacCompilerUse>true</forceJavacCompilerUse>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>org.codehaus.plexus</groupId>
+								<artifactId>plexus-compiler-javac-errorprone</artifactId>
+								<version>2.8</version>
+							</dependency>
+							<dependency>
+								<groupId>com.google.errorprone</groupId>
+								<artifactId>error_prone_core</artifactId>
+								<version>2.0.15</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
