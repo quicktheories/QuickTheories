@@ -1,18 +1,10 @@
 package org.quicktheories.quicktheories.generators;
 
-import static org.junit.Assert.assertTrue;
-import static org.quicktheories.quicktheories.generators.Lists.arrayListCollector;
-import static org.quicktheories.quicktheories.generators.Lists.listsOf;
-import static org.quicktheories.quicktheories.generators.SourceAssert.assertThatSource;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.quicktheories.quicktheories.impl.GenAssert.assertThatGenerator;
 
 import org.junit.Test;
-import org.quicktheories.quicktheories.core.Configuration;
-import org.quicktheories.quicktheories.core.ShrinkContext;
-import org.quicktheories.quicktheories.core.Source;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.quicktheories.quicktheories.core.Gen;
 
 public class ArraysTest {
 
@@ -21,117 +13,100 @@ public class ArraysTest {
 
   @Test
   public void shouldGenerateAllPossibleArraysWithinDomain() {
-    Source<Integer[]> testee = Arrays.arraysOf(Integers.range(1, 2),
+    Gen<Integer[]> testee = Generate.arraysOf(Generate.range(1, 2),
         Integer.class, 2, 2);
-    assertThatSource(testee).generatesAllOf(
+    assertThatGenerator(testee).generatesAllOf(
         new Integer[] { 1, 1 }, new Integer[] { 1, 2 }, new Integer[] { 2, 1 },
         new Integer[] { 2, 2 });
   }
 
   @Test
-  public void shouldNotShrinkAnEmptyFixedSizeArray() {
-    Source<Character[]> testee = Arrays
+  public void shrinksTowardsEmptyArrayWhenZeroLengthsAllowed() {
+    Gen<Character[]> testee = Generate
         .arraysOf(
-            Characters.ofCharacters(FIRST_CODEPOINT, ASCII_LAST_CODEPOINT),
-            Character.class, 0, 0);
-    assertThatSource(testee)
-        .cannotShrink(new Character[] {});
+            Generate.characters(FIRST_CODEPOINT, ASCII_LAST_CODEPOINT),
+            Character.class, 0, 10);
+    assertThatGenerator(testee).shrinksTowards(new Character[0]);
   }
 
+  
   @Test
-  public void shouldShrinkNegativeIntegersByOneInAFixedLengthArrayWhereAllValuesAreWithinRemainingCyclesOfTarget() {
-    Source<Integer[]> testee = Arrays
-        .arraysOf(Integers.range(-9, 0), Integer.class, 3, 3);
-    assertThatSource(testee).shrinksArrayValueTo(
-        new Integer[] { -6, -3, -1 }, new Integer[] { -5, -2, 0 },
-        new ShrinkContext(0, 100, Configuration.defaultPRNG(2)));
+  public void shrinksTowardsSmallestAllowedArrayWithSmallestContents() {
+    Gen<Integer[]> testee = Generate
+        .arraysOf(
+            Generate.range(0, 10),
+            Integer.class, 0, 10);
+    assertThatGenerator(testee).shrinksTowards(new Integer[0]);
   }
+
 
   @Test
   public void shouldGenerateAllPossibleArraysWithinSizeRange() {
-    Source<Integer[]> testee = Arrays
-        .arraysOf(Integers.range(1, 1), Integer.class, 1, 4);
-    assertThatSource(testee).generatesAllOf(new Integer[] { 1 },
+    Gen<Integer[]> testee = Generate
+        .arraysOf(Generate.range(1, 1), Integer.class, 1, 4);
+    assertThatGenerator(testee).generatesAllOf(new Integer[] { 1 },
         new Integer[] { 1, 1 }, new Integer[] { 1, 1, 1 },
         new Integer[] { 1, 1, 1, 1 });
   }
 
   @Test
-  public void shouldNotShrinkAnEmptyBoundedSizeArray() {
-    Source<String[]> testee = Arrays
-        .arraysOf(Strings.boundedNumericStrings(152, 32523), String.class, 0,
-            5);
-    assertThatSource(testee).cannotShrinkArray(new String[] {});
-  }
-
-  @Test
-  public void shouldShrinkAFixedLengthArrayToAnArrayOfSameLength() {
-    Source<Integer[]> testee = Arrays
-        .arraysOf(Integers.range(1, Integer.MAX_VALUE), Integer.class, 4, 4);
-    Integer[] input = new Integer[] { -7, -2, 0, -4 };
-    Integer[] shrunk = testee
-        .shrink(input, new ShrinkContext(0, 100, Configuration.defaultPRNG(-2)))
-        .iterator()
-        .next();
-    isExpectedLength(shrunk, 4);
-  }
-
-  @Test
-  public void shouldShrinkElementsOfFixedArrayByOneIfAllWithinRemainingCyclesOfTarget() {
-    Source<String[]> testee = Arrays
-        .arraysOf(Strings.ofBoundedLengthStrings(Character.MIN_CODE_POINT,
-            Character.MAX_CODE_POINT, 1, 8), String.class, 2, 2);
-    String[] input = new String[] { "\ud81b\udf33", "b" };
-    String[] expected = new String[] { "\ufffd", "a" };
-    assertThatSource(testee).shrinksArrayValueTo(input, expected,
-        new ShrinkContext(0, 1000000000, Configuration.defaultPRNG(2)));
-  }
-
-  @Test
-  public void shouldShrinkBoundedArrayNotMinimumLengthByOne() {
-    Source<Character[]> testee = Arrays.arraysOf(
-        Characters.ofCharacters(FIRST_CODEPOINT, ASCII_LAST_CODEPOINT),
-        Character.class, 3, 7);
-    assertThatSource(testee).shrinksArrayValueTo(
-        new Character[] { 'a', 'a', 'a', 'a' },
-        new Character[] { 'a', 'a', 'a' },
-        new ShrinkContext(0, 100, Configuration.defaultPRNG(2)));
-  }
-
-  @Test
-  public void shouldShrinkBoundedArrayOfMinimumLengthAsFixedArray() {
-    Source<Character[]> testee = Arrays.arraysOf(
-        Characters.ofCharacters(FIRST_CODEPOINT, ASCII_LAST_CODEPOINT),
-        Character.class, 4, 7);
-    assertThatSource(testee).shrinksArrayValueTo(
-        new Character[] { 'b', 'b', 'b', 'b' },
-        new Character[] { 'a', 'a', 'a', 'a' },
-        new ShrinkContext(0, 100, Configuration.defaultPRNG(2)));
-  }
-
-  @Test
   public void shouldDescribeArrayContents() {
-    Source<Integer[]> testee = Arrays.arraysOf(Integers.range(0, 1),
+    Gen<Integer[]> testee = Generate.arraysOf(Generate.range(0, 1),
         Integer.class, 2, 2);
     Integer[] anArray = { 1, 2, 3 };
     assertThat(testee.asString(anArray)).isEqualTo("[1, 2, 3]");
   }
 
   @Test
-  public void shouldDescribeListContentsUsingProvidedSource() {
-    Source<String> sourceWithCustomDescription = Arbitrary.constant("x").describedAs(x -> "custom description for x");
-    Source<String[]> testee = Arrays.arraysOf(sourceWithCustomDescription, String.class, 2, 2);
+  public void shouldDescribeArrayContentsUsingProvidedSource() {
+    Gen<String> sourceWithCustomDescription = Generate.constant("x").describedAs(x -> "custom description for x");
+    Gen<String[]> testee = Generate.arraysOf(sourceWithCustomDescription, String.class, 2, 2);
 
     String[] anArray = { "foo", "bar"};
 
     assertThat(testee.asString(anArray)).isEqualTo("[custom description for x, custom description for x]");
   }
-
-  private <T> void isExpectedLength(T[] shrunkOutput, int expected) {
-    assertTrue(
-        "Expected " + java.util.Arrays.toString(shrunkOutput) + " to be of length " + expected
-            + "rather than " + shrunkOutput.length,
-        shrunkOutput.length == expected);
+  
+  @Test
+  public void shouldGenerateAllPossibleBytesArraysWithinSmallDomain() {
+    Gen<byte[]> testee = Generate.byteArrays(Generate.range(1, 2), Generate.bytes((byte)1, (byte)2, (byte) 0));
+    assertThatGenerator(testee).generatesAllOf(
+        new byte[] { 1, 1 }, new byte[] { 1, 2 }, new byte[] { 2, 1 },
+        new byte[] { 2, 2 });
   }
+  
+  @Test
+  public void shouldGenerateAllPossibleIntArraysWithinSmallDomain() {
+    Gen<int[]> testee = Generate.intArrays(Generate.range(1, 2), Generate.range(1, 2));
+    assertThatGenerator(testee).generatesAllOf(
+        new int[] { 1, 1 }, new int[] { 1, 2 }, new int[] { 2, 1 },
+        new int[] { 2, 2 });
+  }
+  
+  @Test
+  public void shouldGenerateAllPossibleTwoDimensionalIntArraysWithinSmallDomain() {
+    Gen<int[][]> testee = Generate.intArrays(Generate.range(1, 2), Generate.range(1, 2), Generate.range(1, 2));
+    assertThatGenerator(testee).generatesAllOf(
+        new int[][] { {1, 1}, {1,1} }, new int[][] { {1, 1}, {1, 2} }, new int[][] { {1,2}, {1, 1} }, new int[][] { {1, 2}, {1,2} },
+        new int[][] { {2, 1}, {1,1} }, new int[][] { {2, 1}, {1, 2} }, new int[][] { {1,2}, {2, 1} }, new int[][] { {2, 2}, {2,2} });
+  }
+  
+  @Test
+  public void shouldProvideReadableDescriptionOfIntegerArrays() {
+    Gen<int[]> testee = Generate.intArrays(Generate.range(1, 2), Generate.range(1, 2));
+    assertThat(testee.asString(new int[] {1,2} )).containsSequence("1, 2");
+  }
+  
+  @Test
+  public void shouldProvideReadableDescriptionOfTwoDimensionalIntegerArrays() {
+    Gen<int[][]> testee = Generate.intArrays(Generate.range(1, 2), Generate.range(1, 2), Generate.range(1, 2));
+    assertThat(testee.asString(new int[][] { {1,2}, {6,12} } )).containsSequence("[1, 2], [6, 12]");
+  }
+  
+  @Test
+  public void shouldProvideReadableDescriptionOfByteArrays() {
+    Gen<byte[]> testee = Generate.byteArrays(Generate.range(1, 2), Generate.bytes((byte)1, (byte)2, (byte) 0));
+    assertThat(testee.asString(new byte[] {1,2} )).containsSequence("1, 2");
+  }  
 
 }

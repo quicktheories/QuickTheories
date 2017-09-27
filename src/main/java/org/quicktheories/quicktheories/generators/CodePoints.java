@@ -1,54 +1,63 @@
 package org.quicktheories.quicktheories.generators;
 
-import org.quicktheories.quicktheories.core.PseudoRandom;
-import org.quicktheories.quicktheories.core.Shrink;
-import org.quicktheories.quicktheories.core.Source;
+import java.util.function.Predicate;
 
-final class CodePoints {
+import org.quicktheories.quicktheories.core.DetatchedRandomnessSource;
+import org.quicktheories.quicktheories.core.Gen;
+import org.quicktheories.quicktheories.core.RandomnessSource;
 
+public final class CodePoints {
+ 
   private static final int FIRST_NON_WHITESPACE_CHARACTER_IN_BLC = 0x0021;
 
-  static Source<Long> codePoints(int startInclusive,
+  public static Gen<Integer> codePoints(int startInclusive,
       int endInclusive) {
     return codePoints(startInclusive, endInclusive,
         FIRST_NON_WHITESPACE_CHARACTER_IN_BLC);
 
   }
 
-  static Source<Long> codePoints(int startInclusive, int endInclusive,
+  public static Gen<Integer> codePoints(int startInclusive, int endInclusive,
       int idealTarget) {
-    long target = setTargetForCodePoints(startInclusive, endInclusive,
-        idealTarget);
-    return Source.of(
-        (prng, step) -> generateValidCodePoint(prng, startInclusive,
-            endInclusive))
-        .withShrinker(
-            shrinkCodePoint(target));
-  }
-
-  private static long generateValidCodePoint(PseudoRandom prng, long startInclusive,
-      long endInclusive) {
-    long codePoint = prng.generateRandomLongWithinInterval(
-        startInclusive, endInclusive);
-    while (!Character.isDefined((int) codePoint)) {
-      codePoint = prng.generateRandomLongWithinInterval(
-          startInclusive, endInclusive);
+    
+    ArgumentAssertions.checkArguments(startInclusive >= Character.MIN_CODE_POINT,
+        "(%s) is less than the minimum codepoint (%s)",
+        startInclusive, Character.MIN_CODE_POINT);
+    
+    ArgumentAssertions.checkArguments(endInclusive <= Character.MAX_CODE_POINT,
+        "%s is greater than the maximum codepoint (%s)",
+        endInclusive, Character.MAX_CODE_POINT);
+    
+      return new Retry<>(Generate.range(startInclusive, endInclusive, idealTarget), Character::isDefined);
     }
-    return codePoint;
+
+}
+
+class Retry<T> implements Gen<T> {
+  
+  private final Gen<T> child;
+  private final Predicate<T> assumption;
+
+  Retry(Gen<T> child, Predicate<T> assumption) {
+    this.child = child;
+    this.assumption = assumption;
   }
 
-  private static long setTargetForCodePoints(int startInclusive,
-      int endInclusive, int idealTarget) {
-    long target = idealTarget;
-    if (startInclusive > target || endInclusive < target) {
-      target = startInclusive;
-    }
-    return target;
+  @Override
+  public T generate(RandomnessSource in) {
+    // danger of infinite loop here
+    while(true) {
+      DetatchedRandomnessSource detatched = in.detach();
+      T t = child.generate(detatched);
+      if (assumption.test(t)) {
+        detatched.commit();
+        return t;
+      } 
+    }  
   }
-
-  private static Shrink<Long> shrinkCodePoint(long target) {
-    return Longs.shrinkTowardsTarget(target, i -> Character.isDefined((int) i),
-        (prng, start, end) -> (long) generateValidCodePoint(prng, start, end));
+  
+  public String asString(T t) {
+    return child.asString(t);
   }
-
+  
 }

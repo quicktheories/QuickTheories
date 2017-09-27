@@ -1,6 +1,6 @@
 package org.quicktheories.quicktheories.generators;
 
-import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Gen;
 
 /**
  * A Class for creating Sources of type T[], that will generate and shrink array
@@ -26,7 +26,7 @@ public class ArraysDSL {
    * @return an ArrayGeneratorBuilder of type Integer
    */
   public ArrayGeneratorBuilder<Integer> ofIntegers(
-      Source<Integer> source) {
+      Gen<Integer> source) {
     return new ArrayGeneratorBuilder<Integer>(source, Integer.class);
   }
 
@@ -39,7 +39,7 @@ public class ArraysDSL {
    * @return an ArrayGeneratorBuilder of type Character
    */
   public ArrayGeneratorBuilder<Character> ofCharacters(
-      Source<Character> source) {
+      Gen<Character> source) {
     return new ArrayGeneratorBuilder<Character>(source, Character.class);
   }
 
@@ -52,7 +52,7 @@ public class ArraysDSL {
    * @return an ArrayGeneratorBuilder of type String
    */
   public ArrayGeneratorBuilder<String> ofStrings(
-      Source<String> source) {
+      Gen<String> source) {
     return new ArrayGeneratorBuilder<String>(source, String.class);
   }
 
@@ -68,17 +68,17 @@ public class ArraysDSL {
    *          a Class of type T
    * @return an ArrayGeneratorBuilder of type T
    */
-  public <T> ArrayGeneratorBuilder<T> ofClass(Source<T> source,
+  public <T> ArrayGeneratorBuilder<T> ofClass(Gen<T> source,
       Class<T> c) {
     return new ArrayGeneratorBuilder<T>(source, c);
   }
 
   public static class ArrayGeneratorBuilder<T> {
 
-    private final Source<T> source;
+    private final Gen<T> source;
     private final Class<T> c;
 
-    ArrayGeneratorBuilder(Source<T> source, Class<T> c) {
+    ArrayGeneratorBuilder(Gen<T> source, Class<T> c) {
       this.source = source;
       this.c = c;
     }
@@ -90,7 +90,7 @@ public class ArraysDSL {
      *          - fixed length
      * @return a Source of type T[]
      */
-    public Source<T[]> withLength(int length) {
+    public Gen<T[]> withLength(int length) {
       return withLengthBetween(length, length);
     }
 
@@ -104,14 +104,14 @@ public class ArraysDSL {
      *          - the inclusive maximum size of the array
      * @return a Source of type T[]
      */
-    public Source<T[]> withLengthBetween(int minLength, int maxLength) {
+    public Gen<T[]> withLengthBetween(int minLength, int maxLength) {
       ArgumentAssertions.checkArguments(minLength <= maxLength,
           "The minLength (%s) is longer than the maxLength(%s)",
           minLength, maxLength);
       ArgumentAssertions.checkArguments(minLength >= 0,
           "The length of an array cannot be negative; %s is not an accepted argument",
           minLength);
-      return Arrays.arraysOf(source, c, minLength, maxLength);
+      return Generate.arraysOf(source, c, minLength, maxLength);
     }
   }
 

@@ -22,7 +22,7 @@ public class QuickTheoriesExample {
   public void loosesNoInformationWhenTransformedToString() {
     qt()
         .withFixedSeed(0)
-        .withExamples(10000000)
+        .withExamples(1000000)
         .forAll(integers().allPositive(), integers().allPositive(),
             integers().allPositive())
         .assuming((a, b, c) -> a > 10000 && b > 100000 && c > 300000000)
@@ -67,7 +67,7 @@ public class QuickTheoriesExample {
         .withFixedSeed(40)
         .withExamples(10000)
         .forAll(integers().allPositive(), integers().allPositive(),
-            lists().allListsOf(integers().from(-20).upTo(20)).ofSize(3),
+            lists().of(integers().from(-20).upTo(20)).ofSize(3),
             strings().basicLatinAlphabet().ofLengthBetween(0, 100))
         .as((a, b, c, d) -> "Foo" + a.toString() + "Bar" + b + "Fish" + c)
         .check(i -> i.length() < 40);

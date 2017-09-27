@@ -1,8 +1,6 @@
 package org.quicktheories.quicktheories.generators;
 
-import java.util.Arrays;
-
-import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Gen;
 
 /**
  * A Class for creating Boolean Sources that will produce either true or false
@@ -15,14 +13,7 @@ public class BooleansDSL {
    * 
    * @return a Source of booleans
    */
-  public Source<Boolean> all() {
-    return Booleans.generate();
+  public Gen<Boolean> all() {
+    return Generate.booleans();
   }
-
-  final static class Booleans {
-    static Source<Boolean> generate() {
-      return Arbitrary.pick(Arrays.asList(false, true));
-    }
-  }
-
 }

@@ -5,66 +5,57 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.quicktheories.quicktheories.api.AsString;
-import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Gen;
 import org.quicktheories.quicktheories.core.Strategy;
-import org.quicktheories.quicktheories.impl.Checker.CheckerResults;
-import org.quicktheories.quicktheories.impl.Shrinker.ShrinkResult;
 
-final class TheoryRunner<P, T> {
+public final class TheoryRunner<P, T> {
 
-  private final Strategy strategy;
-  private final Source<P> precursorSource;
-  private final Predicate<P> assumptions;
+  private final Strategy       strategy;
+  private final Gen<P>         precursorSource;
   private final Function<P, T> precursorToValue;
-  private final AsString<T> toString;
-  
-  TheoryRunner(final Strategy state, final Source<P> source,
-      Predicate<P> assumptions, Function<P, T> f,
+  private final AsString<T>    toString;
+
+  public TheoryRunner(final Strategy state, final Gen<P> source, Function<P, T> f,
       AsString<T> toString) {
     this.strategy = state;
     this.precursorSource = source;
-    this.assumptions = assumptions;
     this.precursorToValue = f;
     this.toString = toString;
   }
 
-  static <T> TheoryRunner<T,T> runner(final Strategy state, final Source<T> source,
-      Predicate<T> assumptions) {
-    return new TheoryRunner<T,T>(state,source, assumptions, t -> t, source);
+  public static <T> TheoryRunner<T, T> runner(final Strategy state,
+      final Gen<T> source) {
+    return new TheoryRunner<>(state, source, t -> t, source);
   }
-  
-  void check(final Predicate<T> property) {
-    Checker<P, T> checker = new Checker<P, T>(strategy, precursorSource,
-        assumptions, precursorToValue);
-    CheckerResults<P, T> result = checker.check(property);
 
-    if (result.wasFalsified()) {
-      reportResult(property, result);
-    } else if (result.executedExamples != strategy.examples()) {
-      this.strategy.reporter().valuesExhausted(result.executedExamples);
+  public void check(final Predicate<T> property) {
+    final Core core = new Core(this.strategy);
+    final Property<T> prop = new Property<>(property,
+        this.precursorSource.map(this.precursorToValue));
+    final SearchResult<T> results = core.run(prop);
+    if (results.isFalsified()) {
+      reportFalsification(results);
+    } else if (results.wasExhausted()) {
+      this.strategy.reporter().valuesExhausted(results.getExecutedExamples());
     }
 
   }
 
   @SuppressWarnings("unchecked")
-  private void reportResult(final Predicate<T> property,
-      CheckerResults<P, T> result) {
-    long seed = strategy.prng().getInitialSeed();
-    Shrinker<P, T> shrinker = new Shrinker<P, T>(strategy, precursorSource,
-        assumptions, precursorToValue);
-    ShrinkResult<P, T> shrinkResult = shrinker.shrink(property,
-        result.falsification.get());
-    T smallest = shrinkResult.smallest.value();
-    if (shrinkResult.smallest.cause().isPresent()) {
-      this.strategy.reporter().falisification(seed, result.executedExamples,
-          smallest, shrinkResult.smallest.cause().get(),
-          (List<Object>) shrinkResult.otherExamples,
-          (AsString<Object>) toString);
+  private void reportFalsification(SearchResult<T> result) {
+    final long seed = this.strategy.prng().getInitialSeed();
+    if (result.getSmallestThrowable().isPresent()) {
+      this.strategy.reporter().falisification(seed,
+          result.getExecutedExamples(), result.smallest(),
+          result.getSmallestThrowable().get(),
+          (List<Object>) result.getFalsifictions(),
+          (AsString<Object>) this.toString);
     } else {
-      this.strategy.reporter().falisification(seed, result.executedExamples,
-          smallest,
-          (List<Object>) shrinkResult.otherExamples,
-          (AsString<Object>) toString);
+      this.strategy.reporter().falisification(seed,
+          result.getExecutedExamples(), result.smallest(),
+          (List<Object>) result.getFalsifictions(),
+          (AsString<Object>) this.toString);
     }
+
   }
 }

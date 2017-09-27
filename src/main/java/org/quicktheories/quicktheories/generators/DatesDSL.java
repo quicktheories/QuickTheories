@@ -2,7 +2,7 @@ package org.quicktheories.quicktheories.generators;
 
 import java.util.Date;
 
-import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Gen;
 
 /**
  * A Class for creating Date Sources that will produce Dates based on the number
@@ -21,21 +21,15 @@ public class DatesDSL {
    *          generated within this interval.
    * @return a Source of type Date
    */
-  public Source<Date> withMilliseconds(long millisecondsFromEpoch) {
+  public Gen<Date> withMilliseconds(long millisecondsFromEpoch) {
     lowerBoundGEQZero(millisecondsFromEpoch);
-    return Compositions.weightWithValues(
-        Dates.withMilliSeconds(millisecondsFromEpoch),
-        new Date(millisecondsFromEpoch));
+    return Dates.withMilliSeconds(millisecondsFromEpoch);
   }
 
   /**
    * Generates Dates inclusively bounded between new
    * Date(millisecondsFromEpochStartInclusive) and new
    * Date(millisecondsFromEpochEndInclusive).
-   * 
-   * The Source is weighted so it is likely to produce new
-   * Date(millisecondsFromEpochStartInclusive) and new
-   * Date(millisecondsFromEpochEndInclusive) one or more times.
    * 
    * @param millisecondsFromEpochStartInclusive
    *          the number of milliseconds from epoch for the desired older Date
@@ -44,17 +38,15 @@ public class DatesDSL {
    *          Date
    * @return a source of Dates
    */
-  public Source<Date> withMillisecondsBetween(
+  public Gen<Date> withMillisecondsBetween(
       long millisecondsFromEpochStartInclusive,
       long millisecondsFromEpochEndInclusive) {
     lowerBoundGEQZero(millisecondsFromEpochStartInclusive);
     maxGEQMin(millisecondsFromEpochStartInclusive,
         millisecondsFromEpochEndInclusive);
-    return Compositions.weightWithValues(
+    return 
         Dates.withMilliSecondsBetween(millisecondsFromEpochStartInclusive,
-            millisecondsFromEpochEndInclusive),
-        new Date(millisecondsFromEpochEndInclusive),
-        new Date(millisecondsFromEpochStartInclusive));
+            millisecondsFromEpochEndInclusive);
   }
 
   private void lowerBoundGEQZero(long milliSecondsFromEpoch) {
@@ -71,16 +63,15 @@ public class DatesDSL {
 
   static class Dates {
 
-    static Source<Date> withMilliSeconds(long milliSecondsFromEpoch) {
+    static Gen<Date> withMilliSeconds(long milliSecondsFromEpoch) {
       return withMilliSecondsBetween(0, milliSecondsFromEpoch);
     }
 
-    static Source<Date> withMilliSecondsBetween(
+    static Gen<Date> withMilliSecondsBetween(
         long milliSecondsFromEpochStartInclusive,
         long milliSecondsFromEpochEndInclusive) {
-      return Longs.range(milliSecondsFromEpochStartInclusive,
-          milliSecondsFromEpochEndInclusive).as(l -> new Date(l),
-              d -> d.getTime());
+      return Generate.longRange(milliSecondsFromEpochStartInclusive,
+          milliSecondsFromEpochEndInclusive).map(l -> new Date(l));
     }
   }
 

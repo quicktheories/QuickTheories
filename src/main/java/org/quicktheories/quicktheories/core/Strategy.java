@@ -7,6 +7,7 @@ package org.quicktheories.quicktheories.core;
 public class Strategy {
 
   private final PseudoRandom prng;
+  private final int generateAttempts;
   private final int examples;
   private final int shrinkCycles;
   private final Reporter reporter;
@@ -26,11 +27,12 @@ public class Strategy {
    *          value falsifies
    */
   public Strategy(final PseudoRandom prng, final int examples,
-      final int shrinkCycles, Reporter reporter) {
+      final int shrinkCycles, final int generateAttempts, Reporter reporter) {
     this.prng = prng;
     this.examples = examples;
     this.shrinkCycles = shrinkCycles;
     this.reporter = reporter;
+    this.generateAttempts = generateAttempts;
   }
 
   /**
@@ -59,6 +61,15 @@ public class Strategy {
   public int shrinkCycles() {
     return this.shrinkCycles;
   }
+  
+  /**
+   * Returns the maximum number of times to try to retrieve each value before giving up.
+   * 
+   * @return maximum number of times to try to retrieve each value
+   */
+  public int generateAttempts() {
+    return this.generateAttempts;
+  }
 
   /**
    * Returns the reporter used to inform the user of failures
@@ -78,7 +89,7 @@ public class Strategy {
    *         supplied
    */
   public Strategy withFixedSeed(long seed) {
-    return new Strategy(defaultPRNG(seed), examples, shrinkCycles,
+    return new Strategy(defaultPRNG(seed), examples, shrinkCycles, generateAttempts,
         reporter);
   }
 
@@ -90,7 +101,7 @@ public class Strategy {
    * @return a strategy with the maximum number of examples as supplied
    */
   public Strategy withExamples(int examples) {
-    return new Strategy(prng, examples, shrinkCycles, reporter);
+    return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter);
   }
 
   /**
@@ -101,7 +112,7 @@ public class Strategy {
    * @return a strategy with the maximum number of shrinks as supplied
    */
   public Strategy withShrinkCycles(int shrinks) {
-    return new Strategy(prng, examples, shrinks, reporter);
+    return new Strategy(prng, examples, shrinks, generateAttempts, reporter);
   }
 
   /**

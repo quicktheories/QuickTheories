@@ -1,12 +1,10 @@
 package org.quicktheories.quicktheories.generators;
 
-import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Gen;
 
 /**
  * A Class for creating String Sources that will produce Strings composed of
- * code points within the specified domain. The method by which a String will be
- * shrunk depends on whether it is a numeric String or of fixed length, fixed
- * number of code points or bounded length.
+ * code points within the specified domain.
  * 
  */
 public class StringsDSL {
@@ -19,21 +17,14 @@ public class StringsDSL {
   /**
    * Generates integers as Strings, and shrinks towards "0".
    * 
-   * The Source is weighted so that it is likely to generate Integer.MAX_VALUE
-   * (2147483647) and Integer.MIN_VALUE (-2147483648) at least once.
-   * 
    * @return a Source of type String
    */
-  public Source<String> numeric() {
+  public Gen<String> numeric() {
     return numericBetween(Integer.MIN_VALUE, Integer.MAX_VALUE);
   }
 
   /**
-   * Generates integers within the interval as Strings. It shrinks towards the
-   * smallest absolute value as a String.
-   * 
-   * The Source is weighted so that it is likely to generate endInclusive and
-   * startInclusive at least once.
+   * Generates integers within the interval as Strings.
    * 
    * @param startInclusive
    *          - lower inclusive bound of integer domain
@@ -41,14 +32,12 @@ public class StringsDSL {
    *          - upper inclusive bound of integer domain
    * @return a Source of type String
    */
-  public Source<String> numericBetween(int startInclusive,
+  public Gen<String> numericBetween(int startInclusive,
       int endInclusive) {
     ArgumentAssertions.checkArguments(startInclusive <= endInclusive,
         "There are no Integer values to be generated between startInclusive (%s) and endInclusive (%s)",
         startInclusive, endInclusive);
-    return Compositions.weightWithValues(
-        Strings.boundedNumericStrings(startInclusive, endInclusive),
-        Integer.toString(endInclusive), Integer.toString(startInclusive));
+    return  Strings.boundedNumericStrings(startInclusive, endInclusive);
   }
 
   /**
@@ -106,42 +95,34 @@ public class StringsDSL {
     }
 
     /**
-     * Generates Strings of a fixed number of code points. Will shrink by
-     * reducing the numeric value of code points in tandem.
+     * Generates Strings of a fixed number of code points.
      * 
      * @param codePoints
      *          - the fixed number of code points for the String
      * @return a a Source of type String
      */
-    public Source<String> ofFixedNumberOfCodePoints(int codePoints) {
+    public Gen<String> ofFixedNumberOfCodePoints(int codePoints) {
       ArgumentAssertions.checkArguments(codePoints >= 0,
           "The number of codepoints cannot be negative; %s is not an accepted argument",
           codePoints);
-      return Strings.ofFixedNumberOfCodePointsStrings(minCodePoint,
-          maxCodePoint, codePoints);
+      return Strings.withCodePoints(minCodePoint,
+          maxCodePoint, Generate.constant(codePoints));
     }
 
     /**
-     * Generates Strings of a fixed length. Will shrink by reducing the numeric
-     * value of code points in tandem. If the code point to be shrunk is a
-     * supplementary code point, either a lower-valued supplementary code point
-     * will be produced, or a BMP code point will be produced twice.
+     * Generates Strings of a fixed length. 
      * 
      * @param fixedLength
      *          - the fixed length for the Strings
      * @return a Source of type String
      */
-    public Source<String> ofLength(int fixedLength) {
+    public Gen<String> ofLength(int fixedLength) {
       return ofLengthBetween(fixedLength, fixedLength);
     }
 
     /**
      * Generates Strings of length bounded between minLength and maxLength
-     * inclusively. If length of String is greater than minLength, will shrink
-     * by removing a random substring of length 1. If this substring is part of
-     * a supplementary code point, the supplementary code point is replaced with
-     * a BMP code point. If the String is equal to minLength, it shrinks as if a
-     * fixed length String.
+     * inclusively. 
      * 
      * @param minLength
      *          - minimum inclusive length of String
@@ -149,7 +130,7 @@ public class StringsDSL {
      *          - maximum inclusive length of String
      * @return a Source of type String
      */
-    public Source<String> ofLengthBetween(int minLength, int maxLength) {
+    public Gen<String> ofLengthBetween(int minLength, int maxLength) {
       ArgumentAssertions.checkArguments(minLength <= maxLength,
           "The minLength (%s) is longer than the maxLength(%s)",
           minLength, maxLength);

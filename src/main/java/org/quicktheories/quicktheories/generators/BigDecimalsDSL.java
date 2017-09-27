@@ -2,7 +2,7 @@ package org.quicktheories.quicktheories.generators;
 
 import java.math.BigDecimal;
 
-import org.quicktheories.quicktheories.core.Source;
+import org.quicktheories.quicktheories.core.Gen;
 import org.quicktheories.quicktheories.generators.BigIntegersDSL.BigIntegers;
 
 /**
@@ -42,18 +42,17 @@ public class BigDecimalsDSL {
      *          - the desired scale of the BigDecimal
      * @return a Source of type BigDecimal
      */
-    public Source<BigDecimal> withScale(int scale) {
+    public Gen<BigDecimal> withScale(int scale) {
       return BigDecimals.randomWithScale(maxLengthOfBigIntegerByteArray, scale);
     }
   }
 
   final static class BigDecimals {
 
-    static Source<BigDecimal> randomWithScale(
+    static Gen<BigDecimal> randomWithScale(
         int maxLengthOfBigIntegerByteArray, int scale) {
-      return BigIntegers.random(maxLengthOfBigIntegerByteArray).as(
-          i -> new BigDecimal(i, scale),
-          d -> d.movePointRight(scale).toBigInteger());
+      return BigIntegers.random(maxLengthOfBigIntegerByteArray).map(
+          i -> new BigDecimal(i, scale));
     }
 
   }

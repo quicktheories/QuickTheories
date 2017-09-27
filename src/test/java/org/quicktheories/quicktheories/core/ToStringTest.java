@@ -136,8 +136,9 @@ public class ToStringTest {
   @Test
   public void shouldPrintReadableRepresentationOfArrays() {
     try {
-      qt().withFixedSeed(5).forAll(
-          arrays().ofStrings(strings().ascii().ofLength(1)).withLength(1))
+      qt().withFixedSeed(5)
+      .forAll(arrays().ofStrings(strings().ascii().ofLength(1))
+          .withLength(1))
           .check(i -> false);
       failIfReached();
     } catch (final AssertionError error) {
@@ -149,8 +150,10 @@ public class ToStringTest {
   @Test
   public void shouldPrintArrayAsToDeepString() {
     try {
-      qt().withFixedSeed(5).forAll(bigIntegers().ofBytes(5))
-          .as(b -> b.toByteArray()).describedAs(a -> Arrays.toString(a))
+      qt().withFixedSeed(5)
+      .forAll(bigIntegers().ofBytes(5))
+          .as(b -> b.toByteArray())
+          .describedAs(a -> Arrays.toString(a))
           .check(i -> false);
       failIfReached();
     } catch (final AssertionError error) {
@@ -162,13 +165,15 @@ public class ToStringTest {
   @Test
   public void shouldPrintReadableRepresentationOfNull() throws Exception {
       try {
-        qt().withFixedSeed(5).forAll(arbitrary().pick(null, "test")).check(value -> value != null);
+        qt().withFixedSeed(5)
+        .forAll(arbitrary().pick(null, "test"))
+        .check(value -> value != null);
     } catch (final AssertionError error) {
         assertThat(error)
             .hasMessageContaining("null");
     }
   }
-  
+    
   private void failIfReached() throws AssertionError {
     throw new Error("Expected an AssertionError but didn't get one");
   }
