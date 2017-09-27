@@ -5,7 +5,9 @@
 
 Property-based testing for Java 8.
 
-If you were looking for QuickCheck for Java you just found it.
+If you were looking for QuickCheck for Java you just found it. This is the 0.1 series release branch.
+
+The 0.2 series is now the main focus of development but contains some breaking changes to the api.
 
 ## What is property based testing 
 
