@@ -4,7 +4,7 @@
 
 	<groupId>org.quicktheories</groupId>
 	<artifactId>quicktheories</artifactId>
-	<version>1.00-SNAPSHOT</version>
+	<version>0.20-SNAPSHOT</version>
 
 	<name>QuickTheories</name>
 	<description>Property based testing for Java</description>
@@ -241,7 +241,8 @@
 				<plugins>
 					<plugin>
 						<artifactId>maven-source-plugin</artifactId>
-						<executions>
+                        <version>2.4</version>
+                        <executions>
 							<execution>
 								<id>attach-sources</id>
 								<goals>
@@ -252,7 +253,8 @@
 					</plugin>
 					<plugin>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<executions>
+                        <version>2.10.3</version>
+                        <executions>
 							<execution>
 								<id>attach-javadocs</id>
 								<goals>
