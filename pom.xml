@@ -91,7 +91,8 @@
 			<plugin>
 				<groupId>biz.aQute.bnd</groupId>
 				<artifactId>bnd-maven-plugin</artifactId>
-				<executions>
+                <version>3.4.0</version>
+                <executions>
 					<execution>
 						<goals>
 							<goal>bnd-process</goal>
@@ -102,7 +103,8 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
+                <version>3.0.2</version>
+                <configuration>
 					<archive>
 						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
 					</archive>
@@ -235,7 +237,8 @@
 				<plugins>
 					<plugin>
 						<artifactId>maven-source-plugin</artifactId>
-						<executions>
+                        <version>2.4</version>
+                        <executions>
 							<execution>
 								<id>attach-sources</id>
 								<goals>
@@ -246,7 +249,8 @@
 					</plugin>
 					<plugin>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<executions>
+                        <version>2.10.3</version>
+                        <executions>
 							<execution>
 								<id>attach-javadocs</id>
 								<goals>
