@@ -21,7 +21,7 @@ public abstract class Configuration {
    */
   public static Strategy systemStrategy() {
     return new Strategy(defaultPRNG(pickSeed()), pickExamples(), pickShrinks(), pickAttempts(),
-        new ExceptionReporter());
+        new ExceptionReporter(), prng -> new NoGuidance());
   }
 
   private static int pickAttempts() {

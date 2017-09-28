@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.quicktheories.impl.Constraint;
-import org.quicktheories.impl.Precursor;
 
 public class PrecursorTest {
 

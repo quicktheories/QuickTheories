@@ -13,6 +13,7 @@ import java.util.List;
 import org.mockito.ArgumentCaptor;
 import org.quicktheories.core.Configuration;
 import org.quicktheories.core.Gen;
+import org.quicktheories.core.NoGuidance;
 import org.quicktheories.core.Reporter;
 import org.quicktheories.core.Strategy;
 import org.quicktheories.dsl.TheoryBuilder;
@@ -21,7 +22,7 @@ abstract class ComponentTest<T> {
   
   protected Reporter reporter = mock(Reporter.class);
   protected Strategy defaultStrategy = new Strategy(Configuration.defaultPRNG(2), 1000, 10000, 10,
-      this.reporter);
+      this.reporter, prng -> new NoGuidance());
 
   public TheoryBuilder<T> assertThatFor(Gen<T> generator) {
     return assertThatFor(generator, defaultStrategy);

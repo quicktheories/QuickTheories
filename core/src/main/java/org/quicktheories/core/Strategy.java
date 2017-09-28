@@ -1,5 +1,7 @@
 package org.quicktheories.core;
 
+import java.util.function.Function;
+
 /**
  * Describes the components that make up the QuickTheory: random generator,
  * number of examples, number of shrink cycles and falsification reporter
@@ -11,6 +13,7 @@ public class Strategy {
   private final int examples;
   private final int shrinkCycles;
   private final Reporter reporter;
+  private final Function<PseudoRandom, Guidance> guidance;
 
   /**
    * The strategy used in a QuickTheory
@@ -27,12 +30,13 @@ public class Strategy {
    *          value falsifies
    */
   public Strategy(final PseudoRandom prng, final int examples,
-      final int shrinkCycles, final int generateAttempts, Reporter reporter) {
+      final int shrinkCycles, final int generateAttempts, Reporter reporter, Function<PseudoRandom, Guidance> guidance) {
     this.prng = prng;
     this.examples = examples;
     this.shrinkCycles = shrinkCycles;
     this.reporter = reporter;
     this.generateAttempts = generateAttempts;
+    this.guidance = guidance;
   }
 
   /**
@@ -80,6 +84,10 @@ public class Strategy {
     return this.reporter;
   }
 
+  public Guidance guidance() {
+    return guidance.apply(prng());
+  }
+  
   /**
    * Creates a strategy with a fixed seed
    * 
@@ -90,7 +98,7 @@ public class Strategy {
    */
   public Strategy withFixedSeed(long seed) {
     return new Strategy(defaultPRNG(seed), examples, shrinkCycles, generateAttempts,
-        reporter);
+        reporter, guidance);
   }
 
   /**
@@ -101,7 +109,12 @@ public class Strategy {
    * @return a strategy with the maximum number of examples as supplied
    */
   public Strategy withExamples(int examples) {
-    return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter);
+    return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter, guidance);
+  }
+  
+
+  public Strategy withGuidance(Function<PseudoRandom, Guidance> guidance) {
+    return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter, guidance);
   }
 
   /**
@@ -112,7 +125,7 @@ public class Strategy {
    * @return a strategy with the maximum number of shrinks as supplied
    */
   public Strategy withShrinkCycles(int shrinks) {
-    return new Strategy(prng, examples, shrinks, generateAttempts, reporter);
+    return new Strategy(prng, examples, shrinks, generateAttempts, reporter, guidance);
   }
 
   /**

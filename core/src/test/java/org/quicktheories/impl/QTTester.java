@@ -1,5 +1,6 @@
 package org.quicktheories.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
@@ -22,17 +23,16 @@ import org.quicktheories.api.Predicate4;
 import org.quicktheories.api.Tuple3;
 import org.quicktheories.api.Tuple4;
 import org.quicktheories.core.Configuration;
+import org.quicktheories.core.NoGuidance;
 import org.quicktheories.core.Reporter;
 import org.quicktheories.core.Strategy;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class QTTester {
 
   private Reporter r = mock(Reporter.class);
 
   public QuickTheory qt(long seed) {
-    Strategy s = new Strategy(Configuration.defaultPRNG(seed), 100, 10000, 10, r);
+    Strategy s = new Strategy(Configuration.defaultPRNG(seed), 100, 10000, 10, r, prng -> new NoGuidance());
     return org.quicktheories.QuickTheory.qt(() -> s);
   }
 

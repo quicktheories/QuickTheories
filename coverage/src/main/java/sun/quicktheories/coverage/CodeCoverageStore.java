@@ -28,6 +28,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Store for line visit information.
+ * 
+ * This is placed in a sun package as non delegating classloaders
+ * normally still delegate for sun.something.
  */
 public final class CodeCoverageStore {
 

@@ -6,23 +6,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalLong;
 
-class Precursor {
+public final class Precursor {
   
   private static final int INITIAL_SIZE = 32;
   
   private ByteBuffer buffer = ByteBuffer.allocate(1);
   private final List<Constraint> constraints;
   
-  Precursor() {
+  public Precursor() {
     this.buffer = ByteBuffer.allocate(INITIAL_SIZE);
     this.constraints = new ArrayList<>();
   }
   
-  boolean isEmpty() {
+  public boolean isEmpty() {
     return buffer.position() == 0;
   }
   
-  byte[] bytes() {
+  public byte[] bytes() {
     return Arrays.copyOf(buffer.array(),buffer.position());
   }
     
@@ -31,7 +31,7 @@ class Precursor {
     storeConstraints(constraint);
   }
   
-  long[] current() {
+  public long[] current() {
     long[] out = longArraySizedForBuffer();
     ByteBuffer view = buffer.duplicate();
     view.position(0);
@@ -40,7 +40,7 @@ class Precursor {
   }
 
   
-  long[] maxLimit() {
+  public long[] maxLimit() {
     long[] max = longArraySizedForBuffer();
     for (int i = 0; i != constraints.size(); i++) {
       max[i] = constraints.get(i).max();
@@ -48,7 +48,7 @@ class Precursor {
     return max;
   }
 
-  long[] minLimit() {
+  public long[] minLimit() {
     long[] max = longArraySizedForBuffer();
     for (int i = 0; i != constraints.size(); i++) {
       max[i] = constraints.get(i).min();
@@ -56,7 +56,7 @@ class Precursor {
     return max;
   }
 
-  long[] shrinkTarget() {
+  public long[] shrinkTarget() {
     long[] max = longArraySizedForBuffer();
     for (int i = 0; i != constraints.size(); i++) {
       max[i] = constraints.get(i).shrinkTarget().orElse(constraints.get(i).min());
@@ -64,15 +64,15 @@ class Precursor {
     return max;
   }  
   
-  OptionalLong shrinkTarget(int index) {
+  public OptionalLong shrinkTarget(int index) {
     return constraints.get(index).shrinkTarget();
   }
   
-  long min(int index) {
+  public  long min(int index) {
     return constraints.get(index).min();
   }
   
-  long max(int index) {
+  public long max(int index) {
     return constraints.get(index).max();
   }
   

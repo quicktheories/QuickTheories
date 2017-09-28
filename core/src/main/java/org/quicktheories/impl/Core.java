@@ -2,7 +2,6 @@ package org.quicktheories.impl;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -12,22 +11,11 @@ import java.util.zip.CRC32;
 
 import org.quicktheories.api.Pair;
 import org.quicktheories.core.Gen;
-import org.quicktheories.core.PseudoRandom;
+import org.quicktheories.core.Guidance;
 import org.quicktheories.core.Strategy;
-import org.quicktheories.coverage.ClassloaderByteArraySource;
-import org.quicktheories.coverage.Installer;
-
-import com.ea.agentloader.AgentLoader;
-
-import sun.quicktheories.coverage.CodeCoverageStore;
 
 
 class Core {
-  
-  static {
-    Installer in = new Installer(new ClassloaderByteArraySource(Thread.currentThread().getContextClassLoader()));
-    AgentLoader.loadAgent(in.createJar().getAbsolutePath(), "hello");
-  }
 
   private final Strategy      config;
 
@@ -62,12 +50,13 @@ class Core {
   <T> Optional<Pair<Falsification<T>, PrecursorDataPair<T>>> findFalsifyingValue(
       Property<T> prop) {
     
+    Guidance guidance = config.guidance();
+    
     // search randomly but first visit the maxima, minima and shrink point  
     RandomDistribution<T> randomDistribution =  new RandomDistribution<>(config, prop.getGen());
     PrecursorDataPair<T> startPoint = randomDistribution.generate();
 
     ArrayDeque<long[]> toVisit = new ArrayDeque<long[]>();
-    Set<Long> visitedBranches = new HashSet<Long>();
      
     // Always visit the shrink point, min and max
     toVisit.add(startPoint.precursor().shrinkTarget());   
@@ -88,45 +77,21 @@ class Core {
       }  
       
       examplesUsed = examplesUsed + 1;
-      CodeCoverageStore.reset();
+      guidance.newExample(t.precursor());
+      
       Optional<Falsification<T>> falsification = prop.tryFalsification(t.value());
-      Collection<Long> hits = CodeCoverageStore.getHits();
+      guidance.exampleExecuted();
 
       if (falsification.isPresent()) {
         return falsification.map(f -> Pair.of(f, t));
       } else {
-         toVisit.addAll(suggestValues(i, hits, visitedBranches,t));
+        toVisit.addAll(guidance.suggestValues(i,t.precursor()));
       }
-
-      visitedBranches.addAll(hits);
+      
+      guidance.exampleComplete();
 
     }   
     return Optional.empty();
-  }
-
-  private <T> Collection<long[]> suggestValues(int execution, Collection<Long> hits, Set<Long> alreadyVisited,
-      PrecursorDataPair<T> t) {
-
-    if (execution <= 3) {
-      return Collections.emptyList();
-    }
-
-    if (!alreadyVisited.containsAll(hits)) {
-      List<long[]> nearBy = new ArrayList<long[]>();
-      for (int i = 0; i != 20; i++) {
-        nearBy.add(valueNear(t.precursor()));
-      }
-      return nearBy;
-    }
-    return Collections.emptyList();
-  }
-
-  private <T> long[] valueNear(Precursor t) {   
-    PseudoRandom prng = config.prng();
-    long[] ls= t.current();
-    int index = prng.nextInt(0, ls.length -1);
-    ls[index] = prng.nextLong(t.min(index), t.max(index));
-    return ls;
   }
 
   <T> List<T> shrink(PrecursorDataPair<T> precursor, Property<T> prop) {
