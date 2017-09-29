@@ -1,14 +1,16 @@
 package org.quicktheories;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 import org.junit.Test;
-import org.quicktheories.WithQuickTheories;
+import org.mockito.Mockito;
+import org.quicktheories.core.Guidance;
 
 public class WithQuickTheoriesTest {
   
   WithQuickTheories testee = new WithQuickTheories(){};
-
+  
   @Test
   public void shouldProvideAQTInstance() {
     assertThat(testee.qt()).isNotNull();
@@ -83,5 +85,18 @@ public class WithQuickTheoriesTest {
   public void shouldProvideAStringsDSLInstance() {
     assertThat(testee.strings()).isNotNull();
   } 
+  
+  @Test
+  public void usesSuppliedGuidance() {
+    Guidance g = Mockito.mock(Guidance.class);
+    testee.qt()
+      .withGuidance( prng -> g)
+      .withExamples(10)
+      .forAll(testee.integers().all())
+      .check(i -> true);
+    
+    Mockito.verify(g, times(10)).exampleExecuted();
+  }
+
   
 }

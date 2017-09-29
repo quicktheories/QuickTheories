@@ -1,6 +1,9 @@
 package org.quicktheories.core;
 
 import java.util.Optional;
+import java.util.ServiceLoader;
+import java.util.function.Function;
+import java.util.stream.StreamSupport;
 
 /**
  * Configures the Strategy for the corresponding QuickTheory
@@ -21,7 +24,7 @@ public abstract class Configuration {
    */
   public static Strategy systemStrategy() {
     return new Strategy(defaultPRNG(pickSeed()), pickExamples(), pickShrinks(), pickAttempts(),
-        new ExceptionReporter(), prng -> new NoGuidance());
+        new ExceptionReporter(), pickGuidance());
   }
 
   private static int pickAttempts() {
@@ -47,6 +50,11 @@ public abstract class Configuration {
     return userValue.map(Long::valueOf).orElseGet(() -> System.nanoTime());
   }
 
+  private static Function<PseudoRandom, Guidance> pickGuidance() {
+    ServiceLoader<GuidanceFactory> guidance = ServiceLoader.load(GuidanceFactory.class);
+    return StreamSupport.stream(guidance.spliterator(), false).findFirst().orElse( prng -> new NoGuidance());
+  }
+  
   /**
    * Returns the default PRNG with initial seed supplied. Note: the XOrShiftPRNG
    * cannot have seed 0 (if to be useful) and will therefore reset the seed to

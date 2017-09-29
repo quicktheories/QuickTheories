@@ -13,7 +13,7 @@ import org.quicktheories.core.PseudoRandom;
 
 import com.example.HayStack;
 
-public class CoverageGuidanceTest implements WithQuickTheories {
+public class CoverageGuidanceIT implements WithQuickTheories {
 
   @Test
   public void exploresBranchesMoreEfficientlyThanWithoutCoverage() {

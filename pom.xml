@@ -97,6 +97,7 @@
 					<configuration>
 						<excludes>
 							<exclude>com/example/**.java</exclude>
+							<exclude>**/*IT.java</exclude>
 						</excludes>
 						<argLine>-Xms512m -Xmx512m -XX:MaxMetaspaceSize=128m</argLine>
 					</configuration>
