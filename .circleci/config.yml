@@ -1,0 +1,28 @@
+version: 2
+
+jobs:
+  build:
+
+    working_directory: ~/quicktheories
+
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+
+    steps:
+      - checkout
+
+      - run: mvn -X verify
+
+      - run:
+          name: Save test results 
+          command: |
+            mkdir -p ~/junit/ 
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+
+      - store_test_results:
+          path: ~/junit
+
+      - store_artifacts:
+          path: ~/junit
+

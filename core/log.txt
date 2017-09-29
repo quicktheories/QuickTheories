@@ -1,0 +1,961 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Building QuickTheories 1.00-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ quicktheories ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/henry/code/quicktheories_ng/core/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.6.0:compile (default-compile) @ quicktheories ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- bnd-maven-plugin:3.4.0:bnd-process (default) @ quicktheories ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ quicktheories ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/henry/code/quicktheories_ng/core/src/test/resources
+[INFO] 
+[INFO] >>> findbugs-maven-plugin:3.0.3:check (fail-on-bug) > :findbugs @ quicktheories >>>
+[INFO] 
+[INFO] --- findbugs-maven-plugin:3.0.3:findbugs (findbugs) @ quicktheories ---
+[INFO] Fork Value is true
+[INFO] Done FindBugs Analysis....
+[INFO] 
+[INFO] <<< findbugs-maven-plugin:3.0.3:check (fail-on-bug) < :findbugs @ quicktheories <<<
+[INFO] 
+[INFO] 
+[INFO] --- findbugs-maven-plugin:3.0.3:check (fail-on-bug) @ quicktheories ---
+[INFO] BugInstance size is 0
+[INFO] Error size is 0
+[INFO] No errors/warnings found
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.6.0:testCompile (default-testCompile) @ quicktheories ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.5:test (default-test) @ quicktheories ---
+[INFO] Surefire report directory: /home/henry/code/quicktheories_ng/core/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.quicktheories.generators.CharactersTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.256 sec
+Running org.quicktheories.highlevel.DoublesComponentTest
+Loadingorg.quicktheories.coverage.Agent
+Loadingsun.quicktheories.coverage.CodeCoverageStore
+Loadingsun.quicktheories.coverage.InvokeReceiver
+hello
+Hi from the agent!
+I've got instrumentation!: sun.instrument.InstrumentationImpl@4427a0e9
+added 
+!!!!!!!!!!null
+!!!!!!!!!!null
+Error transforming class org.quicktheories.core.Gen$$Lambda$15/520016214
+java.lang.VerifyError
+	at sun.instrument.InstrumentationImpl.retransformClasses0(Native Method)
+	at sun.instrument.InstrumentationImpl.retransformClasses(InstrumentationImpl.java:144)
+	at org.quicktheories.coverage.Agent.lambda$2(Agent.java:31)
+	at java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175)
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471)
+	at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:418)
+	at org.quicktheories.coverage.Agent.agentmain(Agent.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.instrument.InstrumentationImpl.loadClassAndStartAgent(InstrumentationImpl.java:386)
+	at sun.instrument.InstrumentationImpl.loadClassAndCallAgentmain(InstrumentationImpl.java:411)
+Error transforming class org.quicktheories.core.Gen$$Lambda$4/1509514333
+java.lang.VerifyError
+	at sun.instrument.InstrumentationImpl.retransformClasses0(Native Method)
+	at sun.instrument.InstrumentationImpl.retransformClasses(InstrumentationImpl.java:144)
+	at org.quicktheories.coverage.Agent.lambda$2(Agent.java:31)
+	at java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175)
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471)
+	at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:418)
+	at org.quicktheories.coverage.Agent.agentmain(Agent.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.instrument.InstrumentationImpl.loadClassAndStartAgent(InstrumentationImpl.java:386)
+	at sun.instrument.InstrumentationImpl.loadClassAndCallAgentmain(InstrumentationImpl.java:411)
+org/assertj/core/api/AbstractDateAssert$1 is 0
+org/assertj/core/api/iterable/Extractor is 1
+org/assertj/core/api/AbstractIterableSizeAssert is 2
+org/assertj/core/api/IterableSizeAssert is 3
+org/assertj/core/api/AssertFactory is 4
+junit/framework/ComparisonFailure is 5
+junit/framework/AssertionFailedError is 6
+junit/framework/TestListener is 7
+org/assertj/core/api/Condition is 8
+org/quicktheories/generators/DoublesTest$2 is 9
+org/quicktheories/generators/DoublesTest$1 is 10
+org/quicktheories/impl/Property is 11
+!!!!!!!!!!null
+org/quicktheories/impl/RandomDistribution is 12
+org/junit/runners/model/MultipleFailureException is 13
+org/junit/runner/notification/Failure is 14
+org/junit/runner/notification/RunNotifier$4 is 15
+org/apache/maven/surefire/junit4/JUnit4StackTraceWriter is 16
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/impl/ForcedDistribution is 17
+org/quicktheories/impl/Falsification is 18
+org/quicktheories/api/Pair is 19
+!!!!!!!!!!null
+org/quicktheories/impl/SimpleShrink is 20
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/impl/SearchResult is 21
+org/mockito/internal/creation/cglib/DelegatingMockitoMethodProxy is 22
+org/mockito/internal/creation/cglib/CGLIBHacker is 23
+org/mockito/cglib/proxy/MethodProxy$FastClassInfo is 24
+org/mockito/internal/creation/DelegatingMethod is 25
+org/mockito/internal/invocation/realmethod/CleanTraceRealMethod is 26
+org/mockito/internal/invocation/realmethod/DefaultRealMethod is 27
+org/mockito/internal/invocation/InvocationImpl is 28
+org/mockito/internal/exceptions/VerificationAwareInvocation is 29
+org/mockito/internal/progress/SequenceNumber is 30
+org/mockito/internal/invocation/ArgumentsProcessor is 31
+org/mockito/internal/debugging/LocationImpl is 32
+org/mockito/internal/exceptions/stacktrace/StackTraceFilter is 33
+org/mockito/exceptions/stacktrace/StackTraceCleaner is 34
+org/mockito/internal/exceptions/stacktrace/DefaultStackTraceCleaner is 35
+org/mockito/internal/invocation/InvocationMatcher is 36
+org/mockito/internal/invocation/CapturesArgumensFromInvocation is 37
+org/mockito/internal/matchers/Equals is 38
+org/mockito/internal/matchers/ContainsExtraTypeInformation is 39
+org/mockito/ArgumentMatcher is 40
+org/hamcrest/BaseMatcher is 41
+org/mockito/internal/stubbing/OngoingStubbingImpl is 42
+org/mockito/internal/stubbing/BaseStubbing is 43
+org/mockito/stubbing/OngoingStubbing is 44
+org/mockito/stubbing/DeprecatedOngoingStubbing is 45
+org/mockito/internal/util/Primitives is 46
+org/mockito/internal/progress/HandyReturnValues is 47
+org/mockito/internal/matchers/CapturingMatcher is 48
+org/mockito/internal/matchers/CapturesArguments is 49
+org/mockito/internal/matchers/VarargMatcher is 50
+org/mockito/internal/verification/VerificationModeFactory is 51
+org/mockito/internal/verification/Times is 52
+org/mockito/internal/verification/api/VerificationInOrderMode is 53
+org/mockito/internal/verification/MockAwareVerificationMode is 54
+org/mockito/internal/debugging/Localized is 55
+org/mockito/internal/matchers/Any is 56
+org/mockito/internal/matchers/LocalizedMatcher is 57
+org/mockito/internal/matchers/MatcherDecorator is 58
+org/mockito/internal/verification/VerificationDataImpl is 59
+org/mockito/internal/verification/checkers/MissingInvocationChecker is 60
+org/mockito/internal/invocation/InvocationsFinder is 61
+org/mockito/internal/verification/DefaultRegisteredInvocations$RemoveToString is 62
+org/mockito/internal/util/collections/ListUtil is 63
+org/mockito/internal/invocation/InvocationsFinder$RemoveNotMatching is 64
+org/mockito/internal/invocation/ArgumentsComparator is 65
+org/mockito/internal/verification/checkers/NumberOfInvocationsChecker is 66
+org/mockito/internal/invocation/InvocationMarker is 67
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 2.253 sec <<< FAILURE!
+Running org.quicktheories.core.XOrShiftPRNGTest
+!!!!!!!!!!null
+org/assertj/core/api/AssertionsForInterfaceTypes is 68
+org/assertj/core/api/GenericComparableAssert is 69
+org/assertj/core/api/AbstractPathAssert is 70
+org/assertj/core/api/PathAssert is 71
+org/assertj/core/api/CharSequenceAssert is 72
+org/assertj/core/api/ObjectAssertFactory is 73
+org/assertj/core/internal/Iterables is 74
+Loadingjava/lang/Object
+Loadingjava/util/List
+Loadingjava/lang/Object
+org/assertj/core/internal/Predicates is 75
+org/assertj/core/internal/Lists is 76
+org/assertj/core/internal/CommonValidations is 77
+org/assertj/core/util/Lists is 78
+org/assertj/core/internal/IterableDiff is 79
+!!!!!!!!!!null
+org/assertj/core/internal/Comparables is 80
+org/assertj/core/internal/Longs is 81
+org/assertj/core/internal/Numbers is 82
+!!!!!!!!!!null
+org/assertj/core/util/Arrays is 83
+org/assertj/core/api/IterableAssert is 84
+org/assertj/core/api/FactoryBasedNavigableIterableAssert is 85
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.149 sec
+Running org.quicktheories.generators.StringsDSLTest
+!!!!!!!!!!null
+org/quicktheories/generators/StringsDSL$StringGeneratorBuilder is 86
+org/quicktheories/generators/Strings is 87
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/core/DescribingGenerator is 88
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/assertj/core/internal/Integers is 89
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.941 sec
+Running org.quicktheories.generators.DoublesTest
+!!!!!!!!!!null
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 sec
+Running org.quicktheories.api.Tuple3Test
+org/quicktheories/api/Tuple3 is 90
+org/quicktheories/api/Tuple4 is 91
+org/assertj/core/internal/Strings is 92
+org/assertj/core/internal/InputStreamsException is 93
+nl/jqno/equalsverifier/EqualsVerifier is 94
+nl/jqno/equalsverifier/util/exceptions/InternalException is 95
+nl/jqno/equalsverifier/Checker is 96
+nl/jqno/equalsverifier/Configuration is 97
+nl/jqno/equalsverifier/util/PrefabValues is 98
+nl/jqno/equalsverifier/util/exceptions/ReflectionException is 99
+nl/jqno/equalsverifier/util/exceptions/RecursionException is 100
+nl/jqno/equalsverifier/util/StaticFieldValueStash is 101
+nl/jqno/equalsverifier/CachedHashCodeInitializer is 102
+nl/jqno/equalsverifier/Warning is 103
+nl/jqno/equalsverifier/JavaApiPrefabValues is 104
+nl/jqno/equalsverifier/JavaApiPrefabValues$Dummy is 105
+nl/jqno/equalsverifier/util/PrefabValues$Tuple is 106
+javax/naming/Reference is 107
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/api/Function3 is 108
+!!!!!!!!!!null
+Tests run: 6, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.116 sec <<< FAILURE!
+Running org.quicktheories.generators.BooleansTest
+!!!!!!!!!!null
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 sec
+Running org.quicktheories.impl.ShapedDataSourceTest
+!!!!!!!!!!null
+org/quicktheories/core/FilteredGenerator is 109
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/assertj/core/internal/LongArrays is 110
+org/assertj/core/internal/Arrays is 111
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.064 sec
+Running org.quicktheories.impl.TheoryRunnerTest
+com/sun/proxy/$Proxy2 is 112
+Null pointer with 112
+java.lang.NullPointerException
+	at sun.quicktheories.coverage.CodeCoverageStore.visitProbes(CodeCoverageStore.java:159)
+	at com.sun.proxy.$Proxy2.<clinit>(Unknown Source)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at java.lang.reflect.Proxy.newProxyInstance(Proxy.java:739)
+	at sun.reflect.annotation.AnnotationParser$1.run(AnnotationParser.java:305)
+	at sun.reflect.annotation.AnnotationParser$1.run(AnnotationParser.java:303)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.reflect.annotation.AnnotationParser.annotationForMap(AnnotationParser.java:303)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotation2(AnnotationParser.java:293)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotations2(AnnotationParser.java:120)
+	at sun.reflect.annotation.AnnotationParser.parseSelectAnnotations(AnnotationParser.java:101)
+	at sun.reflect.annotation.AnnotationType.<init>(AnnotationType.java:145)
+	at sun.reflect.annotation.AnnotationType.getInstance(AnnotationType.java:85)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotation2(AnnotationParser.java:266)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotations2(AnnotationParser.java:120)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotations(AnnotationParser.java:72)
+	at java.lang.Class.createAnnotationData(Class.java:3521)
+	at java.lang.Class.annotationData(Class.java:3510)
+	at java.lang.Class.getAnnotation(Class.java:3415)
+	at org.junit.internal.builders.IgnoredBuilder.runnerForClass(IgnoredBuilder.java:10)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.builders.AllDefaultPossibilitiesBuilder.runnerForClass(AllDefaultPossibilitiesBuilder.java:26)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.requests.ClassRequest.getRunner(ClassRequest.java:26)
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:51)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.executeTestSet(AbstractDirectoryTestSuite.java:115)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.execute(AbstractDirectoryTestSuite.java:102)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:180)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:350)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1021)
+Null pointer with 112
+java.lang.NullPointerException
+	at sun.quicktheories.coverage.CodeCoverageStore.visitProbes(CodeCoverageStore.java:159)
+	at com.sun.proxy.$Proxy2.<clinit>(Unknown Source)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at java.lang.reflect.Proxy.newProxyInstance(Proxy.java:739)
+	at sun.reflect.annotation.AnnotationParser$1.run(AnnotationParser.java:305)
+	at sun.reflect.annotation.AnnotationParser$1.run(AnnotationParser.java:303)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.reflect.annotation.AnnotationParser.annotationForMap(AnnotationParser.java:303)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotation2(AnnotationParser.java:293)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotations2(AnnotationParser.java:120)
+	at sun.reflect.annotation.AnnotationParser.parseSelectAnnotations(AnnotationParser.java:101)
+	at sun.reflect.annotation.AnnotationType.<init>(AnnotationType.java:145)
+	at sun.reflect.annotation.AnnotationType.getInstance(AnnotationType.java:85)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotation2(AnnotationParser.java:266)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotations2(AnnotationParser.java:120)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotations(AnnotationParser.java:72)
+	at java.lang.Class.createAnnotationData(Class.java:3521)
+	at java.lang.Class.annotationData(Class.java:3510)
+	at java.lang.Class.getAnnotation(Class.java:3415)
+	at org.junit.internal.builders.IgnoredBuilder.runnerForClass(IgnoredBuilder.java:10)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.builders.AllDefaultPossibilitiesBuilder.runnerForClass(AllDefaultPossibilitiesBuilder.java:26)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.requests.ClassRequest.getRunner(ClassRequest.java:26)
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:51)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.executeTestSet(AbstractDirectoryTestSuite.java:115)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.execute(AbstractDirectoryTestSuite.java:102)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:180)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:350)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1021)
+org/junit/internal/runners/InitializationError is 113
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.036 sec <<< FAILURE!
+Running org.quicktheories.highlevel.LongsComponentTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.255 sec
+Running org.quicktheories.highlevel.IntegersComponentTest
+org/quicktheories/generators/IntegersDSL$IntegerDomainBuilder is 114
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.077 sec
+Running org.quicktheories.generators.LongsTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 sec
+Running org.quicktheories.generators.ListsTest
+org/quicktheories/generators/Lists is 115
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.046 sec
+Running org.quicktheories.api.Tuple5Test
+org/quicktheories/api/Tuple5 is 116
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 4, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.01 sec <<< FAILURE!
+Running org.quicktheories.core.ConfigurationTest
+org/junit/contrib/java/lang/system/RestoreSystemProperties is 117
+org/junit/rules/ExternalResource is 118
+com/sun/proxy/$Proxy3 is 119
+org/junit/rules/ExternalResource$1 is 120
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 sec
+Running org.quicktheories.core.stateful.StatefulTest
+org/quicktheories/core/stateful/Parallel is 121
+Loadingjava/util/concurrent/ExecutionException
+Loadingjava/util/concurrent/TimeoutException
+Loadingjava/lang/Exception
+Loadingjava/lang/Throwable
+Loadingjava/lang/Object
+Loadingjava/lang/Exception
+Loadingjava/lang/Throwable
+Loadingjava/lang/Object
+Loadingjava/lang/InterruptedException
+Loadingjava/lang/Exception
+Loadingjava/lang/Exception
+Loadingjava/lang/Throwable
+Loadingjava/lang/Object
+Loadingjava/lang/Throwable
+Loadingjava/lang/Object
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/assertj/core/api/ListAssert$ListFromStream is 122
+org/assertj/core/util/IterableUtil is 123
+Loadingjava/util/Collection
+Loadingjava/util/ArrayList
+Loadingjava/util/List
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/core/stateful/Command is 124
+org/quicktheories/core/stateful/StatefulTest$Model is 125
+org/quicktheories/core/stateful/StatefulTest$Model$1 is 126
+org/quicktheories/core/stateful/StatefulTest$Model$2 is 127
+org/quicktheories/core/stateful/StatefulTest$Model$3 is 128
+org/quicktheories/core/stateful/StatefulTest$Model$4 is 129
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 sec
+Running org.quicktheories.generators.CodePointsTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 sec
+Running org.quicktheories.generators.SourceDSLTest
+org/quicktheories/generators/ListsDSL$ListGeneratorBuilder is 130
+!!!!!!!!!!null
+org/quicktheories/generators/Floats is 131
+!!!!!!!!!!null
+org/quicktheories/generators/ArraysDSL$ArrayGeneratorBuilder is 132
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/generators/LongsDSL$LongDomainBuilder is 133
+org/quicktheories/generators/SourceDSLTest$AnEnum is 134
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/assertj/core/api/OptionalLongAssert is 135
+org/assertj/core/api/AbstractOptionalLongAssert is 136
+org/quicktheories/generators/BigDecimalsDSL$BigDecimalsBuilder is 137
+org/quicktheories/generators/BigDecimalsDSL$BigDecimals is 138
+org/quicktheories/generators/BigIntegersDSL$BigIntegers is 139
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/generators/DatesDSL$Dates is 140
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/generators/LocalDatesDSL$LocalDates is 141
+!!!!!!!!!!null
+org/quicktheories/generators/ListsDSL$TypedListGeneratorBuilder is 142
+Tests run: 99, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.119 sec
+Running org.quicktheories.generators.DatesTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec
+Running org.quicktheories.core.ExceptionReporterTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 sec
+Running org.quicktheories.generators.LocalDatesTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec
+Running org.quicktheories.dogfood.SanityTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.085 sec
+Running org.quicktheories.api.Tuple4Test
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/api/Function4 is 143
+!!!!!!!!!!null
+Tests run: 6, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.025 sec <<< FAILURE!
+Running org.quicktheories.WithQuickTheoriesTest
+org/quicktheories/WithQuickTheoriesTest$1 is 144
+Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 sec
+Running org.quicktheories.Airity1Test
+org/quicktheories/FooInteger is 145
+org/quicktheories/impl/QTTester is 146
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/dsl/MappingTheoryBuilder is 147
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/dsl/PrecursorTheoryBuilder1 is 148
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/assertj/core/error/ShouldBeEqual is 149
+org/assertj/core/error/AssertionErrorFactory is 150
+org/assertj/core/error/MessageFormatter is 151
+org/assertj/core/error/DescriptionFormatter is 152
+org/assertj/core/error/ConstructorInvoker is 153
+org/assertj/core/util/Strings is 154
+Loadingjava/lang/String
+Loadingjava/lang/Object
+Loadingjava/lang/Object
+org/assertj/core/error/ConstructorInvoker$SetAccessibleValueAction is 155
+org/assertj/core/util/Throwables is 156
+!!!!!!!!!!null
+org/mockito/internal/matchers/Equality is 157
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.209 sec
+Running org.quicktheories.impl.PrecursorTest
+org/assertj/core/internal/ByteArrays is 158
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 sec
+Running org.quicktheories.highlevel.DatesComponentTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 sec
+Running org.quicktheories.dogfood.ArraysDSLTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.204 sec
+Running org.quicktheories.generators.BigDecimalsTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 sec
+Running org.quicktheories.dogfood.ListsDSLTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 sec
+Running org.quicktheories.impl.ConstraintTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 sec
+Running org.quicktheories.api.Predicate3Test
+org/quicktheories/api/Predicate3 is 159
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/assertj/core/internal/Booleans is 160
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 sec
+Running org.quicktheories.core.GenTest
+com/sun/proxy/$Proxy4 is 161
+org/quicktheories/impl/ExtendedRandomnessSource$$EnhancerByMockitoWithCGLIB$$463a139f is 162
+org/mockito/internal/stubbing/answers/Returns is 163
+org/mockito/internal/stubbing/answers/AnswersValidator is 164
+org/mockito/internal/stubbing/answers/MethodInfo is 165
+org/mockito/internal/stubbing/answers/ThrowsException is 166
+org/mockito/internal/stubbing/answers/DoesNothing is 167
+org/mockito/internal/stubbing/answers/ReturnsArgumentAt is 168
+org/mockito/internal/stubbing/StubbedInvocationMatcher is 169
+org/mockito/internal/stubbing/ConsecutiveStubbing is 170
+org/quicktheories/core/Sequence is 171
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/mockito/internal/invocation/StubInfoImpl is 172
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.066 sec
+Running org.quicktheories.dogfood.CodePointsTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.041 sec
+Running org.quicktheories.api.PairTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 6, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.005 sec <<< FAILURE!
+Running org.quicktheories.api.Predicate5Test
+!!!!!!!!!!null
+org/quicktheories/api/Predicate5 is 173
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 sec
+Running org.quicktheories.generators.IntegersTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 sec
+Running org.quicktheories.Airity4Test
+org/quicktheories/dsl/TheoryBuilder4 is 174
+org/quicktheories/api/Subject5 is 175
+!!!!!!!!!!null
+org/quicktheories/api/Predicate4 is 176
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/api/QuadConsumer is 177
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/dsl/PrecursorTheoryBuilder4 is 178
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/api/Consumer5 is 179
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.227 sec
+Running org.quicktheories.generators.StringsTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 sec
+Running org.quicktheories.Airity3Test
+org/quicktheories/dsl/TheoryBuilder3 is 180
+org/quicktheories/api/Subject4 is 181
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/api/TriConsumer is 182
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/dsl/PrecursorTheoryBuilder3 is 183
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.271 sec
+Running org.quicktheories.core.ToStringTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/assertj/core/internal/Throwables is 184
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/dsl/TheoryBuilder2 is 185
+org/quicktheories/api/Subject3 is 186
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+org/quicktheories/dsl/PrecursorTheoryBuilder2 is 187
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.412 sec
+Running org.quicktheories.dogfood.BigDecimalsTest
+!!!!!!!!!!null
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.02 sec
+Running org.quicktheories.api.Predicate4Test
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec
+Running org.quicktheories.highlevel.LocalDatesComponentTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 sec
+Running org.quicktheories.generators.ArbritaryTest
+!!!!!!!!!!null
+org/quicktheories/core/RandomnessSource$$EnhancerByMockitoWithCGLIB$$df8a4667 is 188
+org/quicktheories/generators/ArbritaryTest$AnEnum is 189
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 sec
+Running org.quicktheories.generators.BigIntegersTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec
+Running org.quicktheories.generators.FloatsTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 sec
+Running org.quicktheories.Airity2Test
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.172 sec
+Running org.quicktheories.generators.ArraysTest
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+!!!!!!!!!!null
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 sec
+
+Results :
+
+Tests in error: 
+  shouldShrinkUsingCorrectNegativeGeneratorAcrossRange(org.quicktheories.highlevel.DoublesComponentTest)
+  shouldObeyHashcodeEqualsContract(org.quicktheories.api.Tuple3Test)
+  initializationError(org.quicktheories.impl.TheoryRunnerTest)
+  shouldObeyHashcodeEqualsContract(org.quicktheories.api.Tuple5Test)
+  shouldObeyHashcodeEqualsContract(org.quicktheories.api.Tuple4Test)
+  shouldObeyHashcodeEqualsContract(org.quicktheories.api.PairTest)
+
+Tests run: 367, Failures: 0, Errors: 6, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 28.259 s
+[INFO] Finished at: 2017-09-25T13:15:26+01:00
+[INFO] Final Memory: 23M/252M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.5:test (default-test) on project quicktheories: There are test failures.
+[ERROR] 
+[ERROR] Please refer to /home/henry/code/quicktheories_ng/core/target/surefire-reports for the individual test results.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
