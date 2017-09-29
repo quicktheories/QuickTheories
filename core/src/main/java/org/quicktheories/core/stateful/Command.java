@@ -9,7 +9,7 @@ public interface Command<SUT,MODEL> {
 
   /**
    * Calculates the expected state after this command has run
-   * @param state The current state
+   * @param currentState The current state
    * @return The next state
    */
   MODEL nextState(MODEL currentState);

@@ -25,6 +25,7 @@ public interface Gen<T> extends AsString<T>{
 
   /**
    * Maps generated values with supplied function consuming one value
+   * @param <R> Type to map to
    * @param mapper function to map with 
    * @return A Gen of R
    */
@@ -34,6 +35,7 @@ public interface Gen<T> extends AsString<T>{
   
   /**
    * Maps generated values with supplied function consuming two values
+   * @param <R> Type to map to   * 
    * @param mapper function to map with 
    * @return A Gen of R
    */
@@ -43,6 +45,7 @@ public interface Gen<T> extends AsString<T>{
   
   /**
    * Maps generated values with supplied function consuming three values
+   * @param <R> Type to map to 
    * @param mapper function to map with 
    * @return A Gen of R
    */
@@ -61,6 +64,8 @@ public interface Gen<T> extends AsString<T>{
 
   /**
    * Combines output of this Gen with another using mapping
+   * @param <B> Type to combine with
+   * @param <C> Type to generate
    * @param b A Gen of B
    * @param mapping function to use to combine values
    * @return A Gen of C
@@ -71,6 +76,9 @@ public interface Gen<T> extends AsString<T>{
   
   /**
    * Combines output of this Gen with two others using mapping
+   * @param <B> Type to combine with
+   * @param <C> Type to combine with
+   * @param <D> Type to generate
    * @param b A Gen of B
    * @param c A Gen of C
    * @param mapping function to use to combine values

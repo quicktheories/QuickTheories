@@ -25,9 +25,13 @@ public class Strategy {
    * @param shrinkCycles
    *          maximum number of shrink cycles that will occur if falsifying
    *          value found
+   * @param generateAttempts
+   *          maximum number of attempts (due to failed assumptions) to generate each example 
    * @param reporter
    *          a reporter to provide the results if values are exhausted or if a
    *          value falsifies
+   * @param guidance
+   *          Strategy to use to guide search
    */
   public Strategy(final PseudoRandom prng, final int examples,
       final int shrinkCycles, final int generateAttempts, Reporter reporter, Function<PseudoRandom, Guidance> guidance) {

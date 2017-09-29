@@ -33,8 +33,6 @@ public final class TheoryBuilder<A> implements Subject1<A> {
    *          supplies the strategy to be implemented
    * @param source
    *          the source of the values to be generated and potentially shrunk
-   * @param assumptions
-   *          limits the possible values of type T
    */
   public TheoryBuilder(final Supplier<Strategy> state, final Gen<A> source) {
     this.state = state;

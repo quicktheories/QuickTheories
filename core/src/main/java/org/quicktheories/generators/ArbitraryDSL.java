@@ -14,8 +14,7 @@ public class ArbitraryDSL {
   /**
    * Generates the same constant value
    * 
-   * @param <T>
-   *          type of value to generate
+   * @param <T> type of value to generate
    * @param constant
    *          the constant value to generate
    * @return a Source of type T of the constant value
@@ -29,6 +28,10 @@ public class ArbitraryDSL {
    * allow a single mutable value to be safely supplied. If it is abused to inject
    * randomness or values that are semantically different across multiple invocations
    * then QuickTheories will not work correctly.
+   * 
+   * @param <T> type of value to generate
+   * @param constant the constant value to generate
+   * @return a Source of type T of the constant value
    */
   public <T> Gen<T> constant(Supplier<T> constant) {
     return Generate.constant(constant);
@@ -39,10 +42,8 @@ public class ArbitraryDSL {
    * constants. When shrinking, enum constants defined first will be considered
    * "smaller".
    * 
-   * @param <T>
-   *          type of value to generate
-   * @param e
-   *          the enum class to produce constants from
+   * @param <T> type of value to generate
+   * @param e the enum class to produce constants from
    * @return a Source of type T of randomly selected enum values
    */
   public <T extends Enum<T>> Gen<T> enumValues(Class<T> e) {
@@ -55,10 +56,8 @@ public class ArbitraryDSL {
    * 
    * When shrinking no order will be assumed.
    * 
-   * @param <T>
-   *          type of value to generate
-   * @param e
-   *          the enum class to produce constants from
+   * @param <T> type of value to generate
+   * @param e the enum class to produce constants from
    * @return a Source of type T of randomly selected enum values
    */
   public <T extends Enum<T>> Gen<T> enumValuesWithNoOrder(Class<T> e) {

@@ -15,8 +15,9 @@ public class Generate {
   
   /**
    * Generates a constant value
+   * @param <T> type of value to generate
    * @param constant The constant to return
-   * @return A Gen<T>
+   * @return A Gen of T
    */
   public static <T> Gen<T> constant(T constant) {
     return prng -> constant;
@@ -29,8 +30,9 @@ public class Generate {
    * randomness or values that are semantically different across multiple invocations
    * then QuickTheories will not work correctly.
    * 
+   * @param <T> type of value to generate
    * @param constant The constant to return
-   * @return A Gen<T>
+   * @return A Gen of T
    */
   public static <T> Gen<T> constant(Supplier<T> constant) {
     return prng -> constant.get();
@@ -39,8 +41,9 @@ public class Generate {
   
   /**
    * Randomly returns when of the supplied values
+   * @param <T> type of value to generate
    * @param ts Values to pick from
-   * @return A Gen<T>
+   * @return A Gen of T
    */
   public static <T> Gen<T> pickWithNoShrinkPoint(List<T> ts) {
     Gen<Integer> index = rangeWithNoShrinkPoint(0, ts.size() - 1);
@@ -49,8 +52,9 @@ public class Generate {
     
   /**
    * Randomly returns when of the supplied values
+   * @param <T> type of value to generate   * 
    * @param ts Values to pick from
-   * @return A Gen<T>
+   * @return A Gen of T
    */
   public static <T> Gen<T> pick(List<T> ts) {
     Gen<Integer> index = range(0, ts.size() - 1);
@@ -128,6 +132,7 @@ public class Generate {
   
   /**
    * Enum values shrinking towards first declared value
+   * @param <T> type of value to generate
    * @param e Enum from which to source values
    * @return A Gen of T
    */
@@ -147,7 +152,7 @@ public class Generate {
    * Inclusive Range of Characters representing valid code points. Shrinks towards '!' character
    * (the first printable ascii character)
    * @param startInclusive Code point of start of range
-   * @param endCodePoint Code point of end of range
+   * @param endInclusive Code point of end of range
    * @return A Gen of Characters
    */
   public static Gen<Character> characters(int startInclusive, int endInclusive) {

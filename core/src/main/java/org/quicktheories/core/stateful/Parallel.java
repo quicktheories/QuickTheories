@@ -41,10 +41,12 @@ public class Parallel {
    * 
    * The model class *must* correctly implement both equals and hashcode.
    * 
+   * @param <S> System under test
+   * @param <M> Model of system 
    * @param initialState Initial state of the system
    * @param commands Commands to be executed
-   * @param modelToSut Mapping from model to system in that state.
-   * @param sutToModel Mapping from sut to model representation
+   * @param toSut Mapping from model to system in that state.
+   * @param readState Function that returns current state of system
    * @param threads Number of threads to use
    */
   public <S, M> void parallelCheck(M initialState,

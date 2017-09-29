@@ -11,7 +11,8 @@ public class Sequential {
    * Supplied commands will be run in sequence and compared against the model.
    * 
    * The model class *must* correctly implement both equals and hashcode.
-   * 
+   * @param <S> System under test
+   * @param <M> Model of system 
    * @param initialState Initial state of the system
    * @param commands Commands to be executed
    * @param modelToSut Mapping from model to system in that state.
