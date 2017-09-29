@@ -26,9 +26,9 @@ public class CoverageGuidanceIT implements WithQuickTheories {
     Function<PseudoRandom, Guidance> coverageGuidance = prng -> new CoverageGuidance(prng);
     long falsifiedWithGuidance = IntStream.range(0, 300).filter(i -> randomlySearchUsingGuidance(coverageGuidance)).count();
 
-    // Four fold improvement is an arbitrary limit chosen as current implementation
+    // Three fold improvement is an arbitrary limit chosen as current implementation
     // reliably exceeds it. Increase this if algorithms improves
-    assertThat(falsifiedWithGuidance).isGreaterThan(falsifiedWithoutGuidance * 4);
+    assertThat(falsifiedWithGuidance).isGreaterThan(falsifiedWithoutGuidance * 3);
 
     System.out.println("No guidance falisified " + falsifiedWithoutGuidance + " out of " + run);
     System.out.println("Guidance falisified  " + falsifiedWithGuidance + " out of " + run);    
