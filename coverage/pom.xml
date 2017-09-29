@@ -44,6 +44,9 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<argLine>-Xms512m -Xmx512m -XX:MaxMetaspaceSize=128m</argLine>
+				</configuration>				
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
