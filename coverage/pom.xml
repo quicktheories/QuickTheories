@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<artifactId>quicktheories-parent</artifactId>
 		<groupId>org.quicktheories</groupId>
-		<version>0.20-SNAPSHOT</version>
+		<version>0.20</version>
 	</parent>
 	<artifactId>coverage</artifactId>
 
@@ -65,8 +64,7 @@
 								</includes>
 							</artifactSet>
 							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<manifestEntries>
 										<Agent-Class>org.quicktheories.coverage.Agent</Agent-Class>
 										<Can-Redefine-Classes>true</Can-Redefine-Classes>
