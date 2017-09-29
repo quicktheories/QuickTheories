@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
 
-      - run: mvn verify
+      - run: mvn -X verify
 
       - run:
           name: Save test results 
