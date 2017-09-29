@@ -1,5 +1,7 @@
 package org.quicktheories;
 
+import org.quicktheories.core.GuidanceFactory;
+import org.quicktheories.core.NoGuidance;
 import org.quicktheories.generators.ArbitraryDSL;
 import org.quicktheories.generators.ArraysDSL;
 import org.quicktheories.generators.BigDecimalsDSL;
@@ -76,6 +78,10 @@ public interface WithQuickTheories {
   
   public default BooleansDSL booleans() {
     return SourceDSL.booleans();
+  }
+  
+  public default GuidanceFactory noGuidance() {
+    return prng -> new NoGuidance();
   }
  
 }

@@ -1,11 +1,12 @@
 package org.quicktheories;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.quicktheories.core.Guidance;
+import org.quicktheories.core.NoGuidance;
 
 public class WithQuickTheoriesTest {
   
@@ -98,5 +99,8 @@ public class WithQuickTheoriesTest {
     Mockito.verify(g, times(10)).exampleExecuted();
   }
 
-  
+  @Test
+  public void providesANoGuidanceOption() {
+    assertThat(testee.noGuidance().apply(null)).isInstanceOf(NoGuidance.class);
+  }
 }

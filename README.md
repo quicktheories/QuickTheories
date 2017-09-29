@@ -7,6 +7,8 @@ Property-based testing for Java 8.
 
 If you were looking for QuickCheck for Java you just found it.
 
+Unlike many other systems QuickTheories supports both shrinking and targeted search using coverage data.
+
 ## What is property based testing 
 
 Traditional unit testing is performed by specifying a series of concrete examples and asserting on the outputs/behaviour of the unit under test.
@@ -362,6 +364,22 @@ A description function can be provided for a type converted without precursors a
       .describedAs(cylinder -> "Cylinder r =" + cylinder.radius() + " h =" + cylinder.height())        
       .check(l -> whatever);
   }
+```
+
+## Coverage guidance
+
+QuickTheories includes an experimental feature to improve the efficiency of the targeted search. If the coverage jar is included on the classpath QuickTheories will insert probes into the code under test. When these probes reveal that a particular example has exercised new code paths QuickTheories will concentrate the search in this area.
+
+This approach has been demonstrated to be far more effective at falsifying branched code in simple example cases. It is not yet known how well it performs in real world scenarios.
+
+There are some disadvantages to coverage guidance. In order to measure coverage QuickTheories must attach an agent to the JVM. The agent will be active from the moment it is installed until the JVM exits - this means it may be active while non QuickTheory tests are running. This will result in an ~10% reduction in performance, and may interfere with JaCoCo and other coverage systems if they are also active. For this reason we recommend running QuickTheories tests in a separate suite if you are using coverage guidance.
+
+Coverage guidance can be disabled on a per test basis.
+
+```java
+  qt() 
+  .withGuidance(noGuidance())
+  .etc
 ```
 
 ## Configuration properties
