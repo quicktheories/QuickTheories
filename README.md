@@ -517,3 +517,4 @@ If you don't like QuickTheories you might want to try one of the other systems b
 * [QuickCheck](https://bitbucket.org/blob79/quickcheck). Not tied to a test framework - provides generators of random values to be used in tests.
 * [FunctionalJava](http://www.functionaljava.org/). Apparently contains a property based testing system, but appears to be completely undocumented.
 * [ScalaCheck](http://www.scalacheck.org/). Mature property based testing system with shrinking, but requires Scala rather than Java.
+* [jqwik](http://jqwik.net/). A property-based test engine built on the JUnit 5 platform. Important features are annotation-based properties and integrated shrinking.
