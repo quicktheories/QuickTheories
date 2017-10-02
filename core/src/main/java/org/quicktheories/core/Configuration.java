@@ -14,7 +14,7 @@ public abstract class Configuration {
   public final static String SEED = "QT_SEED";
   public final static String EXAMPLES = "QT_EXAMPLES";
   public final static String SHRINKS = "QT_SHRINKS";
-  public final static String GENERATE_ATTEMPRS = "QT_ATTEMPTS";
+  public final static String GENERATE_ATTEMPTS = "QT_ATTEMPTS";
 
   /**
    * Sets the strategy for the corresponding QuickTheory. Default values are set
@@ -28,7 +28,7 @@ public abstract class Configuration {
   }
 
   private static int pickAttempts() {
-    Optional<String> userValue = Optional.ofNullable(System.getProperty(SEED));
+    Optional<String> userValue = Optional.ofNullable(System.getProperty(GENERATE_ATTEMPTS));
     return userValue.map(Integer::valueOf).orElseGet(() -> 10);
   }
 

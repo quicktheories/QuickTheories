@@ -54,8 +54,44 @@ public class XOrShiftPRNGTest {
             + testee.getInitialSeed(),
         testee.getInitialSeed() == 42);
   }
+  
+  @Test
+  public void shouldGenerateUpToLongMax() {
+    XOrShiftPRNG testee = new XOrShiftPRNG(0);
+    long actual = testee.nextLong(Long.MAX_VALUE, Long.MAX_VALUE);
+    assertThat(actual).isEqualTo(Long.MAX_VALUE);
+  }
+  
+  @Test
+  public void shouldGenerateFromLowerLimit() {
+    XOrShiftPRNG testee = new XOrShiftPRNG(0);
+    Set<Long> generated = new HashSet<>();
+    for (int i = 0; i != 10; i++) {
+      generated.add(testee.nextLong(Long.MIN_VALUE, Long.MIN_VALUE + 1));
+    }
+
+    assertThat(generated).contains(Long.MIN_VALUE);
+    assertThat(generated).contains(Long.MIN_VALUE + 1);    
+  }  
+  
+  @Test
+  public void shouldGenerateAcrossFullRange() {
+    // given size of the range expect 1000 unique values in 1000 attempts
+    generatesAtLeastXUniqueValues(testee,
+        prng -> prng.nextLong(Long.MIN_VALUE,
+                Long.MAX_VALUE -2 ),
+       1000);
+  }
 
 
+  private void generatesAtLeastXUniqueValues(PseudoRandom prng,
+      Function<PseudoRandom, Long> longGeneratingMethod, int uniqueValues) {
+    Set<Long> generated = new HashSet<>(generateLongValues(prng, longGeneratingMethod, 1000));
+
+    org.assertj.core.api.Assertions.assertThat(generated.size()).isGreaterThanOrEqualTo(uniqueValues);
+  }
+
+  
   private void generatesExactly(PseudoRandom prng,
       Function<PseudoRandom, Long> longGeneratingMethod, Long... ts) {
     List<Long> generated = generateLongValues(prng, longGeneratingMethod, 1000);
@@ -88,23 +124,5 @@ public class XOrShiftPRNGTest {
   }
 
 
-  @Test
-  public void shouldGenerateUpToLongMax() {
-    XOrShiftPRNG testee = new XOrShiftPRNG(0);
-    long actual = testee.nextLong(Long.MAX_VALUE, Long.MAX_VALUE);
-    assertThat(actual).isEqualTo(Long.MAX_VALUE);
-  }
-  
-  @Test
-  public void shouldGenerateFromLowerLimit() {
-    XOrShiftPRNG testee = new XOrShiftPRNG(0);
-    Set<Long> generated = new HashSet<>();
-    for (int i = 0; i != 10; i++) {
-      generated.add(testee.nextLong(Long.MIN_VALUE, Long.MIN_VALUE + 1));
-    }
 
-    assertThat(generated).contains(Long.MIN_VALUE);
-    assertThat(generated).contains(Long.MIN_VALUE + 1);    
-  }  
-  
 }

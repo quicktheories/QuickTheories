@@ -72,6 +72,7 @@ The falsified theory has highlighted something that we forgot.
 
 Math works just fine, but in Java integers can overflow.
 
+
 ### Without static imports
 
 If you prefer the QuickTheories entry points can be brought into scope by implementing and interface, removing the need for static imports.
@@ -88,6 +89,22 @@ public class SomeTests implements WithQuickTheories {
   }
 
 }
+```
+
+### Less verbose
+
+The source DSL reads nicely but can be a little verbose. Most of the core generators can also be accessed by importing `org.quicktheories.generators.Generate`. This provides simple static methods that return generators of core types.
+
+```java
+import static org.quicktheories.generators.Generate.*;
+
+@Test
+public void someProperty() {
+  qt()
+  .forAll(range(1, 102), constant(7))
+  .check((i,c) -> i + c >= 7);
+}
+
 ```
 
 ### Shrinking
