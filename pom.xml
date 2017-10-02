@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.quicktheories</groupId>
 	<artifactId>quicktheories-parent</artifactId>
-	<version>0.21</version>
+	<version>0.22-SNAPSHOT</version>
 	<name>quicktheories-parent</name>
     
     <organization>
@@ -25,7 +25,7 @@
 		<connection>scm:git:https://github.com/NCR-CoDE/QuickTheories.git</connection>
 		<developerConnection>scm:git:git@github.com:NCR-CoDE/QuickTheories.git</developerConnection>
 		<url>https://github.com/NCR-CoDE/QuickTheories.git</url>
-		<tag>quicktheories-parent-0.21</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<issueManagement>
 		<url>https://github.com/NCR-CoDE/QuickTheories/issues</url>
