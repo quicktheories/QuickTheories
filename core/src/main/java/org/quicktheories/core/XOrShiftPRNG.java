@@ -34,18 +34,13 @@ final class XOrShiftPRNG implements PseudoRandom {
   public long nextLong(long startInclusive,
       long endInclusive) {
     if (longRangeIsSmallerThanMax(startInclusive, endInclusive)) {
-      return generateRandomLongWhereRangeLessThanMax(startInclusive,
+      return nextLongWithinCheckedInterval(startInclusive,
           endInclusive);
     }
     
     return generateRandomLongWhereRangeGEQMax(startInclusive, endInclusive);
   }
     
-  private long generateRandomLongWhereRangeLessThanMax(
-      final long startInclusive, final long endInclusive) {
-    return nextLongWithinCheckedInterval(startInclusive, endInclusive);
-  }
-
   private boolean longRangeIsSmallerThanMax(final long x, final long y) {
     return (1 <= x && y <= Long.MAX_VALUE)
         || ((Long.MIN_VALUE) <= x && y <= -2)

@@ -8,10 +8,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.junit.Test;
-import org.quicktheories.core.PseudoRandom;
-import org.quicktheories.core.XOrShiftPRNG;
 
 public class XOrShiftPRNGTest {
   
@@ -79,10 +79,57 @@ public class XOrShiftPRNGTest {
     // given size of the range expect 1000 unique values in 1000 attempts
     generatesAtLeastXUniqueValues(testee,
         prng -> prng.nextLong(Long.MIN_VALUE,
-                Long.MAX_VALUE -2 ),
+                Long.MAX_VALUE),
        1000);
   }
 
+  @Test
+  public void shouldGenerateAcrossReducedMaxRange() {
+    // given size of the range expect 1000 unique values in 1000 attempts
+    generatesAtLeastXUniqueValues(testee,
+        prng -> prng.nextLong(Long.MIN_VALUE,
+                Long.MAX_VALUE -2 ),
+       1000);
+  }
+  
+  @Test
+  public void shouldGenerateAcrossReducedMinRange() {
+    // given size of the range expect 1000 unique values in 1000 attempts
+    generatesAtLeastXUniqueValues(testee,
+        prng -> prng.nextLong(Long.MIN_VALUE + 2,
+                Long.MAX_VALUE),
+       1000);
+  } 
+  
+  @Test
+  public void shouldGenerateAcrossHalfDomain() {
+    // given size of the range expect 1000 unique values in 1000 attempts
+    generatesAtLeastXUniqueValues(testee,
+        prng -> prng.nextLong(Long.MIN_VALUE,
+                Long.MAX_VALUE / 2),
+       1000);
+  } 
+  
+  @Test
+  public void shouldGenerateAcrossSmallDomain() {
+    // given size of the range expect duplicates
+    generatesAtLeastXUniqueValues(testee,
+        prng -> prng.nextLong(-1000,
+                1000),
+       500);
+  } 
+  
+  @Test
+  public void valuesObeyConstraintsInLargeRange() {
+    long min = Long.MIN_VALUE + 1000;
+    long max = Long.MAX_VALUE - 1000;    
+    allValuesMatch(testee, prng -> prng.nextLong(min,max), l -> l >= min && l <= max );
+  }
+  
+  private void allValuesMatch(PseudoRandom prng, Function<PseudoRandom, Long> longGeneratingMethod, Predicate<Long> test) {
+   Stream<Long> shouldNotHaveGenerated = generateLongValues(prng, longGeneratingMethod, 1000).stream().filter(test.negate());
+   assertThat(shouldNotHaveGenerated).isEmpty();
+  }
 
   private void generatesAtLeastXUniqueValues(PseudoRandom prng,
       Function<PseudoRandom, Long> longGeneratingMethod, int uniqueValues) {
