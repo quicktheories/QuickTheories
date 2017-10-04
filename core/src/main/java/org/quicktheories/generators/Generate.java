@@ -40,7 +40,7 @@ public class Generate {
 
   
   /**
-   * Randomly returns when of the supplied values
+   * Randomly returns one of the supplied values
    * @param <T> type of value to generate
    * @param ts Values to pick from
    * @return A Gen of T
@@ -51,7 +51,7 @@ public class Generate {
   }
     
   /**
-   * Randomly returns when of the supplied values
+   * Randomly returns one of the supplied values
    * @param <T> type of value to generate   * 
    * @param ts Values to pick from
    * @return A Gen of T

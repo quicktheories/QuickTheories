@@ -18,7 +18,6 @@ import org.quicktheories.core.Strategy;
 class Core {
 
   private final Strategy      config;
-
   private int                 examplesUsed           = 0;
   private Optional<Throwable> smallestFoundThrowable = Optional.empty();
   
