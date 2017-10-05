@@ -18,9 +18,9 @@
 			<version>6.0_BETA</version>
 		</dependency>
 		<dependency>
-			<groupId>com.ea.agentloader</groupId>
-			<artifactId>ea-agent-loader</artifactId>
-			<version>1.0.3</version>
+          <groupId>net.bytebuddy</groupId>
+          <artifactId>byte-buddy-agent</artifactId>
+          <version>1.7.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.quicktheories</groupId>

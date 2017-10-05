@@ -11,8 +11,8 @@ import org.quicktheories.core.Guidance;
 import org.quicktheories.core.PseudoRandom;
 import org.quicktheories.impl.Precursor;
 
-import com.ea.agentloader.AgentLoader;
-
+import net.bytebuddy.agent.ByteBuddyAgent;
+import net.bytebuddy.agent.ByteBuddyAgent.ProcessProvider;
 import sun.quicktheories.coverage.CodeCoverageStore;
 
 public class CoverageGuidance implements Guidance {
@@ -20,7 +20,7 @@ public class CoverageGuidance implements Guidance {
     
   static {
     Installer in = new Installer(new ClassloaderByteArraySource(Thread.currentThread().getContextClassLoader()));
-    AgentLoader.loadAgent(in.createJar().getAbsolutePath(), "");
+    ByteBuddyAgent.attach(in.createJar(), ProcessProvider.ForCurrentVm.INSTANCE);
   }
 
   private final PseudoRandom prng; 
