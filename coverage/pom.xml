@@ -8,15 +8,28 @@
 		<version>0.22-SNAPSHOT</version>
 	</parent>
 	<artifactId>coverage</artifactId>
-
 	<name>coverage</name>
+	
+	<properties>
+	  <asm.version>6.0</asm.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-debug-all</artifactId>
-			<version>6.0_BETA</version>
+			<artifactId>asm</artifactId>
+			<version>${asm.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-commons</artifactId>
+			<version>${asm.version}</version>
+		</dependency>	
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-analysis</artifactId>
+			<version>${asm.version}</version>
+		</dependency>	
 		<dependency>
           <groupId>net.bytebuddy</groupId>
           <artifactId>byte-buddy-agent</artifactId>
@@ -27,6 +40,12 @@
 			<artifactId>quicktheories</artifactId>
             <version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-util</artifactId>
+			<version>${asm.version}</version>
+			<scope>test</scope>
+		</dependency>			
 	</dependencies>
 
 	<build>
