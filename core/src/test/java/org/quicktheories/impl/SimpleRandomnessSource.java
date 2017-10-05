@@ -4,7 +4,7 @@ import org.quicktheories.core.PseudoRandom;
 
 public class SimpleRandomnessSource extends ShapedDataSource {
 
-  SimpleRandomnessSource(PseudoRandom r, int maxTries) {
+  public SimpleRandomnessSource(PseudoRandom r, int maxTries) {
     super(r, new long[0], maxTries);
   }
 
