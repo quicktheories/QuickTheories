@@ -26,10 +26,7 @@ public class CoverageTransformer implements ClassFileTransformer {
       final Class<?> classBeingRedefined,
       final ProtectionDomain protectionDomain, final byte[] classfileBuffer)
           throws IllegalClassFormatException {
-               
-//    System.out.println(className);
-
-    
+                 
     final boolean include = shouldInclude(className);
     if (include) {
       try {
@@ -47,14 +44,12 @@ public class CoverageTransformer implements ClassFileTransformer {
       final String className, final byte[] classfileBuffer) {
     final ClassReader reader = new ClassReader(classfileBuffer);
     final ClassWriter writer = new ComputeClassWriter(
-        new ClassloaderByteArraySource(loader), this.computeCache,
+        new ClassloaderByteArraySource(pickLoader(loader)), this.computeCache,
         FrameOptions.pickFlags(classfileBuffer));
     
     final int id = CodeCoverageStore.registerClass(className);
     reader.accept(new CoverageClassVisitor(id, writer),
         ClassReader.EXPAND_FRAMES);
-
-  //  System.out.println(className + " is " + id);
     
     return writer.toByteArray();
   }
@@ -62,5 +57,14 @@ public class CoverageTransformer implements ClassFileTransformer {
   private boolean shouldInclude(final String className) {
     return className != null && this.filter.test(className);
   }
+  
+
+  private ClassLoader pickLoader(ClassLoader loader) {
+    if (loader != null) {
+      return loader;
+    }
+    return ClassLoader.getSystemClassLoader();
+  }
+
   
 }
