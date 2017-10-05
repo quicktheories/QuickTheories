@@ -33,6 +33,10 @@ final class XOrShiftPRNG implements PseudoRandom {
   @Override
   public long nextLong(long startInclusive,
       long endInclusive) {
+    if (endInclusive < startInclusive) {
+      throw new IllegalArgumentException(String.format("Invalid range %d to %d", startInclusive, endInclusive));
+    }
+
     if (longRangeIsSmallerThanMax(startInclusive, endInclusive)) {
       return nextLongWithinCheckedInterval(startInclusive,
           endInclusive);

@@ -2,6 +2,7 @@ package org.quicktheories.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -124,6 +125,18 @@ public class XOrShiftPRNGTest {
     long min = Long.MIN_VALUE + 1000;
     long max = Long.MAX_VALUE - 1000;    
     allValuesMatch(testee, prng -> prng.nextLong(min,max), l -> l >= min && l <= max );
+  }
+  
+  
+  @Test
+  public void errorsNicelyWhenNonSensicalRangeRequested() {
+    try {
+      testee.nextLong(1, 0);
+      fail();
+    } catch(IllegalArgumentException ex) {
+      assertThat(ex).hasMessageContaining("Invalid range 1 to 0");
+      // pass
+    }
   }
   
   private void allValuesMatch(PseudoRandom prng, Function<PseudoRandom, Long> longGeneratingMethod, Predicate<Long> test) {
