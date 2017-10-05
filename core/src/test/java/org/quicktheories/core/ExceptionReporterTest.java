@@ -67,8 +67,9 @@ public class ExceptionReporterTest {
       testee.falisification(0, 0, 0, values, a -> a.toString());
       throw new Exception("Should not reach here");
     } catch (AssertionError expected) {
+      String expectedMessage = String.format("1%n2%n3%n4%n5%n6%n7%n8%n9%n10");
       assertThat(expected.getMessage())
-          .contains("1\n2\n3\n4\n5\n6\n7\n8\n9\n10");
+          .contains(expectedMessage);
       assertThat(expected.getMessage()).doesNotContain("11");
     }
   }
