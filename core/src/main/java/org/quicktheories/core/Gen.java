@@ -34,6 +34,16 @@ public interface Gen<T> extends AsString<T>{
   }
   
   /**
+   * Maps generated values with supplied Mod consuming one value
+   * @param <R> Type to map to
+   * @param mapper function to map with 
+   * @return A Gen of R
+   */
+  default <R> Gen<R> mutate(Mod<? super T, ? extends R> mapper) {
+    return in -> mapper.apply(generate(in), in);
+  }  
+  
+  /**
    * Maps generated values with supplied function consuming two values
    * @param <R> Type to map to   * 
    * @param mapper function to map with 

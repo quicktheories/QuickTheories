@@ -15,8 +15,6 @@ import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.quicktheories.core.Gen;
-import org.quicktheories.core.RandomnessSource;
 import org.quicktheories.impl.ConcreteDetachedSource;
 import org.quicktheories.impl.Constraint;
 import org.quicktheories.impl.ExtendedRandomnessSource;
@@ -65,6 +63,15 @@ public class GenTest {
     
    Stream<String> actual = generate(testee); 
    assertThat(actual.limit(5)).containsExactly("2","3","4","5","6");
+  }
+  
+  @Test
+  public void mutatesContentsWithMod() {
+    when(this.source.next(Constraint.none())).thenReturn(11L);
+    Mod<String,String> m = (i,r) -> i + r.next(Constraint.none());
+    testee = Sequence.of("1","2","3").mutate(m);
+    Stream<String> actual = generate(testee);   
+    assertThat(actual.limit(3)).containsExactly("111", "211","311");
   }
   
   @Test

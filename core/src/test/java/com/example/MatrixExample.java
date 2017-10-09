@@ -18,8 +18,6 @@ public class MatrixExample implements WithQuickTheories {
         .map(arr -> new Matrix(arr));
          
     
-    
   }
-  
   
 }
