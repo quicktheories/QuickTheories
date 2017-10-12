@@ -1,12 +1,16 @@
 package org.quicktheories;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.times;
+
+import java.util.Arrays;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.quicktheories.core.Guidance;
 import org.quicktheories.core.NoGuidance;
+import org.quicktheories.generators.Generate;
 
 public class WithQuickTheoriesTest {
   
@@ -102,5 +106,19 @@ public class WithQuickTheoriesTest {
   @Test
   public void providesANoGuidanceOption() {
     assertThat(testee.noGuidance().apply(null)).isInstanceOf(NoGuidance.class);
+  }
+  
+  @Test
+  public void usesSuppliedNumberOfAttempts() {
+    try {
+      testee.qt()
+           .withGenerateAttempts(1)
+          .forAll(Generate.pick(Arrays.asList(1, 2, 3)))
+          .assuming(i -> i != 1)
+          .check(i -> true);
+      fail();
+    } catch (IllegalStateException ex) {
+      // pass
+    }
   }
 }

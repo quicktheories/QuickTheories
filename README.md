@@ -322,7 +322,7 @@ e.g
   }
   
   private Gen<Cylinder> cylinders() {
-    return radii().combine(heights(),
+    return radii().zip(heights(),
         (radius, height) -> new Cylinder(radius, height))
         .assuming(cylinder -> some sort of validation );
   }
@@ -337,6 +337,8 @@ e.g
   }
 ```
 
+Gens provide a number of methods that allows them to be mapped to different types or combined with other Gens. All these operations preserve assumptions and allow the resulting types to be shrunk without the need for any additional code.
+	
 ## Modifying the falsification output
 
 Values produces by the sources DSL should provide clear falsification messages.
@@ -533,4 +535,4 @@ If you don't like QuickTheories you might want to try one of the other systems b
 * [JCheck](http://www.jcheck.org/). Tightly integrated with JUnit. Does not look to be maintained.
 * [QuickCheck](https://bitbucket.org/blob79/quickcheck). Not tied to a test framework - provides generators of random values to be used in tests.
 * [FunctionalJava](http://www.functionaljava.org/). Apparently contains a property based testing system, but appears to be completely undocumented.
-* [ScalaCheck](http://www.scalacheck.org/). Mature property based testing system with shrinking, but requires Scala rather than Java.
+* [ScalaCheck](http://www.scalacheck.org/). Mature property based testing system with shrinking, but requires Scala rather than Java. Also seem to be [design level issues with how shrinking works](https://github.com/rickynils/scalacheck/issues/317).

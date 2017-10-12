@@ -11,6 +11,9 @@ import java.util.stream.StreamSupport;
  */
 public abstract class Configuration {
 
+  private static final int DEFAULT_NO_ATTEMPTS = 10;
+  private static final int DEFAULT_NO_EXAMPLES = 1000;
+  
   public final static String SEED = "QT_SEED";
   public final static String EXAMPLES = "QT_EXAMPLES";
   public final static String SHRINKS = "QT_SHRINKS";
@@ -29,7 +32,7 @@ public abstract class Configuration {
 
   private static int pickAttempts() {
     Optional<String> userValue = Optional.ofNullable(System.getProperty(GENERATE_ATTEMPTS));
-    return userValue.map(Integer::valueOf).orElseGet(() -> 10);
+    return userValue.map(Integer::valueOf).orElseGet(() -> DEFAULT_NO_ATTEMPTS);
   }
 
   private static int pickShrinks() {
@@ -42,7 +45,7 @@ public abstract class Configuration {
   private static int pickExamples() {
     Optional<String> userValue = Optional
         .ofNullable(System.getProperty(EXAMPLES));
-    return userValue.map(Integer::valueOf).orElseGet(() -> 1000);
+    return userValue.map(Integer::valueOf).orElseGet(() -> DEFAULT_NO_EXAMPLES);
   }
 
   private static long pickSeed() {

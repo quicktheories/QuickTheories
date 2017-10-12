@@ -52,11 +52,6 @@
 		<bintray.package>QuickTheories</bintray.package>
 	</properties>
 
-
-	<prerequisites>
-		<maven>3</maven>
-	</prerequisites>
-
 	<modules>
 		<module>core</module>
 		<module>coverage</module>

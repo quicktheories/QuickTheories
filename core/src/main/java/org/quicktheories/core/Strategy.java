@@ -117,6 +117,21 @@ public class Strategy {
   }
   
 
+  /**
+   * Creates a strategy which will allow the suppled number of failed generation attempts before
+   * erroring 
+   * @param generateAttempts Maximum number of failed geneation attempts
+   * @return a strategy
+   */
+  public Strategy withGenerateAttempts(int generateAttempts) {
+    return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter, guidance);
+  }
+  
+  /**
+   * Creates a strategy using the supplied guidance approach
+   * @param guidance Guidance approach to use
+   * @return a strategy
+   */
   public Strategy withGuidance(Function<PseudoRandom, Guidance> guidance) {
     return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter, guidance);
   }

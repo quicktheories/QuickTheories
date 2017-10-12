@@ -82,7 +82,20 @@ public class QuickTheory {
     return new QuickTheory(() -> state.get().withShrinkCycles(shrinks));
   }
 
-
+  /**
+   * Sets the number of generate attempts to use
+   * @param generateAttempts number of generate attempts
+   * @return n a QuickTheory using the given number of generate attempts
+   */
+  public QuickTheory withGenerateAttempts(int generateAttempts) {
+    return new QuickTheory(() -> state.get().withGenerateAttempts(generateAttempts));
+  }
+  
+  /**
+   * Sets guidance approach to use
+   * @param guidance Guidance approach
+   * @return a QuickTheory using the given guidance
+   */
   public QuickTheory withGuidance(Function<PseudoRandom, Guidance> guidance) {
     return new QuickTheory(() -> state.get().withGuidance(guidance));
   }
