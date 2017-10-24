@@ -63,12 +63,16 @@ public class Generate {
 
   /**
    * Returns a generator that provides a value from a random generator provided.
-   *
-   * @param generators The provided generators
+   * 
+   * @param mandatory Generator to sample from  
+   * @param others Other generators to sample from with equal weighting
    * @param <T>
    * @return A gen of T
    */
-  public static <T> Gen<T> oneOf(Gen<T>... generators) {
+  @SafeVarargs
+  public static <T> Gen<T> oneOf(Gen<T> mandatory, Gen<T> ... others) {
+    Gen<T>[] generators = Arrays.copyOf(others, others.length + 1);
+    generators[generators.length - 1] = mandatory;
     Gen<Integer> index = range(0, generators.length - 1);
     return prng -> generators[(index.generate(prng))].generate(prng);
   }
@@ -97,7 +101,7 @@ public class Generate {
   }
   
   /**
-   * Inclusive integer range wiht no shrink point
+   * Inclusive integer range with no shrink point
    * @param startInclusive start
    * @param endInclusive end
    * @return A Gen of Integers
