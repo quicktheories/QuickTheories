@@ -57,8 +57,8 @@ public class GenAssert<T>
     return this;
   }
 
-  public GenAssert<T> generatesAllOf(
-      @SuppressWarnings("unchecked") T... ts) {
+  @SafeVarargs
+  public final GenAssert<T> generatesAllOf(T... ts) {
     return generatesAllOfWithNSamples(1000, ts);
   }
   
