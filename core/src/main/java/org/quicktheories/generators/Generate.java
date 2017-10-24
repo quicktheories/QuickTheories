@@ -12,7 +12,7 @@ import org.quicktheories.core.Gen;
 import org.quicktheories.impl.Constraint;
 
 public class Generate {
-  
+
   /**
    * Generates a constant value
    * @param <T> type of value to generate
@@ -59,6 +59,18 @@ public class Generate {
   public static <T> Gen<T> pick(List<T> ts) {
     Gen<Integer> index = range(0, ts.size() - 1);
     return prng -> ts.get(index.generate(prng));
+  }
+
+  /**
+   * Returns a generator that provides a value from a random generator provided.
+   *
+   * @param generators The provided generators
+   * @param <T>
+   * @return A gen of T
+   */
+  public static <T> Gen<T> oneOf(Gen<T>... generators) {
+    Gen<Integer> index = range(0, generators.length - 1);
+    return prng -> generators[(index.generate(prng))].generate(prng);
   }
   
   /**
