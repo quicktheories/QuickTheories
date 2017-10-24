@@ -12,7 +12,7 @@ import org.quicktheories.core.Gen;
 import org.quicktheories.impl.Constraint;
 
 public class Generate {
-  
+
   /**
    * Generates a constant value
    * @param <T> type of value to generate
@@ -60,6 +60,22 @@ public class Generate {
     Gen<Integer> index = range(0, ts.size() - 1);
     return prng -> ts.get(index.generate(prng));
   }
+
+  /**
+   * Returns a generator that provides a value from a random generator provided.
+   * 
+   * @param mandatory Generator to sample from  
+   * @param others Other generators to sample from with equal weighting
+   * @param <T>
+   * @return A gen of T
+   */
+  @SafeVarargs
+  public static <T> Gen<T> oneOf(Gen<T> mandatory, Gen<T> ... others) {
+    Gen<T>[] generators = Arrays.copyOf(others, others.length + 1);
+    generators[generators.length - 1] = mandatory;
+    Gen<Integer> index = range(0, generators.length - 1);
+    return prng -> generators[(index.generate(prng))].generate(prng);
+  }
   
   /**
    * Inclusive integer range that shrinks towards 0
@@ -85,7 +101,7 @@ public class Generate {
   }
   
   /**
-   * Inclusive integer range wiht no shrink point
+   * Inclusive integer range with no shrink point
    * @param startInclusive start
    * @param endInclusive end
    * @return A Gen of Integers
