@@ -15,9 +15,12 @@ import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.quicktheories.generators.Generate;
 import org.quicktheories.impl.ConcreteDetachedSource;
 import org.quicktheories.impl.Constraint;
 import org.quicktheories.impl.ExtendedRandomnessSource;
+
+import static org.quicktheories.impl.GenAssert.assertThatGenerator;
 
 public class GenTest {
   
@@ -91,6 +94,13 @@ public class GenTest {
    Stream<String> actual = generate(testee); 
    assertThat(actual.limit(3)).containsExactly("6","15","24");
   }  
+  
+  
+  @Test
+  public void flatMapsContents() {
+    Gen<Integer> testee = Generate.pick(Arrays.asList(1,2)).flatMap(i -> Generate.range(0, i));
+    assertThatGenerator(testee).generatesAllOf(0, 1, 2);
+  }
   
   @Test
   public void describesValuesWithToStringByDefault() {

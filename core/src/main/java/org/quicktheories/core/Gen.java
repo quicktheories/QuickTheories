@@ -62,6 +62,16 @@ public interface Gen<T> extends AsString<T>{
   default <R> Gen<R> map(Function3<? super T, ? super T,  ? super T, ? extends R> mapper) {
     return in -> mapper.apply(generate(in), generate(in), generate(in));
   }
+  
+
+  /**
+   * Flat maps generated values with supplied function
+   * @param mapper function to map with
+   * @return A Gen of R
+   */
+  default <R> Gen<R> flatMap(Function<? super T, Gen<? extends R>> mapper) {
+     return in -> mapper.apply(generate(in)).generate(in);
+  }
 
   /**
    * Limits values produced by this Gen to ones meeting supplied predicate
