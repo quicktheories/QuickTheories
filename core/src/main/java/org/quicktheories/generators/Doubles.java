@@ -31,6 +31,14 @@ final class Doubles {
         l -> l * DOUBLE_UNIT);
   }
 
+  static Gen<Double> between(double min, double max) {
+    ArgumentAssertions.checkArguments(min <= max,
+        "Cannot have the maximum (%s) smaller than the min (%s)",
+        max, min);
+    double adjustedMax = max - min;
+    return fromZeroToOne().map(d -> (d * adjustedMax) + min);
+  }
+  
   static Gen<Double> range(long startInclusive, long endInclusive) {
     return range(startInclusive, endInclusive, 0);
   }

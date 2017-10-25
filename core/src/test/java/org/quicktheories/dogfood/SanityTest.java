@@ -22,6 +22,13 @@ public class SanityTest implements WithQuickTheories {
   }
   
   @Test
+  public void doubleRangesAreWithinRange() {
+    qt()
+    .forAll(doubles().between(-4d, 66d))
+    .check(d -> d <= 66d && d >= -4d);
+  }
+  
+  @Test
   public void positiveFloatsArePositive() {
     qt()
     .forAll(floats().positive())
@@ -35,6 +42,13 @@ public class SanityTest implements WithQuickTheories {
     .check(d -> d <= 0d);
   }
     
+  @Test
+  public void floatsBetweenZeroAndOneAreWithinBounds() {
+    qt()
+    .forAll(floats().fromZeroToOne())
+    .check(f -> f <= 1f && f >= 0f);
+  }
+  
   @Test
   public void constantSuppliesAConstant() {
     Supplier<Integer> s = () -> 42;

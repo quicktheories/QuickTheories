@@ -48,5 +48,15 @@ public class DoublesDSL {
   public Gen<Double> fromZeroToOne() {
     return Doubles.fromZeroToOne();
   }
+  
+  /**
+   * Generates Doubles inclusively between two bounds
+   * @param minInclusive minimum value to generate
+   * @param maxInclusive maximum value to generate
+   * @return a Gen of Doubles between minInclusive and maxInclusive
+   */
+  public Gen<Double> between(double minInclusive, double maxInclusive) {
+    return Doubles.between(minInclusive, maxInclusive);
+  }
 
 }

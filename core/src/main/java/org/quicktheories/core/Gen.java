@@ -139,7 +139,7 @@ public interface Gen<T> extends AsString<T>{
       return rhs.generate(prng);
     };
   }  
-    
+      
   /**
    * Produces a string representation of T
    */
