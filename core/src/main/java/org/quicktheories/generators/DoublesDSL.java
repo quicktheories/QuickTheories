@@ -58,5 +58,39 @@ public class DoublesDSL {
   public Gen<Double> between(double minInclusive, double maxInclusive) {
     return Doubles.between(minInclusive, maxInclusive);
   }
+  
+  /**
+   * Starts a range
+   * 
+   * @param startInclusive
+   *          - lower bound of domain
+   * @return start of range
+   */
+  public DoubleDomainBuilder from(final double startInclusive) {
+    return new DoubleDomainBuilder(startInclusive);
+  }
 
+  
+  public class DoubleDomainBuilder {
+
+    private final double startInclusive;
+
+    private DoubleDomainBuilder(double startInclusive) {
+      this.startInclusive = startInclusive;
+    }
+
+    /**
+     * Generates within the interval specified with an inclusive lower
+     * and upper bound.
+     * 
+     * @param endInclusive
+     *          - inclusive upper bound of domain
+     * @return a Source of type Double
+     */
+    public Gen<Double> upToAndIncluding(final double endInclusive) {
+      return between(startInclusive, endInclusive);
+    }
+
+  }
+  
 }

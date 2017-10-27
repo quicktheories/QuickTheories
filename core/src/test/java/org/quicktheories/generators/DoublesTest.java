@@ -68,7 +68,7 @@ public class DoublesTest {
   
   @Test(expected = IllegalArgumentException.class)
   public void doesNotAllowInvalidRanges() {
-    Doubles.between(1, 0);
+    Doubles.between(1d, 0d);
   }
   
   private Condition<Double> negative() {
