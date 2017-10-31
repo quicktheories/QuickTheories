@@ -1,5 +1,6 @@
 package org.quicktheories.core;
 
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -34,6 +35,32 @@ public interface Gen<T> extends AsString<T>{
   }
   
   /**
+   * Maps generated values with supplied Mod consuming one value
+   * @param <R> Type to map to
+   * @param mapper function to map with 
+   * @return A Gen of R
+   */
+  default <R> Gen<R> mutate(Mod<? super T, ? extends R> mapper) {
+    return in -> mapper.apply(generate(in), in);
+  }  
+  
+  /**
+   * Maps this Gen to generates Optionals including Optional.empty values.
+   * @param percent Percentage (0 to 100) of empty values
+   * @return a Gen of Optional<T>
+   */
+  default Gen<Optional<T>> toOptionals(int percentEmpty) {
+    Mod<T,Optional<T>> toOptional = (t,r) -> {
+      boolean empty = r.next(Constraint.between(0, 100)) < percentEmpty;
+      if(empty) {
+        return Optional.empty();
+      }
+      return Optional.of(t);
+    };
+    return mutate(toOptional);
+  }
+  
+  /**
    * Maps generated values with supplied function consuming two values
    * @param <R> Type to map to   * 
    * @param mapper function to map with 
@@ -51,6 +78,16 @@ public interface Gen<T> extends AsString<T>{
    */
   default <R> Gen<R> map(Function3<? super T, ? super T,  ? super T, ? extends R> mapper) {
     return in -> mapper.apply(generate(in), generate(in), generate(in));
+  }
+  
+
+  /**
+   * Flat maps generated values with supplied function
+   * @param mapper function to map with
+   * @return A Gen of R
+   */
+  default <R> Gen<R> flatMap(Function<? super T, Gen<? extends R>> mapper) {
+     return in -> mapper.apply(generate(in)).generate(in);
   }
 
   /**
@@ -102,7 +139,7 @@ public interface Gen<T> extends AsString<T>{
       return rhs.generate(prng);
     };
   }  
-    
+      
   /**
    * Produces a string representation of T
    */

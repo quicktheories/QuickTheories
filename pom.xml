@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.quicktheories</groupId>
 	<artifactId>quicktheories-parent</artifactId>
-	<version>0.21-SNAPSHOT</version>
+	<version>0.23-SNAPSHOT</version>
 	<name>quicktheories-parent</name>
     
     <organization>
@@ -51,11 +51,6 @@
 		<bintray.repo>ncr-code/ncrcoe</bintray.repo>
 		<bintray.package>QuickTheories</bintray.package>
 	</properties>
-
-
-	<prerequisites>
-		<maven>3</maven>
-	</prerequisites>
 
 	<modules>
 		<module>core</module>

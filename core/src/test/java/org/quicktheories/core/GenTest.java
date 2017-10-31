@@ -5,18 +5,19 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.quicktheories.impl.GenAssert.assertThatGenerator;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.quicktheories.core.Gen;
-import org.quicktheories.core.RandomnessSource;
+import org.quicktheories.generators.Generate;
 import org.quicktheories.impl.ConcreteDetachedSource;
 import org.quicktheories.impl.Constraint;
 import org.quicktheories.impl.ExtendedRandomnessSource;
@@ -68,6 +69,15 @@ public class GenTest {
   }
   
   @Test
+  public void mutatesContentsWithMod() {
+    when(this.source.next(Constraint.none())).thenReturn(11L);
+    Mod<String,String> m = (i,r) -> i + r.next(Constraint.none());
+    testee = Sequence.of("1","2","3").mutate(m);
+    Stream<String> actual = generate(testee);   
+    assertThat(actual.limit(3)).containsExactly("111", "211","311");
+  }
+  
+  @Test
   public void mapsContentsWithBiFunction() {
     testee = Sequence.of(1,2,3,4,5,6)
               .map( (a,b) -> "" + (a + b));
@@ -84,6 +94,13 @@ public class GenTest {
    Stream<String> actual = generate(testee); 
    assertThat(actual.limit(3)).containsExactly("6","15","24");
   }  
+  
+  
+  @Test
+  public void flatMapsContents() {
+    Gen<Integer> testee = Generate.pick(Arrays.asList(1,2)).flatMap(i -> Generate.range(0, i));
+    assertThatGenerator(testee).generatesAllOf(0, 1, 2);
+  }
   
   @Test
   public void describesValuesWithToStringByDefault() {
@@ -155,6 +172,30 @@ public class GenTest {
     Stream<Integer> actual = generate(mixed).limit(3);
     
     assertThat(actual).containsExactly(2,1,4);
+  }
+  
+
+  @SuppressWarnings("unchecked")
+  @Test
+  public void mapsToOptionalsWithoutEmptyWhenPercentageIs0() {
+    Gen<Optional<Integer>> testee = Sequence.of(1,2,3).toOptionals(0);
+    Stream<Optional<Integer>> actual = generate(testee).limit(3);
+    assertThat(actual).containsExactly(Optional.of(1), Optional.of(2), Optional.of(3));
+  }
+  
+
+  @SuppressWarnings("unchecked")
+  @Test
+  public void mapsToOnlyEmptyOptionalsWhenPercentageIs100() {
+    Gen<Optional<Integer>> testee = Sequence.of(1,2,3).toOptionals(100);
+    Stream<Optional<Integer>> actual = generate(testee).limit(3);
+    assertThat(actual).containsExactly(Optional.empty(), Optional.empty(), Optional.empty());
+  }  
+  
+  @Test
+  public void includesSomeOptionalsWhenPercentageIs1() {
+    Gen<Optional<Integer>> testee = Generate.constant(1).toOptionals(1);
+    assertThatGenerator(testee).generatesAllOf(Optional.empty(), Optional.of(1));
   }
 
   private <T> Stream<T> generate(Gen<T> gen) {

@@ -57,9 +57,13 @@ public class GenAssert<T>
     return this;
   }
 
-  public GenAssert<T> generatesAllOf(
-      @SuppressWarnings("unchecked") T... ts) {
-    List<T> generated = generateValues(1000);
+  @SafeVarargs
+  public final GenAssert<T> generatesAllOf(T... ts) {
+    return generatesAllOfWithNSamples(1000, ts);
+  }
+  
+  public GenAssert<T> generatesAllOfWithNSamples(int samples, @SuppressWarnings("unchecked") T... ts) {
+    List<T> generated = generateValues(samples);
     org.assertj.core.api.Assertions.assertThat(generated).contains(ts);
     return this;
   }

@@ -235,8 +235,6 @@ public class SourceDSLTest {
     assertThatGenerator(testee).generatesAtLeastNDistinctValues(1000);
   }  
 
-  
-  
   @Test
   public void shouldGenerateDoublePositiveInfinityAndZero() {
     Gen<Double> testee = doubles().positive();
@@ -249,6 +247,12 @@ public class SourceDSLTest {
     assertThatGenerator(testee).generatesTheMinAndMax(0d, 1d);
   }
 
+  @Test
+  public void shouldRespectUpToAndIncludingBound() {
+    Gen<Double> testee = doubles().from(0d).upToAndIncluding(42d);
+    assertThatGenerator(testee).generatesTheMinAndMax(0d, 42d);
+  }
+  
   @Test
   public void shouldGenerateFloatNegativeInfinityAndNegativeZero() {
     Gen<Float> testee = floats().negative();

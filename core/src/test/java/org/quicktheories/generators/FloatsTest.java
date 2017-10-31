@@ -33,5 +33,5 @@ public class FloatsTest {
    Gen<Float> testee = Floats.fromZeroToOne();
    assertThatGenerator(testee).generatesAtLeastNDistinctValues(1000);
   }
-
+  
 }
