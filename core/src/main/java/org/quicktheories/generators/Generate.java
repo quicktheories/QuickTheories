@@ -66,7 +66,7 @@ public class Generate {
    * 
    * @param mandatory Generator to sample from  
    * @param others Other generators to sample from with equal weighting
-   * @param <T>
+   * @param <T> Type to generate
    * @return A gen of T
    */
   @SafeVarargs

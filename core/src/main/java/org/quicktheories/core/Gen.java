@@ -46,8 +46,8 @@ public interface Gen<T> extends AsString<T>{
   
   /**
    * Maps this Gen to generates Optionals including Optional.empty values.
-   * @param percent Percentage (0 to 100) of empty values
-   * @return a Gen of Optional<T>
+   * @param percentEmpty Percentage (0 to 100) of empty values
+   * @return a Gen of Optional of T
    */
   default Gen<Optional<T>> toOptionals(int percentEmpty) {
     Mod<T,Optional<T>> toOptional = (t,r) -> {
@@ -84,6 +84,7 @@ public interface Gen<T> extends AsString<T>{
   /**
    * Flat maps generated values with supplied function
    * @param mapper function to map with
+   * @param <R> Type to map to 
    * @return A Gen of R
    */
   default <R> Gen<R> flatMap(Function<? super T, Gen<? extends R>> mapper) {
