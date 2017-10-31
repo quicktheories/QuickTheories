@@ -124,21 +124,32 @@ public interface Gen<T> extends AsString<T>{
   default <B,C, D> Gen<D> zip(Gen<B> b, Gen<C> c, Function3<T,B,C, D> mapping) {
     return in -> mapping.apply(generate(in), b.generate(in), c.generate(in));
   }
-  
+    
   /**
    * Randomly combines output of this Gen with another with an roughly 50:50 weighting
    * @param rhs Gen to mix with
    * @return A Gen of T
    */
   default Gen<T> mix(Gen<T> rhs) {
+    return mix(rhs, 50);
+  }
+  
+  /**
+   * Randomly combines output of this Gen with another. The rhs will be given
+   * a likelyhood of being generated of between 0 (or less) == never, 100 (or more) == always.
+   * @param rhs Gen to mix with
+   * @param weight Likelyhood of generating from rhs between 0 and 100 
+   * @return A Gen of T
+   */
+  default Gen<T> mix(Gen<T> rhs, int weight) {
     return prng -> {
-      long picked = prng.next(Constraint.zeroToOne());
-      if (picked == 0) {
+      long picked = prng.next(Constraint.between(0, 100));
+      if (picked >= weight) {
         return this.generate(prng);
       }
       return rhs.generate(prng);
     };
-  }  
+  }
       
   /**
    * Produces a string representation of T

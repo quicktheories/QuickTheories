@@ -76,7 +76,7 @@ public class Generate {
     Gen<Integer> index = range(0, generators.length - 1);
     return prng -> generators[(index.generate(prng))].generate(prng);
   }
-  
+
   /**
    * Inclusive integer range that shrinks towards 0
    * @param startInclusive start
@@ -252,5 +252,5 @@ public class Generate {
   private static <T> AsString<T[]> arrayDescriber(Function<T, String> valueDescriber) {
     return a -> java.util.Arrays.stream(a).map(valueDescriber).collect(Collectors.joining(", ", "[", "]"));
   }  
-  
+   
 }

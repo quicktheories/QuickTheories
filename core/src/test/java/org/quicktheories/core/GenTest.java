@@ -167,7 +167,7 @@ public class GenTest {
     
     Gen<Integer> mixed = as.mix(bs);
     when(source.next(any(Constraint.class)))
-    .thenReturn(1L, 0L, 1L);
+    .thenReturn(0L, 99L, 0L);
     
     Stream<Integer> actual = generate(mixed).limit(3);
     
@@ -198,6 +198,24 @@ public class GenTest {
     assertThatGenerator(testee).generatesAllOf(Optional.empty(), Optional.of(1));
   }
 
+  @Test
+  public void alwaysGeneratesRHSOfMixWhenWeightingIs100() {
+    Gen<Integer> testee = Generate.constant(1).mix(Generate.constant(2), 100);
+    assertThatGenerator(testee).generatesAllOf(2);
+  }
+  
+  @Test
+  public void alwaysGeneratesLHSOfMixWhenWeightingIs0() {
+    Gen<Integer> testee = Generate.constant(1).mix(Generate.constant(2), 0);
+    assertThatGenerator(testee).generatesAllOf(1);
+  }  
+  
+  @Test
+  public void producesValuesFromBothSidesWhenWeightingIs5050() {
+    Gen<Integer> testee = Generate.constant(1).mix(Generate.constant(2), 50);
+    assertThatGenerator(testee).generatesAllOf(1,2);
+  }  
+  
   private <T> Stream<T> generate(Gen<T> gen) {
     return Stream.generate( () -> gen.generate(source));
   }
