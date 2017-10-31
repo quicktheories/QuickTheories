@@ -143,7 +143,7 @@ public interface Gen<T> extends AsString<T>{
    */
   default Gen<T> mix(Gen<T> rhs, int weight) {
     return prng -> {
-      long picked = prng.next(Constraint.between(0, 100));
+      long picked = prng.next(Constraint.between(0, 99));
       if (picked >= weight) {
         return this.generate(prng);
       }
