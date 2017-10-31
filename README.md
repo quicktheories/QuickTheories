@@ -7,7 +7,7 @@ Property-based testing for Java 8.
 
 If you were looking for QuickCheck for Java you just found it.
 
-Unlike many other systems QuickTheories supports both shrinking and targeted search using coverage data.
+Unlike many other systems QuickTheories supports both auto-magical shrinking and targeted search using coverage data.
 
 ## What is property based testing 
 
@@ -118,6 +118,8 @@ By default QuickTheories will spend about 100 times more effort looking for smal
 The smallest found value is reported along with a sample of any other falsifying values found along the way. 
 
 There is no guarantee that this is the smallest possible falsifying value or that others don't exist. Generally the shrunk values will be easier to understand and work with than the original un-shrunk ones - patterns might be visible in the reported values.
+
+Unlike straight QuickCheck clones QuickTheories does not require you to supply your own shrinking implementation for each type. Shrinking is performed automatically for any and all types. The mechanism by which this is achieved does not make any assumptions about the structure or implementation of the type or break encapsulation.
 
 ### Seeds and repeatable tests
 
@@ -514,7 +516,7 @@ QuickTheories was written with the following design goals
 2. Support for shrinking
 3. Independent of test api (JUnit, TestNG etc)
 
-It turned out that number 2 was the hard bit as it had many implications for the design. The approach was completely changed between releases in the 0.x and 1.x series.
+It turned out that number 2 was the hard bit as it had many implications for the design. The approach was completely changed between releases in the 0.1x and 0.2x series.
 
 As of 1.x shrinking uses an approach similar to the python library hypothesis, whereby shrinking is unaware of the type it is generating. This approach is less flexible than the original approach but allows Gens to be freely composed together while greatly reducing the size of the codebase.
 
