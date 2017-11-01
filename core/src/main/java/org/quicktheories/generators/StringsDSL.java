@@ -47,7 +47,7 @@ public class StringsDSL {
    * @return a StringGeneratorBuilder
    */
   public StringGeneratorBuilder allPossible() {
-    return new StringGeneratorBuilder(Character.MIN_CODE_POINT,
+    return betweenCodePoints(Character.MIN_CODE_POINT,
         Character.MAX_CODE_POINT);
   }
 
@@ -58,7 +58,7 @@ public class StringsDSL {
    * @return a StringGeneratorBuilder
    */
   public StringGeneratorBuilder basicMultilingualPlaneAlphabet() {
-    return new StringGeneratorBuilder(Character.MIN_CODE_POINT,
+    return betweenCodePoints(Character.MIN_CODE_POINT,
         LARGEST_DEFINED_BMP_CODEPOINT);
   }
 
@@ -69,7 +69,7 @@ public class StringsDSL {
    * @return a StringGeneratorBuilder
    */
   public StringGeneratorBuilder basicLatinAlphabet() {
-    return new StringGeneratorBuilder(BASIC_LATIN_FIRST_CODEPOINT,
+    return betweenCodePoints(BASIC_LATIN_FIRST_CODEPOINT,
         BASIC_LATIN_LAST_CODEPOINT);
   }
 
@@ -80,10 +80,21 @@ public class StringsDSL {
    * @return a StringGeneratorBuilder
    */
   public StringGeneratorBuilder ascii() {
-    return new StringGeneratorBuilder(Character.MIN_CODE_POINT,
+    return betweenCodePoints(Character.MIN_CODE_POINT,
         ASCII_LAST_CODEPOINT);
   }
-
+  
+  /**
+   * Strings with characters between two (inclusive) code points
+   * @param minInclusive minimum code point
+   * @param maxInclusive max code point
+   * @return Builder for strings
+   */
+  public StringGeneratorBuilder betweenCodePoints(int minInclusive, int maxInclusive) {
+    return new StringGeneratorBuilder(minInclusive,
+        maxInclusive);
+  }
+  
   public static class StringGeneratorBuilder {
 
     private final int minCodePoint;

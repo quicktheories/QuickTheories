@@ -58,7 +58,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAnExclusiveLongIntervalWithMaxLessThanMin() {
+  public void shouldThrowErrorWhenCreatingAnExclusiveLongIntervalWithMaxLessThanMin() {
     try {
       Gen<Long> testee = longs().from(-5).upTo(-5);
       fail("Created a long generator where max is less than min!");
@@ -78,7 +78,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAnInclusiveLongIntervalWithMaxLessThanMin() {
+  public void shouldThrowErrorWhenCreatingAnInclusiveLongIntervalWithMaxLessThanMin() {
     try {
       Gen<Long> testee = longs().from(-5).upToAndIncluding(-6);
       fail("Created a long generator where max is less than min!");
@@ -98,7 +98,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAnInclusiveLongIntervalWithBetweenWithMaxLessThanMin() {
+  public void shouldThrowErrorWhenCreatingAnInclusiveLongIntervalWithBetweenWithMaxLessThanMin() {
     try {
       Gen<Long> testee = longs().between(-5, -6);
       fail("Created a long generator where max is less than min!");
@@ -142,7 +142,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAnExclusiveIntervalWithMaxLessThanMin() {
+  public void shouldThrowErrorWhenCreatingAnExclusiveIntervalWithMaxLessThanMin() {
     try {
       Gen<Integer> testee = integers().from(-5).upTo(-5);
       fail("Created an integer generator where max is less than min!");
@@ -165,7 +165,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAnInclusiveIntervalWithMaxLessThanMin() {
+  public void shouldThrowErrorWhenCreatingAnInclusiveIntervalWithMaxLessThanMin() {
     try {
       Gen<Integer> testee = integers().from(-5).upToAndIncluding(-6);
       fail("Created an integer generator where max is less than min!");
@@ -188,7 +188,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAnInclusiveIntervalWithBetweenWithMaxLessThanMin() {
+  public void shouldThrowErrorWhenCreatingAnInclusiveIntervalWithBetweenWithMaxLessThanMin() {
     try {
       Gen<Integer> testee = integers().between(-5, -6);
       fail("Created an integer generator where max is less than min!");
@@ -306,7 +306,7 @@ public class SourceDSLTest {
     Gen<Character> testee = characters().basicMultilingualPlane();
     assertThatGenerator(testee).generatesTheMinAndMax('\u0000', '\ufffd');
   }
-
+  
   @Test
   public void shouldShrinkBasicLatinCharactersTowardsExclaimationMark() {
     Gen<Character> testee = characters().basicLatinCharacters();
@@ -352,9 +352,16 @@ public class SourceDSLTest {
     assertThatGenerator(testee).shrinksTowards("!!");
   }
 
+  
+  @Test
+  public void shouldGenerateBetweenTwoCodePoints() {
+    Gen<String> testee = strings().betweenCodePoints(97, 102).ofLength(1);
+    assertThatGenerator(testee).generatesAllOf("a", "b", "c", "d", "e", "f");
+  }
+    
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingNumericStringsWithMaxLessThanMin() {
+  public void shouldThrowErrorWhenCreatingNumericStringsWithMaxLessThanMin() {
     try {
       Gen<String> testee = strings().numericBetween(-5, -6);
       fail("Created an String generator where max is less than min!");
@@ -377,7 +384,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingStringsOfNegativeCodePoints() {
+  public void shouldThrowErrorWhenCreatingStringsOfNegativeCodePoints() {
     try {
       Gen<String> testee = strings().ascii()
           .ofFixedNumberOfCodePoints(-4);
@@ -388,7 +395,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldNotCatchWhenCreatingStringsOfZeroCodePoints() {
+  public void shouldNotThrowErrorWhenCreatingStringsOfZeroCodePoints() {
     try {
       Gen<String> testee = strings().ascii()
           .ofFixedNumberOfCodePoints(0);
@@ -399,7 +406,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAStringOfNegativeLength() {
+  public void shouldThrowErrorWhenCreatingAStringOfNegativeLength() {
     try {
       Gen<String> testee = strings().basicMultilingualPlaneAlphabet()
           .ofLength(-7);
@@ -421,7 +428,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingABoundedStringWithMinLengthNegative() {
+  public void shouldThrowErrorWhenCreatingABoundedStringWithMinLengthNegative() {
     try {
       Gen<String> testee = strings().basicLatinAlphabet()
           .ofLengthBetween(-2, 6);
@@ -444,7 +451,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingABoundedStringWithMaxLengthNegative() {
+  public void shouldThrowErrorWhenCreatingABoundedStringWithMaxLengthNegative() {
     try {
       Gen<String> testee = strings().basicLatinAlphabet()
           .ofLengthBetween(5, -6);
@@ -455,7 +462,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingABoundedStringWithMaxLengthLessThanMinLength() {
+  public void shouldThrowErrorWhenCreatingABoundedStringWithMaxLengthLessThanMinLength() {
     try {
       Gen<String> testee = strings().basicLatinAlphabet()
           .ofLengthBetween(2, 0);
@@ -509,7 +516,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAListOfNegativeSize() {
+  public void shouldThrowErrorWhenCreatingAListOfNegativeSize() {
     try {
       Gen<List<Integer>> testee = lists()
           .of(integers().allPositive()).ofSize(-3);
@@ -531,7 +538,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingALinkedListOfNegativeSize() {
+  public void shouldThrowErrorWhenCreatingALinkedListOfNegativeSize() {
     try {
       Gen<List<Integer>> testee = lists().of(integers().allPositive()).ofType(lists().linkedList()).ofSize(-3);
       fail("Created a list generator with negative length!");
@@ -541,7 +548,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingBoundedListsWithMinNegative() {
+  public void shouldThrowErrorWhenCreatingBoundedListsWithMinNegative() {
     try {
       Gen<List<Integer>> testee = lists().of(integers().allPositive()).ofSizeBetween(-3, 6);
       fail("Created a list generator with negative length!");
@@ -561,7 +568,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingABoundedListWithMaxNegative() {
+  public void shouldThrowErrorWhenCreatingABoundedListWithMaxNegative() {
     try {
       Gen<List<Integer>> testee = lists().of(integers().allPositive()).ofSizeBetween(-3, -2);
       fail("Created a list generator with negative length!");
@@ -571,7 +578,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingABoundedListWithMaxSmallerThanMin() {
+  public void shouldThrowErrorWhenCreatingABoundedListWithMaxSmallerThanMin() {
     try {
       Gen<List<Integer>> testee = lists()
           .of(integers().allPositive()).ofSizeBetween(2, 0);
@@ -593,7 +600,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAnArrayOfNegativeSize() {
+  public void shouldThrowErrorWhenCreatingAnArrayOfNegativeSize() {
     try {
       Gen<Integer[]> testee = arrays()
           .ofIntegers(integers().allPositive()).withLength(-3);
@@ -618,7 +625,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingABoundedArrayWithMinNegative() {
+  public void shouldThrowErrorWhenCreatingABoundedArrayWithMinNegative() {
     try {
       Gen<Integer[]> testee = arrays()
           .ofIntegers(integers().allPositive()).withLengthBetween(-3, 6);
@@ -643,7 +650,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingABoundedArrayWithMaxNegative() {
+  public void shouldThrowErrorWhenCreatingABoundedArrayWithMaxNegative() {
     try {
       Gen<Integer[]> testee = arrays()
           .ofIntegers(integers().allPositive()).withLengthBetween(-3, -2);
@@ -657,7 +664,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingABoundedArrayWithMaxSmallerThanMin() {
+  public void shouldThrowErrorWhenCreatingABoundedArrayWithMaxSmallerThanMin() {
     try {
       Gen<Integer[]> testee = arrays()
           .ofIntegers(integers().allPositive()).withLengthBetween(2, 0);
@@ -764,7 +771,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingADateOfNegativeLong() {
+  public void shouldThrowErrorWhenCreatingADateOfNegativeLong() {
     try {
       Gen<Date> testee = dates().withMilliseconds(-234);
       fail("Created a date with a negative number of milliseconds");
@@ -789,7 +796,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAnInclusiveLongIntervalForDatesWithMaxLessThanMin() {
+  public void shouldThrowErrorWhenCreatingAnInclusiveLongIntervalForDatesWithMaxLessThanMin() {
     try {
       Gen<Date> testee = dates().withMillisecondsBetween(342, 3);
       fail("Created a Date where max long is less than min long!");
@@ -809,7 +816,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAnInclusiveLongIntervalForDatesWithMinLessThanZero() {
+  public void shouldThrowErrorWhenCreatingAnInclusiveLongIntervalForDatesWithMinLessThanZero() {
     try {
       Gen<Date> testee = dates().withMillisecondsBetween(-5, 6);
       fail("Created a Date where min long is less than zero!");
@@ -842,7 +849,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingALocalDateBelowMinEpochDayCount() {
+  public void shouldThrowErrorWhenCreatingALocalDateBelowMinEpochDayCount() {
     try {
       Gen<LocalDate> testee = localDates()
           .withDays(LOCAL_DATE_MIN_EPOCH_DAY_COUNT - 1);
@@ -858,7 +865,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingALocalDateAboveMaxEpochDayCount() {
+  public void shouldThrowErrorWhenCreatingALocalDateAboveMaxEpochDayCount() {
     try {
       Gen<LocalDate> testee = localDates()
           .withDays(LOCAL_DATE_MAX_EPOCH_DAY_COUNT + 1);
@@ -891,7 +898,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAnInclusiveLongIntervalForLocalDatesWithMaxLessThanMin() {
+  public void shouldThrowErrorWhenCreatingAnInclusiveLongIntervalForLocalDatesWithMaxLessThanMin() {
     try {
       Gen<LocalDate> testee = localDates().withDaysBetween(342, 3);
       fail("Created a localDate where max long is less than min long!");
@@ -911,7 +918,7 @@ public class SourceDSLTest {
 
   @SuppressWarnings("unused")
   @Test
-  public void shouldCatchWhenCreatingAnInclusiveLongIntervalForLocalDatesWithMinLessThanMinEpochDayCount() {
+  public void shouldThrowErrorWhenCreatingAnInclusiveLongIntervalForLocalDatesWithMinLessThanMinEpochDayCount() {
     try {
       Gen<LocalDate> testee = localDates().withDaysBetween(
           LOCAL_DATE_MIN_EPOCH_DAY_COUNT - 1,
@@ -950,5 +957,5 @@ public class SourceDSLTest {
     Gen<Boolean> testee = booleans().all();
     assertThatGenerator(testee).generatesAllOf(true, false);
   }
-
+  
 }
