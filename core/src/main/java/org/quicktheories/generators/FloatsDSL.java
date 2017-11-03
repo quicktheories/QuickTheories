@@ -46,5 +46,50 @@ public class FloatsDSL {
   public Gen<Float> fromZeroToOne() {
     return Floats.fromZeroToOne();
   }
+  
+  /**
+   * Generates Floats inclusively between two bounds
+   * @param minInclusive minimum value to generate
+   * @param maxInclusive maximum value to generate
+   * @return a Gen of Floats between minInclusive and maxInclusive
+   */
+  public Gen<Float> between(float minInclusive, float maxInclusive) {
+    return Floats.between(minInclusive, maxInclusive);
+  }
+  
+  /**
+   * Starts a range
+   * 
+   * @param startInclusive
+   *          - lower bound of domain
+   * @return start of range
+   */
+  public FloatDomainBuilder from(final float startInclusive) {
+    return new FloatDomainBuilder(startInclusive);
+  }
+
+  
+  public class FloatDomainBuilder {
+
+    private final float startInclusive;
+
+    private FloatDomainBuilder(float startInclusive) {
+      this.startInclusive = startInclusive;
+    }
+
+    /**
+     * Generates within the interval specified with an inclusive lower
+     * and upper bound.
+     * 
+     * @param endInclusive
+     *          - inclusive upper bound of domain
+     * @return a Source of type Float
+     */
+    public Gen<Float> upToAndIncluding(final float endInclusive) {
+      return between(startInclusive, endInclusive);
+    }
+
+  }
+    
 
 }

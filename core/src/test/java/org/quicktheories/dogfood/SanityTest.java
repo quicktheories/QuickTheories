@@ -50,6 +50,13 @@ public class SanityTest implements WithQuickTheories {
   }
   
   @Test
+  public void flaotsRangesAreWithinRange() {
+    qt()
+    .forAll(floats().between(-42f, 66f))
+    .check(f -> f <= 66f && f >= -42f);
+  }  
+  
+  @Test
   public void constantSuppliesAConstant() {
     Supplier<Integer> s = () -> 42;
     qt()

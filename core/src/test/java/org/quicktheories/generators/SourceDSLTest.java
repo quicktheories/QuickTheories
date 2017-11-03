@@ -248,7 +248,7 @@ public class SourceDSLTest {
   }
 
   @Test
-  public void shouldRespectUpToAndIncludingBound() {
+  public void shouldRespectDoublesUpToAndIncludingBound() {
     Gen<Double> testee = doubles().from(0d).upToAndIncluding(42d);
     assertThatGenerator(testee).generatesTheMinAndMax(0d, 42d);
   }
@@ -277,6 +277,13 @@ public class SourceDSLTest {
     assertThatGenerator(testee).generatesTheMinAndMax(0f, 1f);
   }
 
+  
+  @Test
+  public void shouldRespectFloatsUpToAndIncludingBound() {
+    Gen<Float> testee = floats().from(0f).upToAndIncluding(42f);
+    assertThatGenerator(testee).generatesTheMinAndMax(0f, 42f);
+  }
+  
   @Test
   public void shouldGenerateExtremeBasicLatinCharacters() {
     Gen<Character> testee = characters().basicLatinCharacters();
