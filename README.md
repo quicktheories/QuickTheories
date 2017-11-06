@@ -29,8 +29,8 @@ You can run QuickTheories from JUnit, TestNG or any other test framework.
 Here we are using JUnit 
 
 ```java
-import static org.quicktheories.quicktheories.QuickTheory.qt;
-import static org.quicktheories.quicktheories.generators.SourceDSL.*;
+import static org.quicktheories.QuickTheory.qt;
+import static org.quicktheories.generators.SourceDSL.*;
 
 public class SomeTests {
 
