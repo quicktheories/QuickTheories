@@ -15,6 +15,7 @@ import org.quicktheories.generators.IntegersDSL;
 import org.quicktheories.generators.ListsDSL;
 import org.quicktheories.generators.LocalDatesDSL;
 import org.quicktheories.generators.LongsDSL;
+import org.quicktheories.generators.MapsDSL;
 import org.quicktheories.generators.SourceDSL;
 import org.quicktheories.generators.StringsDSL;
 
@@ -50,6 +51,10 @@ public interface WithQuickTheories {
 
   public default ListsDSL lists() {
     return SourceDSL.lists();
+  }
+
+  public default MapsDSL maps() {
+    return SourceDSL.maps();
   }
 
   public default ArraysDSL arrays() {

@@ -30,6 +30,10 @@ public class SourceDSL {
     return new ListsDSL();
   }
 
+  public static MapsDSL maps() {
+    return new MapsDSL();
+  }
+
   public static ArraysDSL arrays() {
     return new ArraysDSL();
   }
