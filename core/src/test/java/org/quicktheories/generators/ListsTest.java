@@ -44,7 +44,6 @@ public class ListsTest {
         Arrays.asList(1, 1, 1, 1, 1, 1));
   }
 
-  @SuppressWarnings("unchecked")
   @Test
   public void shouldGenerateBothTypesOfList() {
     Gen<List<Integer>> testee = boundedListsOf(

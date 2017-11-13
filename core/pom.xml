@@ -92,7 +92,7 @@
 						<configuration>
 							<threads>2</threads>
 							<avoidCallsTo>
-								<value>org.quicktheories.quicktheories.generators.ArgumentAssertions</value>
+								<value>org.quicktheories.generators.ArgumentAssertions</value>
 							</avoidCallsTo>
 							<excludedClasses>
 								<value>com.example.*</value>
