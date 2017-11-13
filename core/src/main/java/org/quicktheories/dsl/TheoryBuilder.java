@@ -13,6 +13,7 @@ import org.quicktheories.api.Subject1;
 import org.quicktheories.api.Subject2;
 import org.quicktheories.core.Gen;
 import org.quicktheories.core.Strategy;
+import org.quicktheories.generators.Generate;
 import org.quicktheories.impl.TheoryRunner;
 
 /**
@@ -75,8 +76,8 @@ public final class TheoryBuilder<A> implements Subject1<A> {
    *          type to create theory about
    *
    * @param mapping
-   *          Function from types A and B to type T
-   * @return a Subject3 relating to the state of a theory involving three values
+   *          Function from types A to type T
+   * @return a Subject2 relating to the state of a theory involving two values
    */
   @CheckReturnValue
   public <T> Subject2<A, T> asWithPrecursor(Function<A, T> mapping) {
@@ -91,17 +92,53 @@ public final class TheoryBuilder<A> implements Subject1<A> {
    *          type to create theory about
    *
    * @param mapping
-   *          Function from types A and B to type T
+   *          Function from types A to a generator of type T
+   * @return a Subject2 relating to the state of a theory involving two values
+   */
+  @CheckReturnValue
+  public <T> Subject2<A, T> withPrecursorGen(Function<A, Gen<T>> mapping) {
+    return withPrecursorGen(mapping, t -> t.toString());
+  }
+
+  /**
+   * Converts theory to one about a different type using the given function
+   * retaining all precursor values
+   *
+   * @param <T>
+   *          type to create theory about
+   *
+   * @param mapping
+   *          Function from types A to type T
    * @param typeToString
    *          Function to use when describing the built type
-   * @return a Subject3 relating to the state of a theory involving three values
+   * @return a Subject2 relating to the state of a theory involving three values
    */
   @CheckReturnValue
   public <T> Subject2<A, T> asWithPrecursor(Function<A, T> mapping,
       Function<T, String> typeToString) {
+    return withPrecursorGen(a -> Generate.constant(mapping.apply(a)), typeToString);
+  }
+
+
+  /**
+   * Converts theory to one about a different type using the given function
+   * retaining all precursor values
+   *
+   * @param <T>
+   *          type to create theory about
+   *
+   * @param mapping
+   *          Function from types A to a generator of type T
+   * @param typeToString
+   *          Function to use when describing the built type
+   * @return a Subject2 relating to the state of a theory involving three values
+   */
+  @CheckReturnValue
+  public <T> Subject2<A, T> withPrecursorGen(Function<A, Gen<T>> mapping,
+                                             Function<T, String> typeToString) {
     final Gen<Pair<A, T>> g = prng -> {
       final A a = this.ps.generate(prng);
-      return Pair.of(a, mapping.apply(a));
+      return Pair.of(a, mapping.apply(a).generate(prng));
     };
 
     final AsString<Pair<A, T>> desc = pair -> pair
@@ -109,7 +146,7 @@ public final class TheoryBuilder<A> implements Subject1<A> {
 
     final Gen<Pair<A, T>> gen = g
         .describedAs(desc);
-    return new PrecursorTheoryBuilder1<A, T>(this.state, gen);
+    return new PrecursorTheoryBuilder1<>(this.state, gen);
   }
 
   @Override
