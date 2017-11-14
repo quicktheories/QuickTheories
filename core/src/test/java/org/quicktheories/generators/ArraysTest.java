@@ -2,6 +2,7 @@ package org.quicktheories.generators;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.quicktheories.impl.GenAssert.assertThatGenerator;
+import static org.quicktheories.generators.Generate.range;
 
 import org.junit.Test;
 import org.quicktheories.core.Gen;
@@ -14,8 +15,8 @@ public class ArraysTest {
 
   @Test
   public void shouldGenerateAllPossibleArraysWithinDomain() {
-    Gen<Integer[]> testee = Generate.arraysOf(Generate.range(1, 2),
-        Integer.class, 2, 2);
+    Gen<Integer[]> testee = Generate.arraysOf(range(1, 2),
+        Integer.class, range(2, 2));
     assertThatGenerator(testee).generatesAllOf(
         new Integer[] { 1, 1 }, new Integer[] { 1, 2 }, new Integer[] { 2, 1 },
         new Integer[] { 2, 2 });
@@ -26,7 +27,7 @@ public class ArraysTest {
     Gen<Character[]> testee = Generate
         .arraysOf(
             Generate.characters(FIRST_CODEPOINT, ASCII_LAST_CODEPOINT),
-            Character.class, 0, 10);
+            Character.class, range(0, 10));
     assertThatGenerator(testee).shrinksTowards(new Character[0]);
   }
 
@@ -35,8 +36,9 @@ public class ArraysTest {
   public void shrinksTowardsSmallestAllowedArrayWithSmallestContents() {
     Gen<Integer[]> testee = Generate
         .arraysOf(
-            Generate.range(0, 10),
-            Integer.class, 0, 10);
+            range(0, 10),
+            Integer.class, 
+            range(0, 10));
     assertThatGenerator(testee).shrinksTowards(new Integer[0]);
   }
 
@@ -44,7 +46,7 @@ public class ArraysTest {
   @Test
   public void shouldGenerateAllPossibleArraysWithinSizeRange() {
     Gen<Integer[]> testee = Generate
-        .arraysOf(Generate.range(1, 1), Integer.class, 1, 4);
+        .arraysOf(Generate.range(1, 1), Integer.class, range(1, 4));
     assertThatGenerator(testee).generatesAllOf(new Integer[] { 1 },
         new Integer[] { 1, 1 }, new Integer[] { 1, 1, 1 },
         new Integer[] { 1, 1, 1, 1 });
@@ -52,8 +54,8 @@ public class ArraysTest {
 
   @Test
   public void shouldDescribeArrayContents() {
-    Gen<Integer[]> testee = Generate.arraysOf(Generate.range(0, 1),
-        Integer.class, 2, 2);
+    Gen<Integer[]> testee = Generate.arraysOf(range(0, 1),
+        Integer.class, range(2, 2));
     Integer[] anArray = { 1, 2, 3 };
     assertThat(testee.asString(anArray)).isEqualTo("[1, 2, 3]");
   }
@@ -61,7 +63,7 @@ public class ArraysTest {
   @Test
   public void shouldDescribeArrayContentsUsingProvidedSource() {
     Gen<String> sourceWithCustomDescription = Generate.constant("x").describedAs(x -> "custom description for x");
-    Gen<String[]> testee = Generate.arraysOf(sourceWithCustomDescription, String.class, 2, 2);
+    Gen<String[]> testee = Generate.arraysOf(sourceWithCustomDescription, String.class, range(2, 2));
 
     String[] anArray = { "foo", "bar"};
 

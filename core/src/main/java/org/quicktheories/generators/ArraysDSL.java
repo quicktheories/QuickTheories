@@ -93,6 +93,11 @@ public class ArraysDSL {
     public Gen<T[]> withLength(int length) {
       return withLengthBetween(length, length);
     }
+    
+    public Gen<T[]> withLengths(Gen<Integer> lengths) {
+      return Generate.arraysOf(source, c, lengths);
+    }
+
 
     /**
      * Generates arrays of specified type T of length bounded inclusively
@@ -111,7 +116,7 @@ public class ArraysDSL {
       ArgumentAssertions.checkArguments(minLength >= 0,
           "The length of an array cannot be negative; %s is not an accepted argument",
           minLength);
-      return Generate.arraysOf(source, c, minLength, maxLength);
+      return withLengths(Generate.range(minLength, maxLength));
     }
   }
 
