@@ -14,14 +14,14 @@ import org.quicktheories.core.Gen;
 
 public final class Lists {
 
-  static <T> Gen<List<T>> boundedListsOf(
-      Gen<T> generator, int minimumSize,
-      int maximumSize) {
+  
+  static <T> Gen<List<T>> listsOf(
+      Gen<T> generator, Gen<Integer> sizes) {
     return 
-        listsOf(generator, arrayList(), minimumSize, maximumSize).mix(
-        listsOf(generator, linkedList(), minimumSize, maximumSize));
+        listsOf(generator, arrayList(), sizes).mix(
+        listsOf(generator, linkedList(), sizes));
   }
-
+  
   public static <T, A extends List<T>> Collector<T, List<T>, List<T>> arrayList() {
     return toList(ArrayList::new);
   }
@@ -38,11 +38,10 @@ public final class Lists {
     });
   }
 
-  static <T> Gen<List<T>> listsOf(Gen<T> values,
-      Collector<T, List<T>, List<T>> collector, int minimumSize,
-      int maximumSize) {
+  static <T> Gen<List<T>> listsOf(
+      Gen<T> values, Collector<T, List<T>, List<T>> collector, Gen<Integer> sizes) {
+   
     Gen<List<T>> gen = prng -> {
-      Gen<Integer> sizes = Generate.range(minimumSize, maximumSize);
       int size = sizes.generate(prng);
       return Stream.generate( () -> values.generate(prng))
           .limit(size)

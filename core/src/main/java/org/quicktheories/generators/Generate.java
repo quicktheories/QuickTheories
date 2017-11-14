@@ -240,7 +240,7 @@ public class Generate {
   static <T> Gen<T[]> arraysOf(Gen<T> values, Class<T> c,
       int minLength, int maxLength) {
     return Lists
-        .listsOf(values, Lists.arrayList(), minLength, maxLength)
+        .listsOf(values, Lists.arrayList(), range(minLength, maxLength))
         .map(l -> l.toArray((T[]) Array.newInstance(c, 0)) // will generate
                                                            // correct size if
                                                            // zero is less than

@@ -88,10 +88,15 @@ public class ListsDSL {
      */
     public Gen<List<T>> ofSizeBetween(int minimumSize, int maximumSize) {
       checkBoundedListArguments(minimumSize, maximumSize);
-      return Lists.boundedListsOf(source, minimumSize,
-          maximumSize);
+      return ofSizes(Generate.range(minimumSize,
+          maximumSize));
     }
 
+
+    public Gen<List<T>> ofSizes(Gen<Integer> sizes) {
+      return Lists.listsOf(source, sizes);
+    }
+    
     /**
      * Determines how the Lists will be collected and returns an
      * TypedListGeneratorBuilder with the Collector specified
@@ -145,7 +150,7 @@ public class ListsDSL {
      */
     public Gen<List<T>> ofSizeBetween(int minimumSize, int maximumSize) {
       checkBoundedListArguments(minimumSize, maximumSize);
-      return listsOf(source, collector, minimumSize, maximumSize);
+      return listsOf(source, collector, Generate.range(minimumSize, maximumSize));
     };
     
     
