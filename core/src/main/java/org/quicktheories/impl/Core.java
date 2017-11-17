@@ -51,16 +51,8 @@ class Core {
     
     Guidance guidance = config.guidance();
     
-    // search randomly but first visit the maxima, minima and shrink point  
-    RandomDistribution<T> randomDistribution =  new RandomDistribution<>(config, prop.getGen());
-    PrecursorDataPair<T> startPoint = randomDistribution.generate();
-
+    Distribution<T> randomDistribution =  new BoundarySkewedDistribution<>(config, prop.getGen()); 
     ArrayDeque<long[]> toVisit = new ArrayDeque<long[]>();
-     
-    // Always visit the shrink point, min and max
-    toVisit.add(startPoint.precursor().shrinkTarget());   
-    toVisit.add(startPoint.precursor().minLimit());   
-    toVisit.add(startPoint.precursor().maxLimit());
 
     Distribution<T> distribution;
     for (int i = 0; i != config.examples(); i++) {
@@ -92,6 +84,7 @@ class Core {
     }   
     return Optional.empty();
   }
+
 
   <T> List<T> shrink(PrecursorDataPair<T> precursor, Property<T> prop) {
     PrecursorDataPair<T> lastSmallestState = precursor;

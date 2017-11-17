@@ -68,7 +68,7 @@ public class FloatsTest {
     List<Float> vals = generateValues(testee, 100);
     assertThat(vals.stream().filter( f -> f < 100f).count()).isGreaterThan(5);
     assertThat(vals.stream().filter( f -> f > 500f).count()).isGreaterThan(40);
-    assertThat(vals.stream().filter( f -> f > 900f).count()).isLessThan(10);
+    assertThat(vals.stream().filter( f -> f > 900f).count()).isLessThanOrEqualTo(10);
   }  
   
   @Test

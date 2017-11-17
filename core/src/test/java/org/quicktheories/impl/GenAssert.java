@@ -7,11 +7,7 @@ import java.util.stream.Collectors;
 import org.assertj.core.api.AbstractAssert;
 import org.quicktheories.core.Configuration;
 import org.quicktheories.core.Gen;
-import org.quicktheories.core.PseudoRandom;
 import org.quicktheories.core.Strategy;
-import org.quicktheories.impl.BoundarySkewedDistribution;
-import org.quicktheories.impl.PrecursorDataPair;
-import org.quicktheories.impl.ShapedDataSource;
 
 public class GenAssert<T>
     extends AbstractAssert<GenAssert<T>, Gen<T>> {
@@ -27,10 +23,11 @@ public class GenAssert<T>
 
   public GenAssert<T> generatesTheMinAndMax(T min, T max) {
     Strategy config = Configuration.systemStrategy().withFixedSeed(0);
-    BoundarySkewedDistribution<T> boundaries = new BoundarySkewedDistribution<T>(config,actual);
-    boundaries.generate(); // skip the shrink target
-    T actualMin = boundaries.generate().value();
-    T actualMax = boundaries.generate().value();
+    RandomDistribution<T> random = new RandomDistribution<T>(config,actual);
+    PrecursorDataPair<T> somePoint = random.generate();
+    
+    T actualMin = generateFrom(somePoint.precursor().minLimit(), config);
+    T actualMax = generateFrom(somePoint.precursor().maxLimit(), config);
     
     org.assertj.core.api.Assertions.assertThat(actualMin).isEqualTo(min);
     org.assertj.core.api.Assertions.assertThat(actualMax).isEqualTo(max);
@@ -40,10 +37,10 @@ public class GenAssert<T>
   public GenAssert<T> shrinksTowards(T target) {
     Strategy config = Configuration.systemStrategy().withFixedSeed(0);
     BoundarySkewedDistribution<T> boundaries = new BoundarySkewedDistribution<T>(config,actual);
-    // test relies on implementation detail that first returned value is the shrink point
-    T t = boundaries.generate().value();
-    
-    org.assertj.core.api.Assertions.assertThat(t).isEqualTo(target);
+    long[] t = boundaries.generate().precursor().shrinkTarget();
+    T actual = generateFrom(t, config); 
+        
+    org.assertj.core.api.Assertions.assertThat(actual).isEqualTo(target);
     return this;
   }
   
@@ -92,15 +89,19 @@ public class GenAssert<T>
   }
   
   public static <T> List<T> generateValues(Gen<T> gen, int count) {
-    PseudoRandom prng = Configuration.defaultPRNG(0);
-    ShapedDataSource sds = new ShapedDataSource(prng, new long[0], count);
+    Strategy config = Configuration.systemStrategy().withFixedSeed(0);
+    BoundarySkewedDistribution<T> dist = new BoundarySkewedDistribution<T>(config, gen); 
     List<T> generated = new ArrayList<T>();
     for (int i = 0; i != count; i++) {
-      generated.add((T) gen.generate(sds));
+      generated.add((T) dist.generate().value());
     }
     return generated;
   }
 
   
-
+  private T generateFrom(long[] ls, Strategy config) {
+    ForcedDistribution<T> forced = new ForcedDistribution<>(config, actual, ls);
+    return forced.generate().value();    
+  }
+  
 }

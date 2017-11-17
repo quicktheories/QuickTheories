@@ -4,9 +4,6 @@ import java.util.ArrayDeque;
 
 import org.quicktheories.core.Gen;
 import org.quicktheories.core.Strategy;
-import org.quicktheories.impl.Distribution;
-import org.quicktheories.impl.PrecursorDataPair;
-import org.quicktheories.impl.ShapedDataSource;
 
 /**
  * Visits (in order) any likely shrink target, minima and maxima before switching to a
@@ -16,7 +13,7 @@ import org.quicktheories.impl.ShapedDataSource;
  */
 class BoundarySkewedDistribution<T> implements Distribution<T> {
   
-  private ArrayDeque<long[]> toVisit = new ArrayDeque<long[]>();
+  private ArrayDeque<long[]> toVisit;
   
   private final Gen<T> gen;
   private final Strategy config;
@@ -25,7 +22,7 @@ class BoundarySkewedDistribution<T> implements Distribution<T> {
   BoundarySkewedDistribution(Strategy config, Gen<T> gen) {
     this.gen = gen;
     this.config = config;
-    findBoundaries(config, gen);   
+    toVisit = findBoundaries(config, gen);   
   }
 
   public PrecursorDataPair<T> generate() {
@@ -35,22 +32,23 @@ class BoundarySkewedDistribution<T> implements Distribution<T> {
     } else {
       forced = new long[0];
     }
-    return generate(gen, forced, config.generateAttempts());
+    return generate(gen, config, forced);
   }
   
-  private PrecursorDataPair<T> generate(Gen<T> gen, long[] forced, int maxTries) {
-    ShapedDataSource buffer = new ShapedDataSource(config.prng(), forced,
-        maxTries);
+  private PrecursorDataPair<T> generate(Gen<T> gen, Strategy config, long[] forced) {
+    ShapedDataSource buffer = new ShapedDataSource(config.prng(), forced, config.generateAttempts());
     T t = gen.generate(buffer);
     return new PrecursorDataPair<>(buffer.capturedPrecursor(), buffer.failedAssumptions(), t);
   }
-    
-  private void findBoundaries(Strategy config, Gen<T> gen) {
-    PrecursorDataPair<T> result = generate(gen, new long[0], config.generateAttempts());
-    toVisit.add(result.precursor().shrinkTarget());   
-    toVisit.add(result.precursor().minLimit());   
-    toVisit.add(result.precursor().maxLimit());
+     
+
+  private ArrayDeque<long[]> findBoundaries(Strategy config, Gen<T> gen) {
+    ArrayDeque<long[]> ordered = new ArrayDeque<>(); 
+    PrecursorDataPair<T> startPoint = generate(gen, config, new long[0]);  
+    ordered.add(startPoint.precursor().shrinkTarget());
+    ordered.add(startPoint.precursor().minLimit());
+    ordered.add(startPoint.precursor().maxLimit());   
+    return ordered;
   }
   
-
 }

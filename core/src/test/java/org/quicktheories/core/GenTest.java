@@ -174,7 +174,6 @@ public class GenTest {
     assertThat(actual).containsExactly(2,1,4);
   }
   
-
   @SuppressWarnings("unchecked")
   @Test
   public void mapsToOptionalsWithoutEmptyWhenPercentageIs0() {
