@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>quicktheories-parent</artifactId>
 		<groupId>org.quicktheories</groupId>
-		<version>0.24</version>
+		<version>0.25-SNAPSHOT</version>
 	</parent>
 	<artifactId>quicktheories</artifactId>
 
