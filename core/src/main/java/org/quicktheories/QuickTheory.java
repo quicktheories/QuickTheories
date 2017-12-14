@@ -9,6 +9,7 @@ import org.quicktheories.core.Configuration;
 import org.quicktheories.core.Gen;
 import org.quicktheories.core.Guidance;
 import org.quicktheories.core.PseudoRandom;
+import org.quicktheories.core.Reporter;
 import org.quicktheories.core.Strategy;
 import org.quicktheories.dsl.TheoryBuilder;
 import org.quicktheories.dsl.TheoryBuilder2;
@@ -100,7 +101,15 @@ public class QuickTheory {
     return new QuickTheory(() -> state.get().withGuidance(guidance));
   }
 
-  
+  /**
+   * Sets reporter to use
+   * @param reporter Reporter to use
+   * @return a QuickTheory using the given reporter
+   */
+  public QuickTheory withReporter(Reporter reporter) {
+    return new QuickTheory(() -> state.get().withReporter(reporter));
+  }
+
   
   /**
    * Specifies a Source of type A for which the property must hold true

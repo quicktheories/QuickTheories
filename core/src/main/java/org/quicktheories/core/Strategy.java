@@ -146,6 +146,15 @@ public class Strategy {
   public Strategy withShrinkCycles(int shrinks) {
     return new Strategy(prng, examples, shrinks, generateAttempts, reporter, guidance);
   }
+  
+  /**
+   * Creates a strategy using the supplied reporter
+   * @param reporter
+   * @return
+   */
+  public Strategy withReporter(Reporter reporter) {
+    return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter, guidance);
+  }
 
   /**
    * Returns the default PRNG with initial seed supplied. Note: the XOrShiftPRNG

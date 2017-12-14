@@ -2,6 +2,9 @@ package org.quicktheories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.times;
 
 import java.util.Arrays;
@@ -10,6 +13,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.quicktheories.core.Guidance;
 import org.quicktheories.core.NoGuidance;
+import org.quicktheories.core.Reporter;
 import org.quicktheories.generators.Generate;
 
 public class WithQuickTheoriesTest {
@@ -103,6 +107,17 @@ public class WithQuickTheoriesTest {
     Mockito.verify(g, times(10)).exampleExecuted();
   }
 
+  @Test
+  public void usesSuppliedReporter() {
+    Reporter r = Mockito.mock(Reporter.class);
+    testee.qt()
+      .withReporter(r)
+      .forAll(testee.integers().all())
+      .check(i -> false);
+    
+    Mockito.verify(r).falisification(anyLong(), anyInt(), any(), any(), any());
+  }
+  
   @Test
   public void providesANoGuidanceOption() {
     assertThat(testee.noGuidance().apply(null)).isInstanceOf(NoGuidance.class);
