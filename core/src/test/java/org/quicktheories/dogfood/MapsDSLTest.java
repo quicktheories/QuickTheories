@@ -7,15 +7,17 @@ public class MapsDSLTest implements WithQuickTheories {
   @Test
   public void fixedSizeMapsHaveFixedSize() {
     qt()
-    .forAll(maps().of(integers().all(), integers().all()).ofSize(2))
-    .check(m -> m.size() == 2);
+    .forAll(integers().between(0, 10))
+    .withPrecursorGen(n -> maps().of(integers().all(), integers().all()).ofSize(n))
+    .check((n, m) -> m.size() == n);
   }
   
   @Test
   public void boundedSizeMapsHaveBoundedSize() {
     qt()
-    .forAll(maps().of(integers().all(), integers().all()).ofSizeBetween(1, 2))
-    .check(m -> m.size() >= 1 && m.size() <= 2);
+    .forAll(integers().between(0, 10), integers().between(0, 10))
+    .withPrecursorGen((min, extra) -> maps().of(integers().all(), integers().all()).ofSizeBetween(min, min + extra))
+    .check((min, extra, m) -> m.size() >= min && m.size() <= min + extra);
   }
  
 }

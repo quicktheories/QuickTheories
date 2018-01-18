@@ -12,15 +12,17 @@ public class ListsDSLTest implements WithQuickTheories {
   @Test
   public void fixedSizeListsHaveFixedSize() {
     qt()
-    .forAll(lists().of(integers().all()).ofSize(2))
-    .check( l -> l.size() == 2);
+    .forAll(integers().between(0, 10))
+    .withPrecursorGen(n -> lists().of(integers().all()).ofSize(n))
+    .check((n, l) -> l.size() == n);
   }
   
   @Test
   public void boundedSizeListsHaveBoundedSize() {
     qt()
-    .forAll(lists().of(integers().all()).ofSizeBetween(1, 2))
-    .check( l -> l.size() >= 1 && l.size() <= 2);
+    .forAll(integers().between(0, 10), integers().between(0, 10))
+    .withPrecursorGen((min, extra) -> lists().of(integers().all()).ofSizeBetween(min, min + extra))
+    .check((min, extra, l) -> l.size() >= min && l.size() <= min + extra);
   }
   
   @Test

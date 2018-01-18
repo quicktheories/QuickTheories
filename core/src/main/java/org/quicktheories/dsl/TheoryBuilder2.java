@@ -17,6 +17,7 @@ import org.quicktheories.api.Subject3;
 import org.quicktheories.api.Tuple3;
 import org.quicktheories.core.Gen;
 import org.quicktheories.core.Strategy;
+import org.quicktheories.generators.Generate;
 import org.quicktheories.impl.TheoryRunner;
 
 public final class TheoryBuilder2<A, B> implements Subject2<A, B> {
@@ -124,6 +125,23 @@ public final class TheoryBuilder2<A, B> implements Subject2<A, B> {
     return this.asWithPrecursor(mapping, t -> t.toString());
   }
 
+
+  /**
+   * Converts theory to one about a different type using the given function
+   * retaining all precursor values
+   *
+   * @param <T>
+   *          type to create theory about
+   *
+   * @param mapping
+   *          Function from types A and B to a generator of type T
+   * @return a Subject3 relating to the state of a theory involving three values
+   */
+  @CheckReturnValue
+  public <T> Subject3<A, B, T> withPrecursorGen(BiFunction<A, B, Gen<T>> mapping) {
+    return withPrecursorGen(mapping, t -> t.toString());
+  }
+
   /**
    * Converts theory to one about a different type using the given function
    * retaining all precursor values
@@ -140,10 +158,29 @@ public final class TheoryBuilder2<A, B> implements Subject2<A, B> {
   @CheckReturnValue
   public <T> Subject3<A, B, T> asWithPrecursor(BiFunction<A, B, T> mapping,
       Function<T, String> typeToString) {
+    return withPrecursorGen((a, b) -> Generate.constant(mapping.apply(a, b)), typeToString);
+  }
+
+  /**
+   * Converts theory to one about a different type using the given function
+   * retaining all precursor values
+   *
+   * @param <T>
+   *          type to create theory about
+   *
+   * @param mapping
+   *          Function from types A and B to type T
+   * @param typeToString
+   *          Function to use to display built type
+   * @return a Subject3 relating to the state of a theory involving three values
+   */
+  @CheckReturnValue
+  public <T> Subject3<A, B, T> withPrecursorGen(BiFunction<A, B, Gen<T>> mapping,
+                                               Function<T, String> typeToString) {
     final Gen<Tuple3<A, B, T>> g = prng -> {
       final A a = this.as.generate(prng);
       final B b = this.bs.generate(prng);
-      return Tuple3.of(a, b, mapping.apply(a, b));
+      return Tuple3.of(a, b, mapping.apply(a, b).generate(prng));
     };
 
     final AsString<Tuple3<A, B, T>> desc = tuple -> tuple
@@ -152,7 +189,7 @@ public final class TheoryBuilder2<A, B> implements Subject2<A, B> {
         .toString();
 
     final Gen<Tuple3<A, B, T>> gen = g.describedAs(desc);
-    return new PrecursorTheoryBuilder2<A, B, T>(this.state, gen,
+    return new PrecursorTheoryBuilder2<>(this.state, gen,
         this.assumptions);
 
   }
