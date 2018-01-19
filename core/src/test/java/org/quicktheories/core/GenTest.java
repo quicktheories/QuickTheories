@@ -161,6 +161,33 @@ public class GenTest {
   }  
   
   @Test
+  public void combinesWithOtherGenUsingFunction4() {
+    Gen<Integer> as = Sequence.of(1,2,3,4);
+    Gen<Integer> bs = Sequence.of(2,4,6,8);   
+    Gen<Integer> cs = Sequence.of(3,6,9,12);     
+    Gen<Integer> ds = Sequence.of(1,3,5,7);       
+    
+    Gen<Integer> combined = as.zip(bs, cs, ds, (a,b,c,d) -> a + b + c + d);
+    
+    Stream<Integer> actual = generate(combined).limit(4);
+    assertThat(actual).containsExactly(7,15,23,31);
+  }
+  
+  @Test
+  public void combinesWithOtherGenUsingFunction5() {
+    Gen<Integer> as = Sequence.of(1,2,3,4);
+    Gen<Integer> bs = Sequence.of(1,2,3,4); 
+    Gen<Integer> cs = Sequence.of(1,2,3,4);     
+    Gen<Integer> ds = Sequence.of(1,2,3,4);  
+    Gen<Integer> es = Sequence.of(1,2,3,4);       
+    
+    Gen<Integer> combined = as.zip(bs, cs, ds, es, (a,b,c,d, e) -> a + b + c + d + e);
+    
+    Stream<Integer> actual = generate(combined).limit(4);
+    assertThat(actual).containsExactly(5,10,15,20);
+  }  
+  
+  @Test
   public void mixesValuesRandomlyWithOtherGens() {
     Gen<Integer> as = Sequence.of(1,2,3);
     Gen<Integer> bs = Sequence.of(2,4,6);  
@@ -242,7 +269,7 @@ class Sequence<T> implements Gen<T> {
   
   @SafeVarargs
   static <T> Sequence<T> of(T ...ts) {
-    return new Sequence<T>(Arrays.asList(ts));
+    return new Sequence<>(Arrays.asList(ts));
   }
 
   @Override

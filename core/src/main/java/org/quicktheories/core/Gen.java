@@ -7,6 +7,8 @@ import java.util.function.Predicate;
 
 import org.quicktheories.api.AsString;
 import org.quicktheories.api.Function3;
+import org.quicktheories.api.Function4;
+import org.quicktheories.api.Function5;
 import org.quicktheories.impl.Constraint;
 
 /**
@@ -120,12 +122,43 @@ public interface Gen<T> extends AsString<T>{
    * @param b A Gen of B
    * @param c A Gen of C
    * @param mapping function to use to combine values
-   * @return A Gen of D
+   * @return A Gen of R
    */
-  default <B,C, D> Gen<D> zip(Gen<B> b, Gen<C> c, Function3<T,B,C, D> mapping) {
+  default <B,C, R> Gen<R> zip(Gen<B> b, Gen<C> c, Function3<T,B,C,R> mapping) {
     return in -> mapping.apply(generate(in), b.generate(in), c.generate(in));
   }
     
+  /**
+   * Combines output of this Gen with others using mapping
+   * @param <B> Type to combine with
+   * @param <C> Type to combine with
+   * @param <D> Type to generate
+   * @param b A Gen of B
+   * @param c A Gen of C
+   * @param d A Gen of D
+   * @param mapping function to use to combine values
+   * @return A Gen of R
+   */
+  default <B,C,D,R> Gen<R> zip(Gen<B> b, Gen<C> c, Gen<D> d, Function4<T,B,C,D,R> mapping) {
+    return in -> mapping.apply(generate(in), b.generate(in), c.generate(in), d.generate(in));
+  } 
+  
+  /**
+   * Combines output of this Gen with others using mapping
+   * @param <B> Type to combine with
+   * @param <C> Type to combine with
+   * @param <D> Type to generate
+   * @param b A Gen of B
+   * @param c A Gen of C
+   * @param d A Gen of D
+   * @param e A Gen of E
+   * @param mapping function to use to combine values
+   * @return A Gen of R
+   */
+  default <B,C,D,E,R> Gen<R> zip(Gen<B> b, Gen<C> c, Gen<D> d, Gen<E> e, Function5<T,B,C,D,E,R> mapping) {
+    return in -> mapping.apply(generate(in), b.generate(in), c.generate(in), d.generate(in), e.generate(in));
+  }   
+  
   /**
    * Randomly combines output of this Gen with another with an roughly 50:50 weighting
    * @param rhs Gen to mix with
