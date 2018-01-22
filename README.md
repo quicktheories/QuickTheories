@@ -538,4 +538,4 @@ If you don't like QuickTheories you might want to try one of the other systems b
 * [QuickCheck](https://bitbucket.org/blob79/quickcheck). Not tied to a test framework - provides generators of random values to be used in tests.
 * [FunctionalJava](http://www.functionaljava.org/). Apparently contains a property based testing system, but appears to be completely undocumented.
 * [ScalaCheck](http://www.scalacheck.org/). Mature property based testing system with shrinking, but requires Scala rather than Java. Also seem to be [design level issues with how shrinking works](https://github.com/rickynils/scalacheck/issues/317).
-* [jqwik](http://jqwik.net/). JUnit 5 based implementation using annotations. Supports shrinking but not available from maven central.
+* [jqwik](http://jqwik.net/). JUnit 5 based implementation using annotations. Supports shrinking.
