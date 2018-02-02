@@ -13,14 +13,17 @@ public class MapsDSL {
   /**
    * Creates a ListGeneratorBuilder.
    *
+   * @param keys Gen of keys
+   * @param values Gen of values
+   *
    * @param <K>
    *          key type to generate
    * @param <V>
    *          value type to generate
    * @return a MapGeneratorBuilder of type K,V
    */
-  public <K, V> MapGeneratorBuilder<K, V> of(Gen<K> kg, Gen<V> vg) {
-    return new MapGeneratorBuilder<>(kg, vg);
+  public <K, V> MapGeneratorBuilder<K, V> of(Gen<K> keys, Gen<V> values) {
+    return new MapGeneratorBuilder<>(keys, values);
   }
 
   /**

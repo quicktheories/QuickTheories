@@ -118,7 +118,7 @@ public interface Gen<T> extends AsString<T>{
    * Combines output of this Gen with two others using mapping
    * @param <B> Type to combine with
    * @param <C> Type to combine with
-   * @param <D> Type to generate
+   * @param <R> Type to generate
    * @param b A Gen of B
    * @param c A Gen of C
    * @param mapping function to use to combine values
@@ -132,7 +132,7 @@ public interface Gen<T> extends AsString<T>{
    * Combines output of this Gen with others using mapping
    * @param <B> Type to combine with
    * @param <C> Type to combine with
-   * @param <D> Type to generate
+   * @param <R> Type to generate
    * @param b A Gen of B
    * @param c A Gen of C
    * @param d A Gen of D
@@ -147,7 +147,7 @@ public interface Gen<T> extends AsString<T>{
    * Combines output of this Gen with others using mapping
    * @param <B> Type to combine with
    * @param <C> Type to combine with
-   * @param <D> Type to generate
+   * @param <R> Type to generate
    * @param b A Gen of B
    * @param c A Gen of C
    * @param d A Gen of D

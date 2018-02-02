@@ -149,8 +149,8 @@ public class Strategy {
   
   /**
    * Creates a strategy using the supplied reporter
-   * @param reporter
-   * @return
+   * @param reporter Reporter to use
+   * @return a strategy with suppled reporter
    */
   public Strategy withReporter(Reporter reporter) {
     return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter, guidance);
