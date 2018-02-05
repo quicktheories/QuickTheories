@@ -1,11 +1,9 @@
 package org.quicktheories.impl;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,7 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.quicktheories.core.Configuration;
 import org.quicktheories.core.Gen;
 import org.quicktheories.core.Guidance;
@@ -48,7 +46,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(arbitrary().pick(1, 2, 3, 4, 5));
     testee.check(i -> true);
     verify(reporter, never()).falisification(anyLong(), anyInt(),
-        any(Object.class), anySmallerValues(), anyObject());
+        any(Object.class), anySmallerValues(), any());
   }
 
   @Test
@@ -56,7 +54,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(arbitrary().pick(1, 2, 3, 4, 5));
     testee.check(i -> false);
     verify(reporter, times(1)).falisification(anyLong(), anyInt(),
-        any(Object.class), anySmallerValues(), anyObject());
+        any(Object.class), anySmallerValues(), any());
   }
 
   @Test
@@ -64,7 +62,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(arbitrary().pick(1, 2, 3, 4, 5));
     testee.check(i -> i > 3);
     verify(reporter, times(1)).falisification(anyLong(), anyInt(),
-        any(Object.class), anySmallerValues(), anyObject());
+        any(Object.class), anySmallerValues(), any());
   }
 
   @Test
@@ -78,7 +76,7 @@ public class TheoryRunnerTest {
     });
     verify(reporter, times(1)).falisification(anyLong(), anyInt(),
         any(Object.class), any(Throwable.class), anySmallerValues(),
-        anyObject());
+        any());
   }
 
   @Test
@@ -86,7 +84,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(arbitrary().pick(1, 2, 3, 4, 5));
     testee.check(i -> i <= 3);
     verify(reporter, times(1)).falisification(anyLong(), anyInt(), eq(4),
-        anySmallerValues(), anyObject());
+        anySmallerValues(), any());
   }
 
   @Test
@@ -95,7 +93,7 @@ public class TheoryRunnerTest {
         i -> i != 4));
     testee.check(i -> i <= 3);
     verify(reporter, times(1)).falisification(anyLong(), anyInt(), eq(5),
-        anySmallerValues(), anyObject());
+        anySmallerValues(), any());
   }
 
   @Test
@@ -105,7 +103,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(arbitrary().pick(1));
     testee.check(i -> false);
     verify(reporter, times(1)).falisification(eq(seed), anyInt(), anyInt(),
-        anySmallerValues(), anyObject());
+        anySmallerValues(), any());
   }
 
   @Test
@@ -133,7 +131,7 @@ public class TheoryRunnerTest {
         arbitrary().pick(0, 1, 2, 3, 4, 5));
     testee.check(i -> i != 4);
     verify(reporter, times(1)).falisification(anyLong(), eq(6), anyInt(),
-        anySmallerValues(), anyObject());
+        anySmallerValues(), any());
 
   }
 
@@ -145,7 +143,7 @@ public class TheoryRunnerTest {
   }
 
   private List<Object> anySmallerValues() {
-    return anyListOf(Object.class);
+    return any(List.class);
   }
 
 }

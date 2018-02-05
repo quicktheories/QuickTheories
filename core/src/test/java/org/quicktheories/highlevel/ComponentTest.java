@@ -1,9 +1,8 @@
 package org.quicktheories.highlevel;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,11 +35,11 @@ abstract class ComponentTest<T> {
     return defaultStrategy.withShrinkCycles(shrinkCycles);
   }
   
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings({ "rawtypes" })
   protected List<T> listOfShrunkenItems() {
     ArgumentCaptor<List> shrunkList = ArgumentCaptor.forClass(List.class);
     verify(this.reporter, times(1)).falisification(anyLong(), anyInt(),
-        any(Object.class), shrunkList.capture(), anyObject());
+        any(Object.class), shrunkList.capture(), any());
     
     return shrunkList.getValue();
   }
@@ -54,7 +53,7 @@ abstract class ComponentTest<T> {
     ArgumentCaptor<T> smallestValue = (ArgumentCaptor<T>) ArgumentCaptor
         .forClass(Object.class);
     verify(this.reporter, times(1)).falisification(anyLong(), anyInt(),
-        smallestValue.capture(), any(List.class), anyObject());
+        smallestValue.capture(), any(List.class), any());
     return smallestValue;
   }
 
