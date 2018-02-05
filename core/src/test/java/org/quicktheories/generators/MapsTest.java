@@ -28,7 +28,7 @@ public class MapsTest {
   @Test
   public void mapsHaveReadableDescription() {
     Gen<Map<String, String>> testee = Maps.boundedMapsOf(constant("aKey"), constant("aValue"), constant(1));
-    Map<String,String> aMap = new HashMap<String,String>();
+    Map<String,String> aMap = new HashMap<>();
     aMap.put("a", "fish");
     aMap.put("b", "dish");
     String actual = testee.asString(aMap);

@@ -45,7 +45,7 @@ public class ListsDSL {
    */
   public <T> ListGeneratorBuilder<T> of(
       Gen<T> source) {
-    return new ListGeneratorBuilder<T>(source);
+    return new ListGeneratorBuilder<>(source);
   }
 
   /**
@@ -107,7 +107,7 @@ public class ListsDSL {
      */
     public TypedListGeneratorBuilder<T> ofType(
         Collector<T, List<T>, List<T>> collector) {
-      return new TypedListGeneratorBuilder<T>(source, collector);
+      return new TypedListGeneratorBuilder<>(source, collector);
     };
     
   }

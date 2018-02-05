@@ -27,7 +27,7 @@ class SearchResult<T> {
   }
 
   List<T> getFalsifictions() {
-    List <T> others = new ArrayList<T>(falisifyingValues);
+    List <T> others = new ArrayList<>(falisifyingValues);
     others.remove(0);
     return others;
   }

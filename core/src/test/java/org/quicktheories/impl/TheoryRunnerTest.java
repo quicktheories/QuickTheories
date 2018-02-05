@@ -140,7 +140,7 @@ public class TheoryRunnerTest {
 
   private TheoryRunner<Integer, Integer> makeTesteeFor(
       Gen<Integer> generator) {
-    return new TheoryRunner<Integer, Integer>(strategy, generator, 
+    return new TheoryRunner<>(strategy, generator, 
         x -> x, a -> a.toString());
   }
 

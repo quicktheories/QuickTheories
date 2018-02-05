@@ -59,7 +59,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> im
     assertThatFor(lists().of(integers().from(-4000).upToAndIncluding(0)).ofType(lists().linkedList()).ofSize(7))
             .check(i -> false);
     smallestValueIsEqualTo(
-        new LinkedList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 0, 0)));
+        new LinkedList<>(Arrays.asList(0, 0, 0, 0, 0, 0, 0)));
   }
 
   @Test
@@ -67,7 +67,7 @@ public class IntegersListsComponentTests extends ComponentTest<List<Integer>> im
     assertThatFor(lists().of(integers().from(0).upToAndIncluding(6000)).ofType(lists().linkedList()).ofSize(7))
             .check(i -> false);
     smallestValueIsEqualTo(
-        new LinkedList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 0, 0)));
+        new LinkedList<>(Arrays.asList(0, 0, 0, 0, 0, 0, 0)));
   }
   @Test
   public void shouldReturnAnEmptyListIfMinimumIsSetToZero() {

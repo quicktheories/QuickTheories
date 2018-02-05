@@ -75,7 +75,7 @@ public final class TheoryBuilder3<A, B, C> {
    */
   @CheckReturnValue
   public TheoryBuilder3<A, B, C> assuming(Predicate3<A, B, C> newAssumption) {
-    return new TheoryBuilder3<A, B, C>(this.state, this.as, this.bs, this.cs,
+    return new TheoryBuilder3<>(this.state, this.as, this.bs, this.cs,
         this.assumptions.and(newAssumption));
   }
 
@@ -140,7 +140,7 @@ public final class TheoryBuilder3<A, B, C> {
     final Gen<Tuple4<A, B, C, T>> gen = generatePrecursorValueTuple(mapping)
         .describedAs(desc);
     
-    return new PrecursorTheoryBuilder3<A, B, C, T>(this.state, gen,
+    return new PrecursorTheoryBuilder3<>(this.state, gen,
         this.assumptions);
   }
 

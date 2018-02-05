@@ -30,7 +30,7 @@ class PrecursorTheoryBuilder1<P, T> implements Subject2<P, T> {
    */
 
   public final void check(final BiPredicate<P, T> property) {
-    final TheoryRunner<Pair<P, T>, Pair<P, T>> qc = new TheoryRunner<Pair<P, T>, Pair<P, T>>(
+    final TheoryRunner<Pair<P, T>, Pair<P, T>> qc = new TheoryRunner<>(
         this.state.get(), ps, Function.identity(), ps);
     qc.check(pair -> property.test(pair._1, pair._2));
   }

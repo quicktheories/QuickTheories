@@ -65,7 +65,7 @@ class MappingTheoryBuilder<P, T> implements Subject1<T> {
 
   @Override
   public Subject1<T> describedAs(Function<T,String> toString) {
-   return new MappingTheoryBuilder<P, T>(this.state, this.ps, 
+   return new MappingTheoryBuilder<>(this.state, this.ps, 
         this.conversion, v -> toString.apply(v));
   }
 

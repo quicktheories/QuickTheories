@@ -167,7 +167,7 @@ public class XOrShiftPRNGTest {
 
   private List<Long> generateLongValues(PseudoRandom prng,
       Function<PseudoRandom, Long> longGeneratingMethod, int count) {
-    List<Long> generated = new ArrayList<Long>();
+    List<Long> generated = new ArrayList<>();
     for (int i = 0; i != count; i++) {
       generated.add(longGeneratingMethod.apply(prng));
     }
@@ -176,7 +176,7 @@ public class XOrShiftPRNGTest {
 
   private List<Integer> generateIntegerValues(PseudoRandom prng,
       Function<PseudoRandom, Integer> integerGeneratingMethod, int count) {
-    List<Integer> generated = new ArrayList<Integer>();
+    List<Integer> generated = new ArrayList<>();
     for (int i = 0; i != count; i++) {
       generated.add(integerGeneratingMethod.apply(prng));
     }

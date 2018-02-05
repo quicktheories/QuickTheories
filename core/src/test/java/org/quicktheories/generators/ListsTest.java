@@ -21,13 +21,13 @@ public class ListsTest {
     Gen<List<Integer>> testee = listsOf(
         Generate.range(1, 1), Lists.linkedList(), Generate.range(1, 4));
     assertThatGenerator(testee).generatesAllOf(
-        new LinkedList<Integer>(Arrays.asList(1)),
-        new LinkedList<Integer>(Arrays.asList(1, 1)),
-        new LinkedList<Integer>(Arrays.asList(1, 1, 1)),
-        new LinkedList<Integer>(Arrays.asList(1, 1, 1, 1)));
+        new LinkedList<>(Arrays.asList(1)),
+        new LinkedList<>(Arrays.asList(1, 1)),
+        new LinkedList<>(Arrays.asList(1, 1, 1)),
+        new LinkedList<>(Arrays.asList(1, 1, 1, 1)));
     assertThatGenerator(testee).doesNotGenerate(
-        new LinkedList<Integer>(Arrays.asList(1, 1, 1, 1, 1)),
-        new LinkedList<Integer>(Arrays.asList(1, 1, 1, 1, 1, 1)));
+        new LinkedList<>(Arrays.asList(1, 1, 1, 1, 1)),
+        new LinkedList<>(Arrays.asList(1, 1, 1, 1, 1, 1)));
   }
 
   @SuppressWarnings("unchecked")
@@ -46,14 +46,14 @@ public class ListsTest {
     Gen<List<Integer>> testee = listsOf(
         Generate.range(1, 1), Generate.constant(5));
     assertThatGenerator(testee).generatesAllOf(Arrays.asList(1, 1, 1, 1, 1),
-        new LinkedList<Integer>(Arrays.asList(1, 1, 1, 1, 1)));
+        new LinkedList<>(Arrays.asList(1, 1, 1, 1, 1)));
   }
 
   @Test
   public void shouldDescribeListContentsUsingProvidedSource() {
     Gen<String> sourceWithCustomDescription = Generate.constant("x").describedAs(x -> "custom description for x");
     Gen<List<String>> testee = listsOf(sourceWithCustomDescription, arrayList(), Generate.range(2, 3));
-    List<String> aList = new ArrayList<String>(Arrays.asList("x","x"));
+    List<String> aList = new ArrayList<>(Arrays.asList("x","x"));
     assertThat(testee.asString(aList)).isEqualTo("[custom description for x, custom description for x]");
   }
 

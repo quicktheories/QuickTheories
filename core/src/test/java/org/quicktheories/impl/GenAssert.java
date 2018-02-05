@@ -18,12 +18,12 @@ public class GenAssert<T>
 
   public static <T> GenAssert<T> assertThatGenerator(
       Gen<T> actual) {
-    return new GenAssert<T>(actual);
+    return new GenAssert<>(actual);
   }
 
   public GenAssert<T> generatesTheMinAndMax(T min, T max) {
     Strategy config = Configuration.systemStrategy().withFixedSeed(0);
-    RandomDistribution<T> random = new RandomDistribution<T>(config,actual);
+    RandomDistribution<T> random = new RandomDistribution<>(config,actual);
     PrecursorDataPair<T> somePoint = random.generate();
     
     T actualMin = generateFrom(somePoint.precursor().minLimit(), config);
@@ -36,7 +36,7 @@ public class GenAssert<T>
   
   public GenAssert<T> shrinksTowards(T target) {
     Strategy config = Configuration.systemStrategy().withFixedSeed(0);
-    BoundarySkewedDistribution<T> boundaries = new BoundarySkewedDistribution<T>(config,actual);
+    BoundarySkewedDistribution<T> boundaries = new BoundarySkewedDistribution<>(config,actual);
     long[] t = boundaries.generate().precursor().shrinkTarget();
     T actual = generateFrom(t, config); 
         
@@ -46,7 +46,7 @@ public class GenAssert<T>
   
   public GenAssert<T> hasNoShrinkPoint() {
     Strategy config = Configuration.systemStrategy().withFixedSeed(0);
-    BoundarySkewedDistribution<T> boundaries = new BoundarySkewedDistribution<T>(config,actual);
+    BoundarySkewedDistribution<T> boundaries = new BoundarySkewedDistribution<>(config,actual);
 
     PrecursorDataPair<T> possibleShrinkPoint = boundaries.generate();
     
@@ -90,8 +90,8 @@ public class GenAssert<T>
   
   public static <T> List<T> generateValues(Gen<T> gen, int count) {
     Strategy config = Configuration.systemStrategy().withFixedSeed(0);
-    BoundarySkewedDistribution<T> dist = new BoundarySkewedDistribution<T>(config, gen); 
-    List<T> generated = new ArrayList<T>();
+    BoundarySkewedDistribution<T> dist = new BoundarySkewedDistribution<>(config, gen); 
+    List<T> generated = new ArrayList<>();
     for (int i = 0; i != count; i++) {
       generated.add((T) dist.generate().value());
     }

@@ -56,7 +56,7 @@ public final class TheoryBuilder2<A, B> implements Subject2<A, B> {
    */
   @CheckReturnValue
   public TheoryBuilder2<A, B> assuming(BiPredicate<A, B> newAssumption) {
-    return new TheoryBuilder2<A, B>(this.state, this.as, this.bs,
+    return new TheoryBuilder2<>(this.state, this.as, this.bs,
         this.assumptions.and(newAssumption));
   }
 
@@ -152,7 +152,7 @@ public final class TheoryBuilder2<A, B> implements Subject2<A, B> {
         .toString();
 
     final Gen<Tuple3<A, B, T>> gen = g.describedAs(desc);
-    return new PrecursorTheoryBuilder2<A, B, T>(this.state, gen,
+    return new PrecursorTheoryBuilder2<>(this.state, gen,
         this.assumptions);
 
   }

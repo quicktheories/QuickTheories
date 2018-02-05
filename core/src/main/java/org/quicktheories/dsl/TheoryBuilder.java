@@ -48,7 +48,7 @@ public final class TheoryBuilder<A> implements Subject1<A> {
    */
   @CheckReturnValue
   public TheoryBuilder<A> assuming(Predicate<A> newAssumption) {
-    return new TheoryBuilder<A>(this.state, this.ps.assuming(newAssumption));
+    return new TheoryBuilder<>(this.state, this.ps.assuming(newAssumption));
   }
 
   /**
@@ -109,13 +109,13 @@ public final class TheoryBuilder<A> implements Subject1<A> {
 
     final Gen<Pair<A, T>> gen = g
         .describedAs(desc);
-    return new PrecursorTheoryBuilder1<A, T>(this.state, gen);
+    return new PrecursorTheoryBuilder1<>(this.state, gen);
   }
 
   @Override
   @CheckReturnValue
   public Subject1<A> describedAs(Function<A, String> toString) {
-    return new TheoryBuilder<A>(this.state,
+    return new TheoryBuilder<>(this.state,
         this.ps.describedAs(a -> toString.apply(a)));
   }
 

@@ -28,7 +28,7 @@ class Core {
   }
 
   <T> SearchResult<T> run(Property<T> prop) {
-    List<T> falsifyingValues = new ArrayList<T>();
+    List<T> falsifyingValues = new ArrayList<>();
     boolean exhausted = false;
     try {
       Optional<Pair<Falsification<T>, PrecursorDataPair<T>>> falisfying = findFalsifyingValue(
@@ -52,14 +52,14 @@ class Core {
     Guidance guidance = config.guidance();
     
     Distribution<T> randomDistribution =  new BoundarySkewedDistribution<>(config, prop.getGen()); 
-    ArrayDeque<long[]> toVisit = new ArrayDeque<long[]>();
+    ArrayDeque<long[]> toVisit = new ArrayDeque<>();
 
     Distribution<T> distribution;
     for (int i = 0; i != config.examples(); i++) {
       if (toVisit.isEmpty()) {
         distribution = randomDistribution;
       } else {
-        distribution = new ForcedDistribution<T>(config, prop.getGen(), toVisit.pop());
+        distribution = new ForcedDistribution<>(config, prop.getGen(), toVisit.pop());
       }
       
       PrecursorDataPair<T> t = distribution.generate();
@@ -88,7 +88,7 @@ class Core {
 
   <T> List<T> shrink(PrecursorDataPair<T> precursor, Property<T> prop) {
     PrecursorDataPair<T> lastSmallestState = precursor;
-    List<T> falsifyingValues = new ArrayList<T>();
+    List<T> falsifyingValues = new ArrayList<>();
 
     ShrinkStrategy shrink = new SimpleShrink();
     try {

@@ -27,7 +27,7 @@ public class ArraysDSL {
    */
   public ArrayGeneratorBuilder<Integer> ofIntegers(
       Gen<Integer> source) {
-    return new ArrayGeneratorBuilder<Integer>(source, Integer.class);
+    return new ArrayGeneratorBuilder<>(source, Integer.class);
   }
 
   /**
@@ -40,7 +40,7 @@ public class ArraysDSL {
    */
   public ArrayGeneratorBuilder<Character> ofCharacters(
       Gen<Character> source) {
-    return new ArrayGeneratorBuilder<Character>(source, Character.class);
+    return new ArrayGeneratorBuilder<>(source, Character.class);
   }
 
   /**
@@ -53,7 +53,7 @@ public class ArraysDSL {
    */
   public ArrayGeneratorBuilder<String> ofStrings(
       Gen<String> source) {
-    return new ArrayGeneratorBuilder<String>(source, String.class);
+    return new ArrayGeneratorBuilder<>(source, String.class);
   }
 
   /**
@@ -70,7 +70,7 @@ public class ArraysDSL {
    */
   public <T> ArrayGeneratorBuilder<T> ofClass(Gen<T> source,
       Class<T> c) {
-    return new ArrayGeneratorBuilder<T>(source, c);
+    return new ArrayGeneratorBuilder<>(source, c);
   }
 
   public static class ArrayGeneratorBuilder<T> {

@@ -13,7 +13,7 @@ import org.quicktheories.core.Strategy;
  */
 class ForcedDistribution<T> implements Distribution<T> {
   
-  private ArrayDeque<long[]> toVisit = new ArrayDeque<long[]>();
+  private ArrayDeque<long[]> toVisit = new ArrayDeque<>();
   
   private final Gen<T> gen;
   private final Strategy config;
