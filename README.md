@@ -518,7 +518,7 @@ QuickTheories was written with the following design goals
 
 It turned out that number 2 was the hard bit as it had many implications for the design. The approach was completely changed between releases in the 0.1x and 0.2x series.
 
-As of 1.x shrinking uses an approach similar to the python library hypothesis, whereby shrinking is unaware of the type it is generating. This approach is less flexible than the original approach but allows Gens to be freely composed together while greatly reducing the size of the codebase.
+As of 0.20 shrinking uses an approach similar to the python library hypothesis, whereby shrinking is unaware of the type it is generating. This approach is less flexible than the original approach but allows Gens to be freely composed together while greatly reducing the size of the codebase.
 
 ## Background
 
