@@ -18,11 +18,11 @@ a random sample of valid inputs from the possible values.
 
 This can be a good way to uncover bad assumptions made by you and your code.
 
-If the word random is making you feel a little nervous, don't worry QuickTheories provides ways to keep your tests repeatable.
+If the word "random" is making you feel a little nervous, don't worry QuickTheories provides ways to keep your tests repeatable.
 
 ## Quick Start
 
-Add the QuickTheories jar to your build (see the badge at the top of the page for the maven co-ordinates of the latest version).
+Add the QuickTheories jar to your build (see the badge at the top of the page for the maven coordinates of the latest version).
 
 You can run QuickTheories from JUnit, TestNG or any other test framework.
 
@@ -75,7 +75,7 @@ Math works just fine, but in Java integers can overflow.
 
 ### Without static imports
 
-If you prefer the QuickTheories entry points can be brought into scope by implementing and interface, removing the need for static imports.
+If you prefer the QuickTheories entry points can be brought into scope by implementing an interface, removing the need for static imports.
 
 ```java
 public class SomeTests implements WithQuickTheories {
@@ -117,7 +117,7 @@ By default QuickTheories will spend about 100 times more effort looking for smal
 
 The smallest found value is reported along with a sample of any other falsifying values found along the way. 
 
-There is no guarantee that this is the smallest possible falsifying value or that others don't exist. Generally the shrunk values will be easier to understand and work with than the original un-shrunk ones - patterns might be visible in the reported values.
+There is no guarantee that this is the smallest possible falsifying value or that others don't exist. Generally the shrunk values will be easier to understand and work with than the original un-shrunk ones – patterns might be visible in the reported values.
 
 Unlike straight QuickCheck clones QuickTheories does not require you to supply your own shrinking implementation for each type. Shrinking is performed automatically for any and all types. The mechanism by which this is achieved does not make any assumptions about the structure or implementation of the type or break encapsulation.
 
@@ -127,7 +127,7 @@ At the end of the report the Seed is reported.
 
 This is the value from which all randomness is derived in QuickTheories. 
 
-By default it is set to the System.nanoTime() so the values will be different each time QuickTheories is run, however the seed can also be set explicitly so runs can be reproduced and deterministic.
+By default it is set to the `System.nanoTime()` so the values will be different each time QuickTheories is run, however the seed can also be set explicitly so runs can be reproduced and deterministic.
 
 Whenever a property is falsified the seed used is reported so you can always reproduce the exact same run.
 
@@ -143,7 +143,7 @@ Directly using the DSL
   .forAll( . . .)
 ``` 
 
-Or using the QT_SEED system property.
+Or using the `QT_SEED` system property.
 
 The same tests can therefore be run with a fixed seed for the purpose of catching regression, or with a changing seed so that falsifying values are constantly being searched for.
 
@@ -151,7 +151,7 @@ The same tests can therefore be run with a fixed seed for the purpose of catchin
 
 Our example theory used a simple predicate, but sometimes it would be nice to take advantage of the functionality provided by assertion libraries such as [assertj](http://joel-costigliola.github.io/assertj/) and [hamcrest](https://github.com/hamcrest).
 
-This can be done using the checkAssert method. 
+This can be done using the `checkAssert` method. 
 
 ```java
   @Test
@@ -161,7 +161,7 @@ This can be done using the checkAssert method.
   }
 ``` 	
 	  
-Any block of code that returns void can be passed to checkAssert. Any unchecked exception will be interpreted as falsifying the theory.
+Any block of code that returns void can be passed to `checkAssert`. Any unchecked exception will be interpreted as falsifying the theory.
 
 ### Assumptions
 
@@ -271,9 +271,9 @@ Instead you can define a conversion function. This can be done inline, or placed
 This works well for simple cases, but there are two problems.
 
 1. We cannot refer to the original width and height integers in our theory. So we couldn't (for example) check that the widget had the expected size.
-2. If our widget doesn't define a toString method it is hard to know what the falsifying values were
+2. If our widget doesn't define a `toString` method it is hard to know what the falsifying values were
 
-Both of these problems are solved by the asWithPrecursors method
+Both of these problems are solved by the `asWithPrecursors` method
 
 ```
   @Test
@@ -313,7 +313,7 @@ Defining the values that make up the valid domain for your objects might not be 
 
 Fortunately the Gen<T> objects that produce the random values can be freely reused and combined with other Gens.
 
-e.g
+e.g.
 
 ```java
   @Test
@@ -407,9 +407,9 @@ Coverage guidance can be disabled on a per test basis.
 
 Three system properties can be set that determine QuickTheories behaviour:
 
-* QT_SEED - the random seed to use
-* QT_EXAMPLES - the number of examples to try for each theory
-* QT_SHRINKS - the number of shrink attempts to make
+* `QT_SEED` - the random seed to use
+* `QT_EXAMPLES` - the number of examples to try for each theory
+* `QT_SHRINKS` - the number of shrink attempts to make
 
 ## Writing good properties
 
@@ -460,7 +460,7 @@ An example test that is falsifying, showing that adding two positive integers in
   }
 
 ```
-An example of multiple tests for code that claims to find the greatest common divisor between two integers. The first property test fails due to a java.lang.StackOverflowError error (caused by attempting to take the absolute value of Integer.MIN_VALUE).
+An example of multiple tests for code that claims to find the greatest common divisor between two integers. The first property test fails due to a `java.lang.StackOverflowError` error (caused by attempting to take the absolute value of `Integer.MIN_VALUE`).
 ```java
   @Test
   public void shouldFindThatAllIntegersHaveGcdOfOneWithOne() {
@@ -524,7 +524,7 @@ As of 0.20 shrinking uses an approach similar to the python library hypothesis, 
 
 QuickTheories was produced at [NCR Edinburgh](http://ncredinburgh.com/) as part of our graduate training program. 
 
-We like to do training a little differently - our [new graduates](http://github.com/katyrae) get to work on an interesting project for a weeks with a more worn in and [weathered member of our staff](http://github.com/hcoles). Our motto for these projects is "software that can fail" - so we get to play with interesting ideas that may come to nothing. 
+We like to do training a little differently – our [new graduates](http://github.com/katyrae) get to work on an interesting project for a weeks with a more worn in and [weathered member of our staff](http://github.com/hcoles). Our motto for these projects is "software that can fail" – so we get to play with interesting ideas that may come to nothing. 
 
 We're happy to share the results as open source when we think they're successful.
 
