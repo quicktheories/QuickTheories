@@ -1,6 +1,6 @@
 package org.quicktheories.impl;
 
-class PrecursorDataPair<T> {
+public class PrecursorDataPair<T> {
   private final Precursor precursor;
   private final T value;
   private final int failedAssumptions;
@@ -15,7 +15,7 @@ class PrecursorDataPair<T> {
     return precursor;
   }
 
-  T value() {
+  public T value() {
     return value;
   }
   

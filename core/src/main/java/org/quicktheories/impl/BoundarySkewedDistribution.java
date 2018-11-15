@@ -11,7 +11,7 @@ import org.quicktheories.core.Strategy;
  *
  * @param <T>
  */
-class BoundarySkewedDistribution<T> implements Distribution<T> {
+public class BoundarySkewedDistribution<T> implements Distribution<T> {
   
   private ArrayDeque<long[]> toVisit;
   
@@ -19,7 +19,7 @@ class BoundarySkewedDistribution<T> implements Distribution<T> {
   private final Strategy config;
   
   
-  BoundarySkewedDistribution(Strategy config, Gen<T> gen) {
+  public BoundarySkewedDistribution(Strategy config, Gen<T> gen) {
     this.gen = gen;
     this.config = config;
     toVisit = findBoundaries(config, gen);   
