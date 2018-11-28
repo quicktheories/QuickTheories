@@ -20,7 +20,7 @@ import org.quicktheories.dsl.TheoryBuilder;
 abstract class ComponentTest<T> {
   
   protected Reporter reporter = mock(Reporter.class);
-  protected Strategy defaultStrategy = new Strategy(Configuration.defaultPRNG(2), 1000, 10000, 10,
+  protected Strategy defaultStrategy = new Strategy(Configuration.defaultPRNG(2), 1000, 0, 10000, 10,
       this.reporter, prng -> new NoGuidance());
 
   public TheoryBuilder<T> assertThatFor(Gen<T> generator) {

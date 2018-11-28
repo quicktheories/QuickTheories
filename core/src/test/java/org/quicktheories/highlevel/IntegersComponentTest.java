@@ -63,7 +63,7 @@ public class IntegersComponentTest extends ComponentTest<Integer> implements Wit
   public void shouldFindAValueEqualToTargetWithDomainBelowZeroMarker() {
     int target = -1;
     assertThatFor(integers().from(-6).upToAndIncluding(-1),
-        new Strategy(Configuration.defaultPRNG(0), 1, 2, 1, this.reporter, prng -> new NoGuidance()))
+        new Strategy(Configuration.defaultPRNG(0), 1, 0, 2, 1, this.reporter, prng -> new NoGuidance()))
             .check(i -> i > target);
     smallestValueIsEqualTo(target);
   }

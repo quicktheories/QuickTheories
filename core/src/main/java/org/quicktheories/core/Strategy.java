@@ -1,5 +1,6 @@
 package org.quicktheories.core;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 /**
@@ -11,6 +12,7 @@ public class Strategy {
   private final PseudoRandom prng;
   private final int generateAttempts;
   private final int examples;
+  private final long testingTimeMillis;
   private final int shrinkCycles;
   private final Reporter reporter;
   private final Function<PseudoRandom, Guidance> guidance;
@@ -21,7 +23,9 @@ public class Strategy {
    * @param prng
    *          PseudoRandom used to generate random values
    * @param examples
-   *          number of examples to generate
+   *          number of examples to generate (unless testingTimeMillis is reached first)
+   * @param testingTimeMillis
+   *          the number of milliseconds to generate examples for (unless examples is reached first)
    * @param shrinkCycles
    *          maximum number of shrink cycles that will occur if falsifying
    *          value found
@@ -33,10 +37,11 @@ public class Strategy {
    * @param guidance
    *          Strategy to use to guide search
    */
-  public Strategy(final PseudoRandom prng, final int examples,
+  public Strategy(final PseudoRandom prng, final int examples, final long testingTimeMillis,
       final int shrinkCycles, final int generateAttempts, Reporter reporter, Function<PseudoRandom, Guidance> guidance) {
     this.prng = prng;
     this.examples = examples;
+    this.testingTimeMillis = testingTimeMillis;
     this.shrinkCycles = shrinkCycles;
     this.reporter = reporter;
     this.generateAttempts = generateAttempts;
@@ -50,6 +55,10 @@ public class Strategy {
    */
   public int examples() {
     return this.examples;
+  }
+
+  public long testingTimeMillis() {
+    return this.testingTimeMillis;
   }
 
   /**
@@ -101,21 +110,52 @@ public class Strategy {
    *         supplied
    */
   public Strategy withFixedSeed(long seed) {
-    return new Strategy(defaultPRNG(seed), examples, shrinkCycles, generateAttempts,
+    return new Strategy(defaultPRNG(seed), examples, testingTimeMillis, shrinkCycles, generateAttempts,
         reporter, guidance);
   }
 
   /**
-   * Creates a strategy which will produce a maximum number of examples supplied
-   * 
+   * Creates a strategy which will produce a maximum number of examples supplied (unless {@link #withTestingTime(long, TimeUnit)}
+   * is reached first).
+   *
    * @param examples
-   *          the maximum number of examples to be generated
+   *          the maximum number of examples to be generated. Pass -1 to rely solely on {@link #withTestingTime(long, TimeUnit)}
    * @return a strategy with the maximum number of examples as supplied
    */
   public Strategy withExamples(int examples) {
-    return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter, guidance);
+    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, generateAttempts, reporter, guidance);
   }
-  
+
+  /**
+   * Removes the limit on the number of examples run (limiting the test run by the value passed to
+   * {@link #withTestingTime(long, TimeUnit)}
+   *
+   * @return A Strategy that runs an unlimited number of examples and is only limited by {@link #withTestingTime(long, TimeUnit)}
+   */
+  public Strategy withUnlimitedExamples() {
+    return withExamples(-1);
+  }
+
+  /**
+   * Creates a strategy which will produce examples for the amount of time given (unless the value passed to
+   * {@link #withExamples(int)} is reached first)
+   *
+   * @param time the amount of time to generate tests for. Pass a value {@literal <= 0} to rely solely on {@link #withExamples(int)}
+   * @param timeUnit the time unit for the given time
+   * @return a strategy with the testing time set to the amount of time given.
+   */
+  public Strategy withTestingTime(long time, TimeUnit timeUnit) {
+    return new Strategy(prng, examples, timeUnit.toMillis(time), shrinkCycles, generateAttempts, reporter, guidance);
+  }
+
+  /**
+   * Removes the time limit on the duration of the run. NOTE: This is the default but can be used to be explicit.
+   *
+   * @return A QuickTheory that runs for an unlimited amount of time and is only limited by {@link #withExamples(int)}
+   */
+  public Strategy withUnlimitedTestingTime() {
+    return withTestingTime(-1, TimeUnit.MILLISECONDS);
+  }
 
   /**
    * Creates a strategy which will allow the suppled number of failed generation attempts before
@@ -124,7 +164,7 @@ public class Strategy {
    * @return a strategy
    */
   public Strategy withGenerateAttempts(int generateAttempts) {
-    return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter, guidance);
+    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, generateAttempts, reporter, guidance);
   }
   
   /**
@@ -133,7 +173,7 @@ public class Strategy {
    * @return a strategy
    */
   public Strategy withGuidance(Function<PseudoRandom, Guidance> guidance) {
-    return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter, guidance);
+    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, generateAttempts, reporter, guidance);
   }
 
   /**
@@ -144,7 +184,7 @@ public class Strategy {
    * @return a strategy with the maximum number of shrinks as supplied
    */
   public Strategy withShrinkCycles(int shrinks) {
-    return new Strategy(prng, examples, shrinks, generateAttempts, reporter, guidance);
+    return new Strategy(prng, examples, testingTimeMillis, shrinks, generateAttempts, reporter, guidance);
   }
   
   /**
@@ -153,7 +193,7 @@ public class Strategy {
    * @return a strategy with suppled reporter
    */
   public Strategy withReporter(Reporter reporter) {
-    return new Strategy(prng, examples, shrinkCycles, generateAttempts, reporter, guidance);
+    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, generateAttempts, reporter, guidance);
   }
 
   /**

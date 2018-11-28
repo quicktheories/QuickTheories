@@ -55,6 +55,8 @@ class Core {
     ArrayDeque<long[]> toVisit = new ArrayDeque<>();
 
     Distribution<T> distribution;
+
+    long endTime = System.currentTimeMillis() + config.testingTimeMillis();
     for (int i = 0; i != config.examples(); i++) {
       if (toVisit.isEmpty()) {
         distribution = randomDistribution;
@@ -81,7 +83,10 @@ class Core {
       
       guidance.exampleComplete();
 
-    }   
+      if (config.testingTimeMillis() > 0 && System.currentTimeMillis() > endTime)
+        break;
+    }
+
     return Optional.empty();
   }
 
