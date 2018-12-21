@@ -44,7 +44,7 @@ class MappingTheoryBuilder<P, T> implements Subject1<T> {
    *          property to check
    */
   public final void check(final Predicate<T> property) {
-    final TheoryRunner<P, T> qc = new TheoryRunner<>(this.state.get(), this.ps,
+    final TheoryRunner<P, T> qc = TheoryRunner.runner(this.state.get(), this.ps,
         conversion, asString);
     qc.check(property);
   }

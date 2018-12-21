@@ -1,5 +1,6 @@
 package org.quicktheories;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -50,6 +51,27 @@ public class QuickTheory {
   }
 
   /**
+   * Uses the configuration from the selected registered profile
+   *
+   * @param testClass The class that registered the profiles
+   * @return a QuickTheory using the configuration from the selected registered profile
+   */
+  public QuickTheory withRegisteredProfiles(Class<?> testClass) {
+    return new QuickTheory(() -> Configuration.initialStrategy(Configuration.ensureLoaded(testClass)));
+  }
+
+  /**
+   * Uses the configuration from a specific profile
+   *
+   * @param testClass The class that registered the profile
+   * @param name The name of the registered profile
+   * @return a QuickTheory using the configuration from the given profile
+   */
+  public QuickTheory withProfile(Class<?> testClass, String name) {
+    return new QuickTheory(() -> Configuration.profileStrategy(Configuration.ensureLoaded(testClass), name));
+  }
+
+  /**
    * Sets the seed to be used for randomness overriding any value set elsewhere.
    * 
    * @param seed
@@ -62,14 +84,46 @@ public class QuickTheory {
 
   /**
    * Sets the number of examples to use to verify a property overriding any
-   * value set elsewhere
+   * value set elsewhere. The property runs until the number of examples is reached,
+   * the amount of time given to {@link #withTestingTime(long, TimeUnit)} passes, or a falsifying example is found.
    * 
    * @param examples
-   *          number of examples to use
+   *          number of examples to use. Pass -1 to rely solely on {@link #withTestingTime(long, TimeUnit)}
    * @return a QuickTheory using the given number of examples
    */
   public QuickTheory withExamples(int examples) {
     return new QuickTheory(() -> state.get().withExamples(examples));
+  }
+
+  /**
+   * Removes the limit on the number of examples run (limiting the test run by the value passed to
+   * {@link #withTestingTime(long, TimeUnit)}
+   *
+   * @return A QuickTheory that runs an unlimited number of examples and is only limited by {@link #withTestingTime(long, TimeUnit)}
+   */
+  public QuickTheory withUnlimitedExamples() {
+    return withExamples(-1);
+  }
+
+  /**
+   * Sets the amount of time to generate and run examples for. The property runs until the given amount of time
+   * passes, the number of examples passed to {@link #withExamples(int)} is reached, or a falsifying example is found.
+   *
+   * @param time the amount of time to generate tests for. Pass a value {@literal <= 0} to rely solely on {@link #withExamples(int)}
+   * @param timeUnit the time unit for the given time
+   * @return a QuickTheory using the given testing time
+   */
+  public QuickTheory withTestingTime(long time, TimeUnit timeUnit) {
+    return new QuickTheory(() -> state.get().withTestingTime(time, timeUnit));
+  }
+
+  /**
+   * Removes the time limit on the duration of the run. NOTE: This is the default but can be used to be explicit.
+   *
+   * @return A QuickTheory that runs for an unlimited amount of time and is only limited by {@link #withExamples(int)}
+   */
+  public QuickTheory withUnlimitedTestingTime() {
+    return withTestingTime(-1, TimeUnit.MILLISECONDS);
   }
 
   /**
