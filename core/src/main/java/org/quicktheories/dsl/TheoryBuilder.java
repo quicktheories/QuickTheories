@@ -127,7 +127,7 @@ public final class TheoryBuilder<A> implements Subject1<A> {
    */
   @Override
   public final void check(final Predicate<A> property) {
-    final TheoryRunner<A, A> qc = new TheoryRunner<>(this.state.get(), this.ps,
+    final TheoryRunner<A, A> qc = TheoryRunner.runner(this.state.get(), this.ps,
         x -> x, this.ps);
     qc.check(property);
   }

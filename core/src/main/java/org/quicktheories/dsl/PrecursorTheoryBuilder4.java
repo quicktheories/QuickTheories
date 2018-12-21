@@ -35,7 +35,7 @@ class PrecursorTheoryBuilder4<P, P2, P3, P4, T>
    *          property to check
    */
   public final void check(final Predicate5<P, P2, P3, P4, T> property) {
-    final TheoryRunner<Tuple5<P, P2, P3, P4, T>, Tuple5<P, P2, P3, P4, T>> qc = new TheoryRunner<>(
+    final TheoryRunner<Tuple5<P, P2, P3, P4, T>, Tuple5<P, P2, P3, P4, T>> qc = TheoryRunner.runner(
         this.state.get(), ps.assuming(pair -> assumptions.test(pair._1, pair._2, pair._3, pair._4)),
         Function.identity(), this.ps);
     qc.check(tuple -> property.test(tuple._1, tuple._2, tuple._3, tuple._4,

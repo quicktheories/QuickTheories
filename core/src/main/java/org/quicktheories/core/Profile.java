@@ -23,8 +23,9 @@ public class Profile {
                 perClass = newPerClass;
         }
 
-        if (perClass.putIfAbsent(name, profile) != null)
+        if (perClass.putIfAbsent(name, profile) != null) {
             throw new IllegalArgumentException(String.format("Profile %s already exists for class %s", name, cls.getSimpleName()));
+        }
     }
 
     public static Optional<Function<Strategy, Strategy>> getDefaultProfile(Class<?> cls) {

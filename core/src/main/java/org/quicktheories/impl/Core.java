@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.LongSupplier;
 import java.util.zip.CRC32;
 
 import org.quicktheories.api.Pair;
@@ -27,12 +28,12 @@ class Core {
     this.config = config;
   }
 
-  <T> SearchResult<T> run(Property<T> prop) {
+  <T> SearchResult<T> run(Property<T> prop, LongSupplier clock) {
     List<T> falsifyingValues = new ArrayList<>();
     boolean exhausted = false;
     try {
       Optional<Pair<Falsification<T>, PrecursorDataPair<T>>> falisfying = findFalsifyingValue(
-          prop);
+          prop, clock);
       if (falisfying.isPresent()) {
         smallestFoundThrowable = falisfying.get()._1.cause();
         falsifyingValues.add(falisfying.get()._1.value());
@@ -47,7 +48,7 @@ class Core {
   }
 
   <T> Optional<Pair<Falsification<T>, PrecursorDataPair<T>>> findFalsifyingValue(
-      Property<T> prop) {
+      Property<T> prop, LongSupplier clock) {
     
     Guidance guidance = config.guidance();
     
@@ -56,7 +57,7 @@ class Core {
 
     Distribution<T> distribution;
 
-    long endTime = System.currentTimeMillis() + config.testingTimeMillis();
+    long endTime = clock.getAsLong() + config.testingTimeMillis();
     for (int i = 0; i != config.examples(); i++) {
       if (toVisit.isEmpty()) {
         distribution = randomDistribution;
@@ -83,8 +84,9 @@ class Core {
       
       guidance.exampleComplete();
 
-      if (config.testingTimeMillis() > 0 && System.currentTimeMillis() > endTime)
+      if (config.testingTimeMillis() > 0 && clock.getAsLong() > endTime) {
         break;
+      }
     }
 
     return Optional.empty();
@@ -122,7 +124,7 @@ class Core {
       }
     } catch (AttemptsExhaustedException ex) {
       // swallow - if we got as far as shrinking we were unlucky to run out of
-      // values now but we might have found some results earlier
+      // values now, but we might have found some results earlier
     }
 
     return falsifyingValues;
@@ -143,9 +145,9 @@ class Core {
     // CRC gives fairly good performance thanks to optimised code in JVM
     // but a higher collision rate than alternatives like murmer3 - using mainly
     // so we don't need to include a hash implementation
-   CRC32 crc = new CRC32();
-   crc.update(t.precursor().bytes());
-   return crc.getValue();
+    CRC32 crc = new CRC32();
+    crc.update(t.precursor().bytes());
+    return crc.getValue();
   }
 
   private <T> PrecursorDataPair<T> generate(Gen<T> gen, long[] forced,
