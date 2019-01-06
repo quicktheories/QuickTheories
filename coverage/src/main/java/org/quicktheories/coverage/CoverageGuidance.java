@@ -24,7 +24,7 @@ public class CoverageGuidance implements Guidance {
   }
 
   private final PseudoRandom prng; 
-  private final Set<Long> visitedBranches = new HashSet<Long>();
+  private final Set<Long> visitedBranches = new HashSet<>();
   
   private Collection<Long> currentHits;
   
@@ -49,7 +49,7 @@ public class CoverageGuidance implements Guidance {
     }
 
     if (!visitedBranches.containsAll(currentHits)) {
-      List<long[]> nearBy = new ArrayList<long[]>();
+      List<long[]> nearBy = new ArrayList<>();
       for (int i = 0; i != 20; i++) {
         nearBy.add(valueNear(precursor));
       }

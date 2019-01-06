@@ -33,7 +33,7 @@ public class SimpleBlockCoverageVisitor extends MethodVisitor {
       InstructionCounter counter, final int classId,
       final MethodVisitor writer, final int access, final String name,
       final String desc, final int probeOffset) {
-    super(Opcodes.ASM6, writer);
+    super(Opcodes.ASM7, writer);
 
     this.counter = counter;
     this.methodVisitor = writer;

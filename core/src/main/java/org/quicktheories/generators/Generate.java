@@ -174,7 +174,6 @@ public class Generate {
      * At generation time, the generator picks an integer between [0, total weight) and finds
      * the generator responsible for the range.
      */
-    @SuppressWarnings("unchecked")
     static <T> FrequencyGen<T> fromList(boolean withNoShrinkPoint, List<Pair<Integer, Gen<T>>> ts) {
       if (ts.size() < 1) {
         throw new IllegalArgumentException("List of generators must not be empty");
@@ -221,7 +220,7 @@ public class Generate {
 
       Gen<Integer> indexGen = withNoShrinkPoint ? rangeWithNoShrinkPoint(0, upperRange): range(0, upperRange);
 
-      return new FrequencyGen(indexGen, weightedMap);
+      return new FrequencyGen<>(indexGen, weightedMap);
     }
 
     @Override

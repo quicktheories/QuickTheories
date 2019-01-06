@@ -15,7 +15,7 @@ import sun.quicktheories.coverage.CodeCoverageStore;
 public class CoverageTransformer implements ClassFileTransformer {
   
   private final Predicate<String>   filter;
-  private final Map<String, String> computeCache = new ConcurrentHashMap<String, String>();
+  private final Map<String, String> computeCache = new ConcurrentHashMap<>();
 
   public CoverageTransformer(final Predicate<String> filter) {
     this.filter = filter;

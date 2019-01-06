@@ -2,14 +2,13 @@ package org.quicktheories.generators;
 
 import static org.quicktheories.impl.GenAssert.assertThatGenerator;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
 import org.quicktheories.api.Pair;
 import org.quicktheories.core.Gen;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class GenerateTest {
 

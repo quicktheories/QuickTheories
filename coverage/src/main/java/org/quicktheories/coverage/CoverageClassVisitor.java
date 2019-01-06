@@ -34,7 +34,7 @@ public class CoverageClassVisitor extends ClassVisitor {
   private int       probeCount = 0;
 
   public CoverageClassVisitor(final int classId, final ClassWriter writer) {
-    super(Opcodes.ASM6, writer);
+    super(Opcodes.ASM7, writer);
     this.classId = classId;
   }
 

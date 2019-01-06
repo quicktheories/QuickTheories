@@ -52,7 +52,7 @@ public final class CodeCoverageStore {
   // both AtomicInteger array with bit per flag and integer per flag.
   // optimisation with other methods of ensuring a happens before not yet
   // investigated
-  private static final Map<Integer, boolean[]> CLASS_HITS        = new ConcurrentHashMap<Integer, boolean[]>();
+  private static final Map<Integer, boolean[]> CLASS_HITS        = new ConcurrentHashMap<>();
 
   
   public static void init(final InvokeReceiver invokeQueue) {
@@ -564,7 +564,7 @@ public final class CodeCoverageStore {
   }
 
   public static synchronized Collection<Long> getHits() {
-    final Collection<Long> blockHits = new ArrayList<Long>();
+    final Collection<Long> blockHits = new ArrayList<>();
     for (final Entry<Integer, boolean[]> each : CLASS_HITS.entrySet()) {
       final boolean[] bs = each.getValue();
       // first entry tracks if class has been visited at all
