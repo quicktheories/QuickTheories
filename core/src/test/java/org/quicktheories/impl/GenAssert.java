@@ -1,10 +1,14 @@
 package org.quicktheories.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.assertj.core.api.AbstractAssert;
+import org.quicktheories.api.Pair;
 import org.quicktheories.core.Configuration;
 import org.quicktheories.core.Gen;
 import org.quicktheories.core.Strategy;
@@ -73,6 +77,23 @@ public class GenAssert<T>
     //Arbitrarily allowing a 1 in 10 duplication
     List<T> generated = generateValues(count * 10).stream().distinct().collect(Collectors.toList());
     org.assertj.core.api.Assertions.assertThat(generated.size()).isGreaterThanOrEqualTo(count);
+    return this;
+  }
+
+  @SafeVarargs
+  public final GenAssert<T> generatesInProportion(Pair<T,Double>... wts) {
+    return generatesInProportion(1000, 0.05, wts);
+  }
+
+  public final GenAssert<T> generatesInProportion(int samples, double errorThresh,
+                                                  @SuppressWarnings("unchecked") Pair<T,Double>... wts) {
+    List<T> generated = generateValues(samples);
+    Map<T, Long> counted = generated.stream()
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    Arrays.stream(wts).forEach(wt ->
+        org.assertj.core.api.Assertions.assertThat((wt._2))
+            .isCloseTo(counted.get(wt._1).doubleValue() / samples,
+                org.assertj.core.api.Assertions.within(errorThresh)));
     return this;
   }
 
