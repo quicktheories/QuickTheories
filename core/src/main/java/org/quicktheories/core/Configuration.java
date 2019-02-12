@@ -14,6 +14,8 @@ public abstract class Configuration {
   private static final int DEFAULT_NO_ATTEMPTS = 10;
   private static final int DEFAULT_NO_EXAMPLES = 1000;
   private static final int DEFAULT_TESTING_TIME_MILLIS = -1;
+  private static final int DEFAULT_MIN_STATEFUL_STEPS = 1;
+  private static final int DEFAULT_MAX_STATEFUL_STEPS = 100;
 
   public final static String PROFILE = "QT_PROFILE";
   public final static String SEED = "QT_SEED";
@@ -55,8 +57,8 @@ public abstract class Configuration {
    * @return a Strategy
    */
   public static Strategy systemStrategy() {
-    return new Strategy(defaultPRNG(pickSeed()), pickExamples(), pickTestingTimeMillis(), pickShrinks(), pickAttempts(),
-        new ExceptionReporter(), pickGuidance());
+    return new Strategy(defaultPRNG(pickSeed()), pickExamples(), pickTestingTimeMillis(), pickShrinks(),
+            DEFAULT_MIN_STATEFUL_STEPS, DEFAULT_MAX_STATEFUL_STEPS, pickAttempts(), new ExceptionReporter(), pickGuidance());
   }
 
   private static int pickAttempts() {

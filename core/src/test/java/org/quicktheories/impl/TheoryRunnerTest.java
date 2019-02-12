@@ -45,7 +45,7 @@ public class TheoryRunnerTest {
 
   @Before
   public void setup() {
-    strategy = new Strategy(Configuration.defaultPRNG(0), 100, 0, 100, 10, reporter, guidance);
+    strategy = new Strategy(Configuration.defaultPRNG(0), 100, 0, 100, 1, 10, 10, reporter, guidance);
   }
 
   @Test
@@ -106,7 +106,7 @@ public class TheoryRunnerTest {
   @Test
   public void shouldReportInitialSeed() {
     long seed = 42;
-    strategy = new Strategy(Configuration.defaultPRNG(seed), 10, 0, 10, 10, reporter, guidance);
+    strategy = new Strategy(Configuration.defaultPRNG(seed), 10, 0, 10, 1, 10, 10, reporter, guidance);
     testee = makeTesteeFor(arbitrary().pick(1));
     testee.check(i -> false);
     verify(reporter, times(1)).falisification(eq(seed), anyInt(), anyInt(),
@@ -123,7 +123,7 @@ public class TheoryRunnerTest {
   @Test
   public void shouldReportNumberOfFoundExamplesWhenValuesExhausted() {
     int numberOfExamples = 3;
-    strategy = new Strategy(Configuration.defaultPRNG(0), numberOfExamples, 0, 0, 10,
+    strategy = new Strategy(Configuration.defaultPRNG(0), numberOfExamples, 0, 0, 1, 10, 10,
         reporter, guidance);
     testee = makeTesteeFor(
         arbitrary().pick(1, 2, 1, 1, 1).assuming(

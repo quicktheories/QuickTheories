@@ -16,6 +16,8 @@ import org.quicktheories.dsl.TheoryBuilder;
 import org.quicktheories.dsl.TheoryBuilder2;
 import org.quicktheories.dsl.TheoryBuilder3;
 import org.quicktheories.dsl.TheoryBuilder4;
+import org.quicktheories.impl.stateful.StatefulCore;
+import org.quicktheories.impl.stateful.StatefulTheory;
 
 /**
  * Entry point for property based testing.
@@ -23,7 +25,7 @@ import org.quicktheories.dsl.TheoryBuilder4;
 @CheckReturnValue
 public class QuickTheory {
 
-  private final Supplier<Strategy> state;
+  protected final Supplier<Strategy> state;
 
   private QuickTheory(Supplier<Strategy> state) {
     this.state = state;
@@ -135,6 +137,26 @@ public class QuickTheory {
    */
   public QuickTheory withShrinkCycles(int shrinks) {
     return new QuickTheory(() -> state.get().withShrinkCycles(shrinks));
+  }
+
+  /**
+   * Sets the minimum of number of steps to be generated when running a stateful model
+   *
+   * @param minStatefulSteps minimum number of steps to generate
+   * @return a QuickTheory using the new minimum number of steps
+   */
+  public QuickTheory withMinStatefulSteps(int minStatefulSteps) {
+    return new QuickTheory(() -> state.get().withMinStatefulSteps(minStatefulSteps));
+  }
+
+  /**
+   * Sets the maximum of number of steps to be generated when running a stateful model
+   *
+   * @param maxStatefulSteps maximum number of steps to generate
+   * @return a QuickTheory using the new maximum number of steps
+   */
+  public QuickTheory withMaxStatefulSteps(int maxStatefulSteps) {
+    return new QuickTheory(() -> state.get().withMaxStatefulSteps(maxStatefulSteps));
   }
 
   /**
@@ -259,6 +281,55 @@ public class QuickTheory {
       final Gen<D> ds) {
     return new TheoryBuilder4<>(state, as, bs, cs, ds, (a, b, c, d) -> true);
   }
-  
+
+  /**
+   * Set the stateful model used to generate examples. The model is only used if
+   * {@link StatefulTheoryBuilder#checkStateful()} is called instead of forAll.
+   *
+   * Stateful models customize QuickTheory properties with the following:
+   * <ul>
+   *   <li>Raises generate attempts to account for cases where there are a small number of steps, which can accidentally
+   *   exhaust the generator
+   *   <li>Turn off shrinking because the current shrinker is not effective at shrinking stateful models for a variety
+   *   of reasons
+   * </ul>
+   * These properties can be overridden just as they would with any QuickTheory property.
+   *
+   * @param theory A supplier of the stateful model used to generate examples
+   * @see #stateful(Supplier)
+   * @see StatefulTheoryBuilder#checkStateful()
+   * @return A {@link StatefulTheoryBuilder} that can continue to be used to configure QuickTheories
+   * or run the model
+   */
+  public StatefulTheoryBuilder withStatefulModel(final Supplier<StatefulTheory<?>> theory) {
+    return new StatefulTheoryBuilder(() -> state.get().withShrinkCycles(0).withGenerateAttempts(100), theory);
+  }
+
+  /**
+   * Set the stateful model used to generate examples. The model is run immediately as if
+   * {@code withStatefulModel(...).checkStateful()} were called. This is useful when no further customization to QuickTheory
+   * properties is needed.
+   *
+   * @param theory A supplier of the stateful model used to generate examples
+   * @see #withStatefulModel(Supplier)
+   * @see StatefulTheoryBuilder#checkStateful()
+   */
+  public void stateful(final Supplier<StatefulTheory<?>> theory) {
+    withStatefulModel(theory).checkStateful();
+  }
+
+  public static class StatefulTheoryBuilder extends QuickTheory {
+
+    private final Supplier<StatefulTheory<?>> statefulTheory;
+    private StatefulTheoryBuilder(Supplier<Strategy> state, Supplier<StatefulTheory<?>> statefulTheory) {
+      super(state);
+      this.statefulTheory = statefulTheory;
+    }
+
+    public void checkStateful() {
+      new TheoryBuilder<>(state, StatefulCore.generator(statefulTheory)).check(sm -> sm.run(state));
+    }
+
+  }
 
 }
