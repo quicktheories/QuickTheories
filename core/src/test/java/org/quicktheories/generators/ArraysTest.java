@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.quicktheories.core.Gen;
 import org.quicktheories.generators.Generate;
 
+import java.util.Arrays;
+
 public class ArraysTest {
 
   private static final int ASCII_LAST_CODEPOINT = 0x007F;
@@ -31,7 +33,22 @@ public class ArraysTest {
     assertThatGenerator(testee).shrinksTowards(new Character[0]);
   }
 
-  
+  @Test
+  public void shouldGenerateAllPossibleCharArraysWithinSmallDomain() {
+    Gen<char[]> testee = Generate.charArrays(Generate.range(1, 2), Generate.pick(Arrays.asList('a', 'b')));
+    assertThatGenerator(testee).generatesAllOf(
+            new char[] { 'a', 'a' }, new char[] { 'a', 'b' }, new char[] { 'b', 'a' },
+            new char[] { 'b', 'b' });
+  }
+
+  @Test
+  public void shouldGenerateAllPossibleCharArraysWithinSmallDomainNoBoxing() {
+    Gen<char[]> testee = Generate.charArrays(Generate.range(1, 2), new char[] {'a', 'b'});
+    assertThatGenerator(testee).generatesAllOf(
+            new char[] { 'a', 'a' }, new char[] { 'a', 'b' }, new char[] { 'b', 'a' },
+            new char[] { 'b', 'b' });
+  }
+
   @Test
   public void shrinksTowardsSmallestAllowedArrayWithSmallestContents() {
     Gen<Integer[]> testee = Generate
