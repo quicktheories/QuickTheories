@@ -59,6 +59,9 @@ public class Generate {
    * @return A Gen of T
    */
   public static <T> Gen<T> pick(List<T> ts) {
+    if (ts.isEmpty()) {
+      throw new IllegalArgumentException("Cannot pick elements of an empty list");
+    }
     Gen<Integer> index = range(0, ts.size() - 1);
     return prng -> ts.get(index.generate(prng));
   }
