@@ -19,7 +19,7 @@ public class QuickTheoriesExample {
   }
 
   @Test
-  public void loosesNoInformationWhenTransformedToString() {
+  public void losesNoInformationWhenTransformedToString() {
     qt()
         .withFixedSeed(0)
         .withExamples(1000000)
