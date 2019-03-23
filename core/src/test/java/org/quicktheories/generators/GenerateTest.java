@@ -1,5 +1,6 @@
 package org.quicktheories.generators;
 
+import static org.junit.Assert.fail;
 import static org.quicktheories.impl.GenAssert.assertThatGenerator;
 
 import java.util.ArrayList;
@@ -87,5 +88,14 @@ public class GenerateTest {
         Pair.of(10, Generate.constant(2)),
         Pair.of(100, Generate.constant(3)));
     assertThatGenerator(testee).hasNoShrinkPoint();
+  }
+
+  @Test
+  public void shouldThrowErrorWhenPickingFromEmptyList() {
+    try {
+      Gen<Integer> testee = Generate.pick(new ArrayList<Integer>());
+      fail("Attempted to pick from an empty list!");
+    } catch (IllegalArgumentException expected) {
+    }
   }
 }
