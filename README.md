@@ -1,6 +1,8 @@
 [![CircleCI](https://circleci.com/gh/quicktheories/QuickTheories.svg?style=svg)](https://circleci.com/gh/quicktheories/QuickTheories)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.quicktheories/quicktheories/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.quicktheories/quicktheories)
 
+DO NOT MERGE
+
 # QuickTheories
 
 Property-based testing for Java 8.
