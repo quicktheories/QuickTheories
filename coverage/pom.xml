@@ -11,7 +11,7 @@
 	<name>coverage</name>
 	
 	<properties>
-	  <asm.version>7.0</asm.version>
+	  <asm.version>7.1</asm.version>
 	</properties>
 
 	<dependencies>
