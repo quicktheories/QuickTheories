@@ -11,7 +11,7 @@ strategy:
       imageName: 'vs2017-win2016'
 
 pool:
-  vmImage: ${imageName}
+  vmImage: $(imageName)
 
 steps:
 - task: Maven@3
