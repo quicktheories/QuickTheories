@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/quicktheories/QuickTheories.svg?style=svg)](https://circleci.com/gh/quicktheories/QuickTheories)
+[![Build Status](https://dev.azure.com/henrycoles/quicktheories/_apis/build/status/quicktheories.QuickTheories?branchName=master)](https://dev.azure.com/henrycoles/quicktheories/_build/latest?definitionId=2&branchName=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.quicktheories/quicktheories/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.quicktheories/quicktheories)
 
 # QuickTheories
