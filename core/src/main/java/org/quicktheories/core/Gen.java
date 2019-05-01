@@ -52,8 +52,9 @@ public interface Gen<T> extends AsString<T>{
    * @return a Gen of Optional of T
    */
   default Gen<Optional<T>> toOptionals(int percentEmpty) {
+    Constraint constraint = Constraint.between(0, 100);
     Mod<T,Optional<T>> toOptional = (t,r) -> {
-      boolean empty = r.next(Constraint.between(0, 100)) < percentEmpty;
+      boolean empty = r.next(constraint) < percentEmpty;
       if(empty) {
         return Optional.empty();
       }
@@ -176,8 +177,9 @@ public interface Gen<T> extends AsString<T>{
    * @return A Gen of T
    */
   default Gen<T> mix(Gen<T> rhs, int weight) {
+    Constraint constraint = Constraint.between(0, 99);
     return prng -> {
-      long picked = prng.next(Constraint.between(0, 99));
+      long picked = prng.next(constraint);
       if (picked >= weight) {
         return this.generate(prng);
       }
