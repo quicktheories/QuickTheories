@@ -119,7 +119,7 @@ public class ArbitraryDSL {
    * @param recursiveGenerator
    *            The function result is given back as the function argument
    */
-  public static <T> Gen<T> recursive(Function<Gen<T>, Gen<T>> recursiveGenerator) {
+  public <T> Gen<T> recursive(Function<Gen<T>, Gen<T>> recursiveGenerator) {
       return Generate.recursive(recursiveGenerator);
   }
 
