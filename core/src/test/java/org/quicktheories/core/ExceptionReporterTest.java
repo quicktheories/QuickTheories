@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.quicktheories.core.ExceptionReporter;
 
 public class ExceptionReporterTest {
 
@@ -16,7 +15,7 @@ public class ExceptionReporterTest {
   public void shouldIncludeSeedInFalsificationReport() throws Exception {
     long seed = 42;
     try {
-      testee.falisification(42, 0, 0, Arrays.asList(0), a -> a.toString());
+      testee.falsification(42, 0, 0, Arrays.asList(0), a -> a.toString());
       throw new Exception("Should not reach here");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage()).contains("" + seed);
@@ -28,7 +27,7 @@ public class ExceptionReporterTest {
       throws Exception {
     int examples = 100;
     try {
-      testee.falisification(0, examples, 0, Arrays.asList(0),
+      testee.falsification(0, examples, 0, Arrays.asList(0),
           a -> a.toString());
       throw new Exception("Should not reach here");
     } catch (AssertionError expected) {
@@ -41,7 +40,7 @@ public class ExceptionReporterTest {
       throws Exception {
     int smallest = 101;
     try {
-      testee.falisification(0, 0, smallest, Arrays.asList(0),
+      testee.falsification(0, 0, smallest, Arrays.asList(0),
           a -> a.toString());
       throw new Exception("Should not reach here");
     } catch (AssertionError expected) {
@@ -53,7 +52,7 @@ public class ExceptionReporterTest {
   public void shouldIncludeAdditionalExamplesInFalsificationReport()
       throws Exception {
     try {
-      testee.falisification(0, 0, 0, Arrays.asList(41, 42), a -> a.toString());
+      testee.falsification(0, 0, 0, Arrays.asList(41, 42), a -> a.toString());
       throw new Exception("Should not reach here");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage()).contains("41", "42");
@@ -64,7 +63,7 @@ public class ExceptionReporterTest {
   public void shouldIncludeOnlyFirst10ValuesInReport() throws Exception {
     try {
       List<Object> values = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
-      testee.falisification(0, 0, 0, values, a -> a.toString());
+      testee.falsification(0, 0, 0, values, a -> a.toString());
       throw new Exception("Should not reach here");
     } catch (AssertionError expected) {
       String expectedMessage = String.format("1%n2%n3%n4%n5%n6%n7%n8%n9%n10");

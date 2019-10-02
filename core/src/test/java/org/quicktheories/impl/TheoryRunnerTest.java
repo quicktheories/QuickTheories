@@ -52,7 +52,7 @@ public class TheoryRunnerTest {
   public void shouldNotFalisifyTheTruth() {
     testee = makeTesteeFor(arbitrary().pick(1, 2, 3, 4, 5));
     testee.check(i -> true);
-    verify(reporter, never()).falisification(anyLong(), anyInt(),
+    verify(reporter, never()).falsification(anyLong(), anyInt(),
         any(Object.class), anySmallerValues(), any());
   }
 
@@ -60,7 +60,7 @@ public class TheoryRunnerTest {
   public void shouldFalisifyUniversalFalsehood() {
     testee = makeTesteeFor(arbitrary().pick(1, 2, 3, 4, 5));
     testee.check(i -> false);
-    verify(reporter, times(1)).falisification(anyLong(), anyInt(),
+    verify(reporter, times(1)).falsification(anyLong(), anyInt(),
         any(Object.class), anySmallerValues(), any());
   }
 
@@ -68,7 +68,7 @@ public class TheoryRunnerTest {
   public void shouldFalsifyPartialTruth() {
     testee = makeTesteeFor(arbitrary().pick(1, 2, 3, 4, 5));
     testee.check(i -> i > 3);
-    verify(reporter, times(1)).falisification(anyLong(), anyInt(),
+    verify(reporter, times(1)).falsification(anyLong(), anyInt(),
         any(Object.class), anySmallerValues(), any());
   }
 
@@ -81,7 +81,7 @@ public class TheoryRunnerTest {
       }
       return true;
     });
-    verify(reporter, times(1)).falisification(anyLong(), anyInt(),
+    verify(reporter, times(1)).falsification(anyLong(), anyInt(),
         any(Object.class), any(Throwable.class), anySmallerValues(),
         any());
   }
@@ -90,7 +90,7 @@ public class TheoryRunnerTest {
   public void shouldReportSmallestFalsifyingValueFound() {
     testee = makeTesteeFor(arbitrary().pick(1, 2, 3, 4, 5));
     testee.check(i -> i <= 3);
-    verify(reporter, times(1)).falisification(anyLong(), anyInt(), eq(4),
+    verify(reporter, times(1)).falsification(anyLong(), anyInt(), eq(4),
         anySmallerValues(), any());
   }
 
@@ -99,7 +99,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(arbitrary().pick(1, 2, 3, 4, 5).assuming(
         i -> i != 4));
     testee.check(i -> i <= 3);
-    verify(reporter, times(1)).falisification(anyLong(), anyInt(), eq(5),
+    verify(reporter, times(1)).falsification(anyLong(), anyInt(), eq(5),
         anySmallerValues(), any());
   }
 
@@ -109,7 +109,7 @@ public class TheoryRunnerTest {
     strategy = new Strategy(Configuration.defaultPRNG(seed), 10, 0, 10, 10, reporter, guidance);
     testee = makeTesteeFor(arbitrary().pick(1));
     testee.check(i -> false);
-    verify(reporter, times(1)).falisification(eq(seed), anyInt(), anyInt(),
+    verify(reporter, times(1)).falsification(eq(seed), anyInt(), anyInt(),
         anySmallerValues(), any());
   }
 
@@ -137,7 +137,7 @@ public class TheoryRunnerTest {
     testee = makeTesteeFor(
         arbitrary().pick(0, 1, 2, 3, 4, 5));
     testee.check(i -> i != 4);
-    verify(reporter, times(1)).falisification(anyLong(), eq(6), anyInt(),
+    verify(reporter, times(1)).falsification(anyLong(), eq(6), anyInt(),
         anySmallerValues(), any());
 
   }

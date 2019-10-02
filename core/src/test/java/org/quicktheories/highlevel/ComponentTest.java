@@ -38,7 +38,7 @@ abstract class ComponentTest<T> {
   @SuppressWarnings({ "rawtypes" })
   protected List<T> listOfShrunkenItems() {
     ArgumentCaptor<List> shrunkList = ArgumentCaptor.forClass(List.class);
-    verify(this.reporter, times(1)).falisification(anyLong(), anyInt(),
+    verify(this.reporter, times(1)).falsification(anyLong(), anyInt(),
         any(Object.class), shrunkList.capture(), any());
     
     return shrunkList.getValue();
@@ -52,7 +52,7 @@ abstract class ComponentTest<T> {
   private ArgumentCaptor<T> captureSmallestValue() {
     ArgumentCaptor<T> smallestValue = (ArgumentCaptor<T>) ArgumentCaptor
         .forClass(Object.class);
-    verify(this.reporter, times(1)).falisification(anyLong(), anyInt(),
+    verify(this.reporter, times(1)).falsification(anyLong(), anyInt(),
         smallestValue.capture(), any(List.class), any());
     return smallestValue;
   }

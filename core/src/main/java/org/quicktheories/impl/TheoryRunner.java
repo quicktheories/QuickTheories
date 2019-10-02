@@ -55,13 +55,13 @@ public final class TheoryRunner<P, T> {
   private void reportFalsification(SearchResult<T> result) {
     final long seed = this.strategy.prng().getInitialSeed();
     if (result.getSmallestThrowable().isPresent()) {
-      this.strategy.reporter().falisification(seed,
+      this.strategy.reporter().falsification(seed,
           result.getExecutedExamples(), result.smallest(),
           result.getSmallestThrowable().get(),
           (List<Object>) result.getFalsifictions(),
           (AsString<Object>) this.toString);
     } else {
-      this.strategy.reporter().falisification(seed,
+      this.strategy.reporter().falsification(seed,
           result.getExecutedExamples(), result.smallest(),
           (List<Object>) result.getFalsifictions(),
           (AsString<Object>) this.toString);

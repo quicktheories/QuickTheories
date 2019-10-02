@@ -40,22 +40,22 @@ public class QTTester {
   }
 
   public void notFalsified() {
-    verify(r, never()).falisification(anyLong(), anyInt(), any(Object.class),
+    verify(r, never()).falsification(anyLong(), anyInt(), any(Object.class),
         any(List.class), any());
   }
 
   public void isFalsified() {
-    verify(r, times(1)).falisification(anyLong(), anyInt(), any(Object.class),
+    verify(r, times(1)).falsification(anyLong(), anyInt(), any(Object.class),
         any(List.class), any());
   }
 
   public void isFalsifiedByException() {
-    verify(r, times(1)).falisification(anyLong(), anyInt(), any(Object.class),
+    verify(r, times(1)).falsification(anyLong(), anyInt(), any(Object.class),
         any(Throwable.class), any(List.class), any());
   }
 
   public void reportedSeedIs(long seed) {
-    verify(r, times(1)).falisification(eq(seed), anyInt(), any(Object.class),
+    verify(r, times(1)).falsification(eq(seed), anyInt(), any(Object.class),
         any(List.class), any());
   }
 
@@ -63,7 +63,7 @@ public class QTTester {
   public <T> T smallestFalsifiedValue() {
     ArgumentCaptor<T> value = (ArgumentCaptor<T>) ArgumentCaptor
         .forClass(Object.class);
-    verify(r, times(1)).falisification(anyLong(), anyInt(), value.capture(),
+    verify(r, times(1)).falsification(anyLong(), anyInt(), value.capture(),
         any(List.class), any());
     return value.getValue();
   }
@@ -75,7 +75,7 @@ public class QTTester {
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public <A, B> void smallestValueMatches(BiPredicate<A, B> p) {
     ArgumentCaptor value = ArgumentCaptor.forClass(Object.class);
-    verify(r, times(1)).falisification(anyLong(), anyInt(), value.capture(),
+    verify(r, times(1)).falsification(anyLong(), anyInt(), value.capture(),
         any(List.class), any());
     Pair<A, B> v = (Pair<A, B>) value.getValue();
     if (!p.test(v._1, v._2)) {
@@ -86,7 +86,7 @@ public class QTTester {
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public <A, B, C> void smallestValueMatches(Predicate3<A, B, C> p) {
     ArgumentCaptor value = ArgumentCaptor.forClass(Object.class);
-    verify(r, times(1)).falisification(anyLong(), anyInt(), value.capture(),
+    verify(r, times(1)).falsification(anyLong(), anyInt(), value.capture(),
         any(List.class), any());
     Tuple3<A, B, C> v = (Tuple3<A, B, C>) value.getValue();
     if (!p.test(v._1, v._2, v._3)) {
@@ -98,7 +98,7 @@ public class QTTester {
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public <A, B, C, D> void smallestValueMatches(Predicate4<A, B, C, D> p) {
     ArgumentCaptor value = ArgumentCaptor.forClass(Object.class);
-    verify(r, times(1)).falisification(anyLong(), anyInt(), value.capture(),
+    verify(r, times(1)).falsification(anyLong(), anyInt(), value.capture(),
         any(List.class), any());
     Tuple4<A, B, C, D> v = (Tuple4<A, B, C, D>) value.getValue();
     if (!p.test(v._1, v._2, v._3, v._4)) {
@@ -111,7 +111,7 @@ public class QTTester {
   public void falsificationContainsText(String string) {
     ArgumentCaptor value = ArgumentCaptor.forClass(Object.class);
     ArgumentCaptor<AsString> asString = ArgumentCaptor.forClass(AsString.class);
-    verify(r, times(1)).falisification(anyLong(), anyInt(), value.capture(),
+    verify(r, times(1)).falsification(anyLong(), anyInt(), value.capture(),
         any(List.class), asString.capture());
 
     assertThat(asString.getValue().asString(value.getValue())).contains(string);
