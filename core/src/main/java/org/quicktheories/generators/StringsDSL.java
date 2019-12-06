@@ -1,6 +1,12 @@
 package org.quicktheories.generators;
 
+import org.quicktheories.api.Pair;
 import org.quicktheories.core.Gen;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A Class for creating String Sources that will produce Strings composed of
@@ -97,15 +103,55 @@ public class StringsDSL {
   
   public static class StringGeneratorBuilder {
 
-    private final int minCodePoint;
-    private final int maxCodePoint;
+    private final List<Pair<Integer, Integer>> ranges;
 
     private StringGeneratorBuilder(int minCodePoint, int maxCodePoint) {
-      this.minCodePoint = minCodePoint;
-      this.maxCodePoint = maxCodePoint;
+      this.ranges = Collections.singletonList(Pair.of(minCodePoint, maxCodePoint));
     }
 
-    /**
+    private StringGeneratorBuilder(List<Pair<Integer, Integer>> ranges) {
+        this.ranges = ranges;
+    }
+
+    public StringGeneratorBuilder excludingCodePoint(int codePoint) {
+        return excludingRange(codePoint, codePoint);
+    }
+
+    public StringGeneratorBuilder excludingRange(int minCodePoint, int maxCodePoint) {
+        return null;
+    }
+
+    public StringGeneratorBuilder withCodePoint(int codePoint) {
+        return withRange(codePoint, codePoint);
+    }
+
+      public StringGeneratorBuilder withRange(int minCodePoint, int maxCodePoint) {
+          List<Pair<Integer, Integer>> newRanges = new ArrayList<>();
+          Iterator<Pair<Integer, Integer>> it = ranges.iterator();
+          boolean added = false;
+          while (it.hasNext()) {
+              Pair<Integer, Integer> next = it.next();
+              if (next._1 > maxCodePoint) {
+                  newRanges.add(Pair.of(minCodePoint, maxCodePoint));
+                  added = true;
+              } else if (next._2 < minCodePoint) {
+                  newRanges.add(next);
+              }
+              // If ranges overlap but neither contains the other, we can just combine them
+              else if (next._2 > maxCodePoint) {
+                  newRanges.add(Pair.of(minCodePoint, next._2));
+                  added = true;
+              }
+              // Otherwise, min/max dominates next, and we can skip next
+          }
+          if (!added) {
+              newRanges.add(Pair.of(minCodePoint, maxCodePoint));
+          }
+          return new StringGeneratorBuilder(newRanges);
+      }
+
+
+      /**
      * Generates Strings of a fixed number of code points.
      * 
      * @param codePoints
@@ -116,8 +162,7 @@ public class StringsDSL {
       ArgumentAssertions.checkArguments(codePoints >= 0,
           "The number of codepoints cannot be negative; %s is not an accepted argument",
           codePoints);
-      return Strings.withCodePoints(minCodePoint,
-          maxCodePoint, Generate.constant(codePoints));
+      return Strings.fromRanges(ranges, codePoints, codePoints);
     }
 
     /**
@@ -148,10 +193,8 @@ public class StringsDSL {
       ArgumentAssertions.checkArguments(minLength >= 0,
           "The length of a String cannot be negative; %s is not an accepted argument",
           minLength);
-      return Strings.ofBoundedLengthStrings(minCodePoint, maxCodePoint,
-          minLength, maxLength);
+      return Strings.fromRanges(ranges, minLength, maxLength);
     }
-
   }
 
 }
