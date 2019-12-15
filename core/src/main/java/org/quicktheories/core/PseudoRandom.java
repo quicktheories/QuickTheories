@@ -17,16 +17,6 @@ public interface PseudoRandom {
   long nextLong(long startInclusive, long endInclusive);
   
   /**
-   * Generates a random long within the interval
-   * 
-   * @param startInclusive
-   *          startInclusive to be generated
-   * @param endInclusive
-   *          endInclusive to generated
-   * @return a long between start and end inclusive
-   */
-
-  /**
    * Returns the seed used to generate random numbers for this instance
    * 
    * @return the seed

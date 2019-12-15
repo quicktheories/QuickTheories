@@ -3,8 +3,7 @@ package org.quicktheories.api;
 /**
  * State for a theory involving three values
  *
- * @param
- *          <P>
+ * @param <P>
  *          Type of first value
  * @param <P2>
  *          Type of second value

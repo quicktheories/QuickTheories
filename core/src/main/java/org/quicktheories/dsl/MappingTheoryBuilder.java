@@ -15,8 +15,7 @@ import org.quicktheories.impl.TheoryRunner;
  * Builds theories about values of type T based on values of precursor types P
  * and a mapping function.
  *
- * @param
- *          <P>
+ * @param <P>
  *          Precursor type from which T will be built
  * @param <T>
  *          Final type of value required to theory

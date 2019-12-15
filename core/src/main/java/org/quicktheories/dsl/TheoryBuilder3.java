@@ -26,21 +26,6 @@ public final class TheoryBuilder3<A, B, C> {
   private final Predicate3<A, B, C> assumptions;
 
   /**
-   * Builds theories about values of type A and B
-   *
-   * @param state
-   *          supplies the strategy to be implemented
-   * @param as
-   *          the first source of the values to be generated and potentially
-   *          shrunk
-   * @param bs
-   *          the second source of the values to be generated and potentially
-   *          shrunk
-   * @param assumptions
-   *          limits the possible values of type A and of type B
-   */
-
-  /**
    * Builds theories about values of type A, B and C
    *
    * @param state

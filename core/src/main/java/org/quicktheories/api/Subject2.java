@@ -6,8 +6,7 @@ import java.util.function.BiPredicate;
 /**
  * State for a theory involving two values
  *
- * @param
- *          <P>
+ * @param <P>
  *          Type of first value
  * @param <T>
  *          Type of second value

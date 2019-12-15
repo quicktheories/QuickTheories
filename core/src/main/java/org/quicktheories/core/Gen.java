@@ -12,7 +12,7 @@ import org.quicktheories.api.Function5;
 import org.quicktheories.impl.Constraint;
 
 /**
- * (Psuedo)randomly generates instances of T
+ * (Pseudo)randomly generates instances of T
  *
  * @param <T> Type to generate
  */
@@ -171,9 +171,9 @@ public interface Gen<T> extends AsString<T>{
   
   /**
    * Randomly combines output of this Gen with another. The rhs will be given
-   * a likelyhood of being generated of between 0 (or less) == never, 100 (or more) == always.
+   * a likelihood of being generated of between 0 (or less) == never, 100 (or more) == always.
    * @param rhs Gen to mix with
-   * @param weight Likelyhood of generating from rhs between 0 and 100 
+   * @param weight Likelihood of generating from rhs between 0 and 100
    * @return A Gen of T
    */
   default Gen<T> mix(Gen<T> rhs, int weight) {
