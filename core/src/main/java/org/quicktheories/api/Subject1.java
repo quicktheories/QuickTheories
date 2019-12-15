@@ -20,7 +20,7 @@ public interface Subject1<T> {
    * @param property
    *          property to check
    */
-  public void check(final Predicate<T> property);
+  void check(final Predicate<T> property);
 
   /**
    * Checks a property across a random sample of possible values where
@@ -29,7 +29,7 @@ public interface Subject1<T> {
    * @param property
    *          property to check
    */
-  public void checkAssert(final Consumer<T> property);
+  void checkAssert(final Consumer<T> property);
 
   /**
    * Specifies how the object of type T will be output as a String by the
@@ -40,6 +40,6 @@ public interface Subject1<T> {
    * @return a Subject1 of type T
    */
   @CheckReturnValue
-  public Subject1<T> describedAs(Function<T,String> tToString);
+  Subject1<T> describedAs(Function<T, String> tToString);
 
 }

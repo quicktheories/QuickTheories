@@ -20,7 +20,7 @@ public interface Subject2<P, T> {
    * @param property
    *          property to check
    */
-  public void check(final BiPredicate<P, T> property);
+  void check(final BiPredicate<P, T> property);
 
   /**
    * Checks a property across a random sample of possible values where
@@ -29,7 +29,7 @@ public interface Subject2<P, T> {
    * @param property
    *          property to check
    */
-  public void checkAssert(final BiConsumer<P, T> property);
+  void checkAssert(final BiConsumer<P, T> property);
 
 
 }

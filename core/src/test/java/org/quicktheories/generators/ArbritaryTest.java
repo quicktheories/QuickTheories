@@ -69,7 +69,7 @@ public class ArbritaryTest {
   }
  
   
-  static enum AnEnum {
-    A, B, C, D, E;
+  enum AnEnum {
+    A, B, C, D, E
   }
 }

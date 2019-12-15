@@ -25,67 +25,67 @@ public interface WithQuickTheories {
     return QuickTheory.qt();
   }
   
-  public default LongsDSL longs() {
+  default LongsDSL longs() {
     return SourceDSL.longs();
   }
 
-  public default IntegersDSL integers() {
+  default IntegersDSL integers() {
     return SourceDSL.integers();
   }
 
-  public default DoublesDSL doubles() {
+  default DoublesDSL doubles() {
     return SourceDSL.doubles();
   }
 
-  public default FloatsDSL floats() {
+  default FloatsDSL floats() {
     return SourceDSL.floats();
   }
 
-  public default CharactersDSL characters() {
+  default CharactersDSL characters() {
     return SourceDSL.characters();
   }
 
-  public default StringsDSL strings() {
+  default StringsDSL strings() {
     return SourceDSL.strings();
   }
 
-  public default ListsDSL lists() {
+  default ListsDSL lists() {
     return SourceDSL.lists();
   }
 
-  public default MapsDSL maps() {
+  default MapsDSL maps() {
     return SourceDSL.maps();
   }
 
-  public default ArraysDSL arrays() {
+  default ArraysDSL arrays() {
     return SourceDSL.arrays();
   }
 
-  public default BigIntegersDSL bigIntegers() {
+  default BigIntegersDSL bigIntegers() {
     return SourceDSL.bigIntegers();
   }
 
-  public default BigDecimalsDSL bigDecimals() {
+  default BigDecimalsDSL bigDecimals() {
     return SourceDSL.bigDecimals();
   }
 
-  public default ArbitraryDSL arbitrary() {
+  default ArbitraryDSL arbitrary() {
     return SourceDSL.arbitrary();
   }
 
-  public default DatesDSL dates() {
+  default DatesDSL dates() {
     return SourceDSL.dates();
   }
 
-  public default LocalDatesDSL localDates() {
+  default LocalDatesDSL localDates() {
     return SourceDSL.localDates();
   }
   
-  public default BooleansDSL booleans() {
+  default BooleansDSL booleans() {
     return SourceDSL.booleans();
   }
   
-  public default GuidanceFactory noGuidance() {
+  default GuidanceFactory noGuidance() {
     return prng -> new NoGuidance();
   }
  
