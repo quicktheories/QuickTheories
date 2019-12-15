@@ -15,7 +15,7 @@ import sun.quicktheories.coverage.CodeCoverageStore;
  * coverage store via specialised methods for each number of probes.
  *
  * The range of methods this approach can be applied to is limited by the
- * maximum airty of the overloaded methods on the coverage store.
+ * maximum arity of the overloaded methods on the coverage store.
  */
 class LocalVariableCoverageMethodVisitor extends AbstractCoverageStrategy {
 
