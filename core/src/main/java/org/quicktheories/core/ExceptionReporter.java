@@ -14,8 +14,8 @@ import org.quicktheories.api.AsString;
 public class ExceptionReporter implements Reporter {
 
   @Override
-  public void falisification(long seed, int examplesUsed, Object smallest,
-      List<Object> examples, AsString<Object> toString) {
+  public void falsification(long seed, int examplesUsed, Object smallest,
+                            List<Object> examples, AsString<Object> toString) {
     this.falsify(seed, examplesUsed, smallest, "", examples, toString);
 
   }
@@ -29,8 +29,8 @@ public class ExceptionReporter implements Reporter {
   }
 
   @Override
-  public void falisification(long seed, int examplesUsed, Object smallest,
-      Throwable cause, List<Object> examples, AsString<Object> toString) {
+  public void falsification(long seed, int examplesUsed, Object smallest,
+                            Throwable cause, List<Object> examples, AsString<Object> toString) {
     StringWriter sw = new StringWriter();
     cause.printStackTrace(new PrintWriter(sw));
     String failure = String.format("%nCause was :-%n%s", sw);

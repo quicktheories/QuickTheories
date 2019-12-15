@@ -26,8 +26,8 @@ public interface Reporter {
    *          function specifying how the Object should be output to String in
    *          the falsification output
    */
-  void falisification(long seed, int count, Object smallest, Throwable cause,
-      List<Object> examples, AsString<Object> toString);
+  void falsification(long seed, int count, Object smallest, Throwable cause,
+                     List<Object> examples, AsString<Object> toString);
 
   /**
    * Report falsification of a theory
@@ -44,8 +44,8 @@ public interface Reporter {
    *          function specifying how the Object should be output to String in
    *          the falsification output
    */
-  void falisification(long seed, int count, Object smallest,
-      List<Object> examples, AsString<Object> toString);
+  void falsification(long seed, int count, Object smallest,
+                     List<Object> examples, AsString<Object> toString);
 
   /**
    * Reports the number of examples generated, which is less than the expected

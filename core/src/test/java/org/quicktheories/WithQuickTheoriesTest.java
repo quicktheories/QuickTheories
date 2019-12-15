@@ -115,7 +115,7 @@ public class WithQuickTheoriesTest {
       .forAll(testee.integers().all())
       .check(i -> false);
     
-    Mockito.verify(r).falisification(anyLong(), anyInt(), any(), any(), any());
+    Mockito.verify(r).falsification(anyLong(), anyInt(), any(), any(), any());
   }
   
   @Test
