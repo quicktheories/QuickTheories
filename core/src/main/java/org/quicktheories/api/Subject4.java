@@ -21,7 +21,7 @@ public interface Subject4<P, P2, P3, T> {
    * @param property
    *          property to check
    */
-  public void check(final Predicate4<P, P2, P3, T> property);
+  void check(final Predicate4<P, P2, P3, T> property);
 
   /**
    * Checks a property across a random sample of possible values where
@@ -30,6 +30,6 @@ public interface Subject4<P, P2, P3, T> {
    * @param property
    *          property to check
    */
-  public void checkAssert(final QuadConsumer<P, P2, P3, T> property);
+  void checkAssert(final QuadConsumer<P, P2, P3, T> property);
 
 }

@@ -431,7 +431,7 @@ public class CodeCoverageStoreTest {
             Thread.sleep(sleepPeriod);
           } catch (final InterruptedException e) {
           }
-          final boolean b[] = new boolean[1000];
+          final boolean[] b = new boolean[1000];
           CodeCoverageStore.visitProbes(0, 0, b);
         }
       }

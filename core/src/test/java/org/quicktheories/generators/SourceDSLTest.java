@@ -450,7 +450,6 @@ public class SourceDSLTest {
     try {
       Gen<String> testee = strings().basicLatinAlphabet()
           .ofLengthBetween(0, 6);
-      ;
     } catch (IllegalArgumentException expected) {
       fail("Threw an exception for an acceptable input!");
     }
@@ -772,8 +771,8 @@ public class SourceDSLTest {
   }
 
 
-  static enum AnEnum {
-    A, B, C, D, E;
+  enum AnEnum {
+    A, B, C, D, E
   }
 
   @SuppressWarnings("unused")

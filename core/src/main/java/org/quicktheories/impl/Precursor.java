@@ -10,7 +10,7 @@ public final class Precursor {
   
   private static final int INITIAL_SIZE = 32;
   
-  private ByteBuffer buffer = ByteBuffer.allocate(1);
+  private ByteBuffer buffer;
   private final List<Constraint> constraints;
   
   public Precursor() {

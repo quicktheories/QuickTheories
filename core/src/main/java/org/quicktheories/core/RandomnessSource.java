@@ -7,10 +7,10 @@ import org.quicktheories.impl.Constraint;
  */
 public interface RandomnessSource {
   
-  public long next(Constraint constraints);
+  long next(Constraint constraints);
 
   DetatchedRandomnessSource detach();
   
-  public void registerFailedAssumption();
+  void registerFailedAssumption();
  
 }
