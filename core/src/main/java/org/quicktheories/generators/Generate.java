@@ -263,7 +263,7 @@ public class Generate {
   public static Gen<Integer> range(final int startInclusive,
       final int endInclusive, final int shrinkTarget) {
     Constraint constraint = Constraint.between(startInclusive, endInclusive).withShrinkPoint(shrinkTarget);
-    return td -> Integer.valueOf((int)td.next(constraint));
+    return td -> (int) td.next(constraint);
   }
   
   /**
@@ -275,7 +275,7 @@ public class Generate {
   public static Gen<Integer> rangeWithNoShrinkPoint(final int startInclusive,
                                                      final int endInclusive) {
     Constraint constraint = Constraint.between(startInclusive, endInclusive).withNoShrinkPoint();
-    return td -> Integer.valueOf((int)td.next(constraint));
+    return td -> (int) td.next(constraint);
   }
   
   /**

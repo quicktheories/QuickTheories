@@ -62,8 +62,9 @@ public class GenAssert<T>
   public final GenAssert<T> generatesAllOf(T... ts) {
     return generatesAllOfWithNSamples(1000, ts);
   }
-  
-  public GenAssert<T> generatesAllOfWithNSamples(int samples, @SuppressWarnings("unchecked") T... ts) {
+
+  @SafeVarargs
+  public final GenAssert<T> generatesAllOfWithNSamples(int samples, @SuppressWarnings("unchecked") T... ts) {
     List<T> generated = generateValues(samples);
     org.assertj.core.api.Assertions.assertThat(generated).contains(ts);
     return this;
@@ -85,6 +86,7 @@ public class GenAssert<T>
     return generatesInProportion(1000, 0.05, wts);
   }
 
+  @SafeVarargs
   public final GenAssert<T> generatesInProportion(int samples, double errorThresh,
                                                   @SuppressWarnings("unchecked") Pair<T,Double>... wts) {
     List<T> generated = generateValues(samples);
@@ -102,7 +104,8 @@ public class GenAssert<T>
     return generateValues(actual,count);
   }
 
-  public GenAssert<T> doesNotGenerate(
+  @SafeVarargs
+  public final GenAssert<T> doesNotGenerate(
       @SuppressWarnings("unchecked") T... ts) {
     List<T> generated = generateValues(100);
     org.assertj.core.api.Assertions.assertThat(generated).doesNotContain(ts);

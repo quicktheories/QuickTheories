@@ -67,7 +67,7 @@ enum Commands implements Command<Counter,Long> {
    
     @Override
     public Long nextState(Long state) {
-      return state = state * 2;
+      return state * 2;
     }
   },
   

@@ -93,7 +93,7 @@ public class GenerateTest {
   @Test
   public void shouldThrowErrorWhenPickingFromEmptyList() {
     try {
-      Gen<Integer> testee = Generate.pick(new ArrayList<Integer>());
+      Gen<Integer> testee = Generate.pick(new ArrayList<>());
       fail("Attempted to pick from an empty list!");
     } catch (IllegalArgumentException expected) {
     }
