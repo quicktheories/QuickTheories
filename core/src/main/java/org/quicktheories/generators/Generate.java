@@ -344,7 +344,45 @@ public class Generate {
     return CodePoints.codePoints(startInclusive, endInclusive, '!')
         .map(l -> (char) l.intValue());
   }
-  
+
+  /**
+   * One dimensional char arrays
+   * @param sizes Gen of sizes for the arrays
+   * @param contents Gen of contents
+   * @return A Gen of char[]
+   */
+  public static Gen<char[]> charArrays(Gen<Integer> sizes, Gen<Character> contents) {
+    Gen<char[]> gen = td -> {
+      int size = sizes.generate(td);
+      char[] is = new char[size];
+      for (int i = 0; i != size; i++) {
+        is[i] = contents.generate(td);
+      }
+      return is;
+    };
+    return gen.describedAs(Arrays::toString);
+  }
+
+  /**
+   * One dimensional char arrays
+   * @param sizes Gen of sizes for the arrays
+   * @param domain of content
+   * @return A Gen of char[]
+   */
+  public static Gen<char[]> charArrays(Gen<Integer> sizes, char[] domain) {
+    Constraint constraints = Constraint.between(0, domain.length - 1).withNoShrinkPoint();
+    Gen<char[]> gen = td -> {
+      int size = sizes.generate(td);
+      char[] is = new char[size];
+      for (int i = 0; i != size; i++) {
+        int idx = (int) td.next(constraints);
+        is[i] = domain[idx];
+      }
+      return is;
+    };
+    return gen.describedAs(Arrays::toString);
+  }
+
   /**
    * One dimensional int arrays
    * @param sizes Gen of sizes for the arrays
