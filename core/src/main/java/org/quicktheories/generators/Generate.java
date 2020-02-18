@@ -419,6 +419,60 @@ public class Generate {
   
   private static <T> AsString<T[]> arrayDescriber(Function<T, String> valueDescriber) {
     return a -> java.util.Arrays.stream(a).map(valueDescriber).collect(Collectors.joining(", ", "[", "]"));
-  }  
-   
+  }
+
+  /**
+   * Recursive generator.
+   *
+   * @param recursiveGenerator The function result is given back as the function
+   *                           argument
+   */
+  public static <T> Gen<T> recursive(Function<Gen<T>, Gen<T>> recursiveGenerator) {
+    return new RecursiveGen<T>(recursiveGenerator);
+  }
+
+  private static class RecursiveGen<T> implements Gen<T> {
+    private Gen<T> generator;
+
+    RecursiveGen(Function<Gen<T>, Gen<T>> recursiveDefinition) {
+      // Uses handle, since generator is not declared yet
+      this.generator = recursiveDefinition.apply(lazy(() -> generatorHandle()));
+    }
+
+    private Gen<T> generatorHandle() {
+      return generator;
+    }
+
+    @Override
+    public T generate(RandomnessSource in) {
+      return generator.generate(in);
+    }
+  }
+
+  /**
+   * Lazily evaluate the generator supplier once at first use, and re-use the
+   * given generator on all subsequent uses.
+   */
+  private static <T> Gen<T> lazy(Supplier<Gen<T>> innerGen) {
+    return new LazyGen<T>(innerGen);
+  }
+
+  private static class LazyGen<T> implements Gen<T> {
+    private Supplier<Gen<T>> genereratorSupplier;
+
+    LazyGen(Supplier<Gen<T>> generatorSupplier) {
+      this.genereratorSupplier = generatorSupplier;
+    }
+
+    @Override
+    public T generate(RandomnessSource in) {
+      Gen<T> generator = genereratorSupplier.get();
+
+      // Re-define the supplier to only return the calculated
+      // generator next time called.
+      genereratorSupplier = () -> generator;
+
+      return generator.generate(in);
+    }
+  }
 }

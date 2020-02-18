@@ -6,6 +6,7 @@ import static org.quicktheories.impl.GenAssert.assertThatGenerator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.quicktheories.api.Pair;
@@ -97,5 +98,16 @@ public class GenerateTest {
       fail("Attempted to pick from an empty list!");
     } catch (IllegalArgumentException expected) {
     }
+  }
+
+  @Test
+  public void recursive() throws Exception {
+    Gen<Object> optionalTelescopes = Generate
+        .recursive(me -> me
+            .mix(Generate.constant(1337), 5)
+            .map(Optional::of));
+
+    assertThatGenerator(optionalTelescopes)
+        .generatesAtLeastNDistinctValues(20);
   }
 }

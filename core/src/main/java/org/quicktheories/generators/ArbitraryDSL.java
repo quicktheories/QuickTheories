@@ -1,6 +1,8 @@
 package org.quicktheories.generators;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.quicktheories.core.Gen;
@@ -92,6 +94,33 @@ public class ArbitraryDSL {
    */
   public <T> Gen<T> pick(List<T> ts) {
     return Generate.pick(ts);
+  }
+
+  /**
+   * Recursive generator. The probability for a recursive value must be less than
+   * one (i.e. 100%) on each recursive depth level in order for the recursive data
+   * structure to not grow infinitely.
+   * <p>
+   * For example, if the recursive data structure have a branching factor of 5,
+   * the probability for returning a non-terminating data element must be less
+   * than 20% in order for the generated data structure to have a chance to
+   * terminate.
+   * <p>
+   * Example where there is 5% change that the the telescope of {@link Optional optionals} terminate.
+   * <pre>
+   *  {@code
+   *  Gen<Object> optionalTelescopes(Gen<Object> terminalValues) {
+   *      return recursive(me -> me
+   *       .mix(terminalValues, 5)
+   *       .map(Optional::of));
+   *  }
+   * </pre>
+   *
+   * @param recursiveGenerator
+   *            The function result is given back as the function argument
+   */
+  public <T> Gen<T> recursive(Function<Gen<T>, Gen<T>> recursiveGenerator) {
+      return Generate.recursive(recursiveGenerator);
   }
 
 }
