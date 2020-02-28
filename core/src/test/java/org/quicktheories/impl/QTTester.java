@@ -31,7 +31,7 @@ public class QTTester {
   private Reporter r = mock(Reporter.class);
 
   public QuickTheory qt(long seed) {
-    Strategy s = new Strategy(Configuration.defaultPRNG(seed), 100, 0, 10000, 10, r, prng -> new NoGuidance());
+    Strategy s = new Strategy(Configuration.defaultPRNG(seed), 100, 0, 10000, 1, 10, 10, r, prng -> new NoGuidance());
     return org.quicktheories.QuickTheory.qt(() -> s);
   }
 

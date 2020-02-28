@@ -9,6 +9,11 @@ import org.quicktheories.core.Gen;
 import org.quicktheories.core.stateful.Command;
 import org.quicktheories.core.stateful.Parallel;
 import org.quicktheories.core.stateful.Sequential;
+import org.quicktheories.generators.Generate;
+import org.quicktheories.impl.stateful.StatefulTheory;
+
+import static org.quicktheories.impl.stateful.StatefulTheory.*;
+
 
 public class StatefulTest implements WithQuickTheories {
  
@@ -41,8 +46,75 @@ public class StatefulTest implements WithQuickTheories {
     .forAll(longs().between(0, 10), commandSequences)
     .checkAssert((initialState, commands) -> parallel.parallelCheck(initialState,commands, l -> new NotThreadSafeCounter(l), sut -> sut.get(), threads));
   }
- 
-  
+
+  @Test
+  public void statefulModelSimple() {
+    qt().withRegisteredProfiles(ExampleProfiles.class).withStatefulModel(CounterModel::new).checkStateful();
+  }
+
+  @Test
+  public void statefulModelStepBased() {
+    qt().withProfile(ExampleProfiles.class, "ci")
+            .withMinStatefulSteps(1)
+            .withMaxStatefulSteps(10)
+            .stateful(StepBasedCounterModel::new);
+
+  }
+
+  public static class CounterModel extends StatefulTheory.WithHistory<Commands> {
+
+    Long state = 0L;
+    Counter counter = new BuggyCounter(0);
+
+    @Override
+    public Gen<Commands> steps() {
+      return Generate.enumValues(Commands.class);
+    }
+
+    @Override
+    public boolean performStep(Commands s) {
+      System.out.println("Executing step: " + s);
+      s.run(counter);
+      state = s.nextState(state);
+      return counter.get() == state;
+    }
+
+  }
+
+  public static class StepBasedCounterModel extends StatefulTheory.StepBased {
+
+    private Long state = 0L;
+    private Counter counter = null;
+
+    public void setup() {
+      counter = new BuggyCounter(state);
+    }
+
+    public void inc(Long by) {
+      for (int i = 0; i < by; i++) {
+        counter.inc();
+      }
+      state += by;
+    }
+
+    public boolean counterIsCorrect() {
+      return state == counter.get();
+    }
+
+    public Gen<Long> incrementBy()
+    {
+      return state == 0 ? Generate.longRange(3, 10) : Generate.longRange(0, state);
+    }
+
+    protected void initSteps() {
+      addSetupStep(builder("setup", this::setup).build());
+      addStep(builder("inc", this::inc, this::incrementBy)
+              .postcondition(this::counterIsCorrect)
+              .build());
+    }
+
+  }
+
 
 enum Commands implements Command<Counter,Long> {
  
@@ -125,7 +197,7 @@ interface Counter {
 }
 
 
-class NotThreadSafeCounter implements Counter {
+static class NotThreadSafeCounter implements Counter {
 
   long n = 0;
   
@@ -154,7 +226,7 @@ class NotThreadSafeCounter implements Counter {
   }
 }
 
-class BuggyCounter implements Counter {
+static class BuggyCounter implements Counter {
 
   long n = 0;
   int count = 0;

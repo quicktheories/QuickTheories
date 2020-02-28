@@ -14,6 +14,8 @@ public class Strategy {
   private final int examples;
   private final long testingTimeMillis;
   private final int shrinkCycles;
+  private final int minStatefulSteps;
+  private final int maxStatefulSteps;
   private final Reporter reporter;
   private final Function<PseudoRandom, Guidance> guidance;
 
@@ -38,11 +40,14 @@ public class Strategy {
    *          Strategy to use to guide search
    */
   public Strategy(final PseudoRandom prng, final int examples, final long testingTimeMillis,
-      final int shrinkCycles, final int generateAttempts, Reporter reporter, Function<PseudoRandom, Guidance> guidance) {
+                  final int shrinkCycles,  final int minStatefulSteps, final int maxStatefulSteps, final int generateAttempts,
+                  Reporter reporter, Function<PseudoRandom, Guidance> guidance) {
     this.prng = prng;
     this.examples = examples;
     this.testingTimeMillis = testingTimeMillis;
     this.shrinkCycles = shrinkCycles;
+    this.minStatefulSteps = minStatefulSteps;
+    this.maxStatefulSteps = maxStatefulSteps;
     this.reporter = reporter;
     this.generateAttempts = generateAttempts;
     this.guidance = guidance;
@@ -78,7 +83,25 @@ public class Strategy {
   public int shrinkCycles() {
     return this.shrinkCycles;
   }
-  
+
+  /**
+   * Returns the minimum number of steps that will be generated in a run of a stateful model
+   *
+   * @return the minimum number of steps that will be generated in a run of a stateful model
+   */
+  public int minStatefulSteps() {
+    return this.minStatefulSteps;
+  }
+
+  /**
+   * Returns the maximum number of steps that will be generated in a run of a stateful model
+   *
+   * @return the maximum number of steps that will be generated in a run of a stateful model
+   */
+  public int maxStatefulSteps() {
+    return this.maxStatefulSteps;
+  }
+
   /**
    * Returns the maximum number of times to try to retrieve each value before giving up.
    * 
@@ -110,8 +133,8 @@ public class Strategy {
    *         supplied
    */
   public Strategy withFixedSeed(long seed) {
-    return new Strategy(defaultPRNG(seed), examples, testingTimeMillis, shrinkCycles, generateAttempts,
-        reporter, guidance);
+    return new Strategy(defaultPRNG(seed), examples, testingTimeMillis, shrinkCycles, minStatefulSteps, maxStatefulSteps,
+            generateAttempts, reporter, guidance);
   }
 
   /**
@@ -123,7 +146,8 @@ public class Strategy {
    * @return a strategy with the maximum number of examples as supplied
    */
   public Strategy withExamples(int examples) {
-    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, generateAttempts, reporter, guidance);
+    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, minStatefulSteps, maxStatefulSteps,
+            generateAttempts, reporter, guidance);
   }
 
   /**
@@ -145,7 +169,8 @@ public class Strategy {
    * @return a strategy with the testing time set to the amount of time given.
    */
   public Strategy withTestingTime(long time, TimeUnit timeUnit) {
-    return new Strategy(prng, examples, timeUnit.toMillis(time), shrinkCycles, generateAttempts, reporter, guidance);
+    return new Strategy(prng, examples, timeUnit.toMillis(time), shrinkCycles, minStatefulSteps, maxStatefulSteps,
+            generateAttempts, reporter, guidance);
   }
 
   /**
@@ -164,7 +189,8 @@ public class Strategy {
    * @return a strategy
    */
   public Strategy withGenerateAttempts(int generateAttempts) {
-    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, generateAttempts, reporter, guidance);
+    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, minStatefulSteps, maxStatefulSteps,
+            generateAttempts, reporter, guidance);
   }
   
   /**
@@ -173,7 +199,8 @@ public class Strategy {
    * @return a strategy
    */
   public Strategy withGuidance(Function<PseudoRandom, Guidance> guidance) {
-    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, generateAttempts, reporter, guidance);
+    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, minStatefulSteps, maxStatefulSteps,
+            generateAttempts, reporter, guidance);
   }
 
   /**
@@ -184,16 +211,30 @@ public class Strategy {
    * @return a strategy with the maximum number of shrinks as supplied
    */
   public Strategy withShrinkCycles(int shrinks) {
-    return new Strategy(prng, examples, testingTimeMillis, shrinks, generateAttempts, reporter, guidance);
+    return new Strategy(prng, examples, testingTimeMillis, shrinks, minStatefulSteps, maxStatefulSteps,
+            generateAttempts, reporter, guidance);
   }
-  
+
+  public Strategy withMinStatefulSteps(int minStatefulSteps)
+  {
+    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, minStatefulSteps, maxStatefulSteps,
+            generateAttempts, reporter, guidance);
+  }
+
+  public Strategy withMaxStatefulSteps(int maxStatefulSteps)
+  {
+    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, minStatefulSteps, maxStatefulSteps,
+            generateAttempts, reporter, guidance);
+  }
+
   /**
    * Creates a strategy using the supplied reporter
    * @param reporter Reporter to use
    * @return a strategy with suppled reporter
    */
   public Strategy withReporter(Reporter reporter) {
-    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, generateAttempts, reporter, guidance);
+    return new Strategy(prng, examples, testingTimeMillis, shrinkCycles, minStatefulSteps, maxStatefulSteps,
+            generateAttempts, reporter, guidance);
   }
 
   /**
