@@ -17,8 +17,8 @@ public final class Lists {
   
   static <T> Gen<List<T>> listsOf(
       Gen<T> generator, Gen<Integer> sizes) {
-    return 
-        listsOf(generator, arrayList(), sizes).mix(
+    return
+        arrayListOf(generator, sizes).mix(
         listsOf(generator, linkedList(), sizes));
   }
   
@@ -36,6 +36,26 @@ public final class Lists {
       left.addAll(right);
       return left;
     });
+  }
+
+  /**
+   * Create a {@link Gen} using {@link ArrayList}.
+   *
+   * Why use this function rather than {@link #arrayList()} or {@link #listsOf(Gen, Gen)}? Mostly because of array
+   * pre-allocation.  Since the size is known before the values are generated, can pre-allocate the array so array
+   * copying does not become a bottleneck; useful for theories which depend on large lists.
+   */
+  public static <T> Gen<List<T>> arrayListOf(Gen<T> values, Gen<Integer> sizes) {
+    Gen<List<T>> gen = prng -> {
+      int size = sizes.generate(prng);
+      ArrayList<T> list = new ArrayList<>(size);
+      for (int i = 0; i < size; i++) {
+        list.add(values.generate(prng));
+      }
+      return list;
+
+    };
+    return gen.describedAs(listDescriber(values::asString));
   }
 
   static <T> Gen<List<T>> listsOf(
