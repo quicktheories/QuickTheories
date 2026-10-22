@@ -66,23 +66,21 @@ class Core {
       }
       
       PrecursorDataPair<T> t = distribution.generate();
-      if (checkHash(t)) {
-        continue;
-      }  
-      
-      examplesUsed = examplesUsed + 1;
-      guidance.newExample(t.precursor());
-      
-      Optional<Falsification<T>> falsification = prop.tryFalsification(t.value());
-      guidance.exampleExecuted();
+      if (!checkHash(t)) {
+        examplesUsed = examplesUsed + 1;
+        guidance.newExample(t.precursor());
 
-      if (falsification.isPresent()) {
-        return falsification.map(f -> Pair.of(f, t));
-      } else {
-        toVisit.addAll(guidance.suggestValues(i,t.precursor()));
+        Optional<Falsification<T>> falsification = prop.tryFalsification(t.value());
+        guidance.exampleExecuted();
+
+        if (falsification.isPresent()) {
+          return falsification.map(f -> Pair.of(f, t));
+        } else {
+          toVisit.addAll(guidance.suggestValues(i,t.precursor()));
+        }
+
+        guidance.exampleComplete();
       }
-      
-      guidance.exampleComplete();
 
       if (config.testingTimeMillis() > 0 && clock.getAsLong() > endTime) {
         break;
