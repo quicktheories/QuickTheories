@@ -13,6 +13,7 @@ import static org.quicktheories.generators.SourceDSL.arbitrary;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.LongSupplier;
 
@@ -162,9 +163,40 @@ public class TheoryRunnerTest {
       when(clock.getAsLong()).thenReturn(0L, 8L,9L, 11L);
       testee = makeTesteeFor(arbitrary().pick(1,2,3,4,5,6,7,8,9,10));
       SearchResult<Integer> actual = testee.runSearch(i -> true);
-      assertThat(actual.getExecutedExamples()).isEqualTo(3);
+      // The duplicate generated within this interval also counts towards elapsed time.
+      assertThat(actual.getExecutedExamples()).isEqualTo(2);
   }
   
+  @Test
+  public void shouldRespectTimeLimitForRepeatedExamples() {
+    assertStopsWhenRepeatingExamples(20);
+  }
+
+  @Test
+  public void shouldRespectTimeLimitForUnlimitedRepeatedExamples() {
+    assertStopsWhenRepeatingExamples(-1);
+  }
+
+  private void assertStopsWhenRepeatingExamples(int exampleLimit) {
+    strategy = strategy.withExamples(exampleLimit)
+        .withTestingTime(10, TimeUnit.MILLISECONDS);
+    when(clock.getAsLong()).thenReturn(0L, 9L, 11L);
+    AtomicInteger generated = new AtomicInteger();
+    testee = makeTesteeFor(prng -> {
+      // Bound the regression even if the time limit is never checked again.
+      if (generated.incrementAndGet() > 10) {
+        throw new AssertionError("Time limit was ignored for repeated examples");
+      }
+      return 1;
+    });
+
+    SearchResult<Integer> actual = testee.runSearch(i -> true);
+
+    assertThat(actual.getExecutedExamples()).isEqualTo(1);
+    // One boundary probe, then the original example and one duplicate.
+    assertThat(generated.get()).isEqualTo(3);
+  }
+
   private TheoryRunner<Integer, Integer> makeTesteeFor(
       Gen<Integer> generator) {
     return new TheoryRunner<>(strategy, generator,
